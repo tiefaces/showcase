@@ -13,9 +13,14 @@
 package org.tiefaces.showcase;
 
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +37,8 @@ import javax.sql.DataSource;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 import org.tiefaces.utility.FacesUtility;
+
+import com.tiefaces.components.sql.SQLRunner;
 
 
 
@@ -55,26 +62,44 @@ public class App {
 		snapshot = version.contains("-SNAPSHOT") || version.contains("-RC");
 		poweredBy = initPoweredBy();
 		initPage();
-		//testds();
+		testds();
 	}
 	
-//	private void testds() {
-//		
-//		Connection result = null;
-//		try {
-//		    Context initialContext = new InitialContext();
-//		    DataSource datasource = (DataSource)initialContext.lookup("java:jboss/datasources/MySQLDS");
-//		    result = datasource.getConnection();
-//		    Statement stmt = result.createStatement() ;
-//		    String query = "select * from pricestable" ;
-//		    ResultSet rs = stmt.executeQuery(query) ;
-//		    while (rs.next()) {
-//		        System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + "<br />");
-//		    }
-//		} catch (Exception ex) {
-//		    System.out.println("Exception: " + ex + ex.getMessage());
-//		}		
-//	}
+	//For file: new FileReader (inputfile)
+	//FOR Inputstream:  new InputStreamReader( inputfile, "UTF8")
+	private String readFile( Reader  input ) throws IOException {
+	    BufferedReader reader = new BufferedReader( input);
+	    String         line = null;
+	    StringBuilder  stringBuilder = new StringBuilder();
+	    String         ls = System.getProperty("line.separator");
+
+	    while( ( line = reader.readLine() ) != null ) {
+	        stringBuilder.append( line );
+	        stringBuilder.append( ls );
+	    }
+	    return stringBuilder.toString();
+	}
+	
+	private void testds() {
+		
+		Connection conn = null;
+		try {
+
+		    Context initialContext = new InitialContext();
+		    DataSource datasource = (DataSource)initialContext.lookup("java:jboss/datasources/ExampleDS");
+		    conn = datasource.getConnection();
+
+			String sql = readFile( new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("sql/pricestable.sql"), "UTF8"));
+			SQLRunner runner = new SQLRunner(conn, false);
+			String results = runner.runSQLs(sql);
+	        System.out.println("sql runner results = "+results);
+		} catch (Exception ex) {
+		    System.out.println("Exception: " + ex + ex.getMessage());
+		} finally {
+			try { conn.close(); } catch (Exception e) { /* ignored */ }
+		}
+	}
+	
 	
 	private void initPage() {
 		pages = new HashMap<>();
