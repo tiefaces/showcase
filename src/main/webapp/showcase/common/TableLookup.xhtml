@@ -1,0 +1,56 @@
+<ui:composition template="/templates/showcase.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:tie="http://java.sun.com/jsf/composite/tiefaces">
+
+	<ui:define name="meta">
+		<f:metadata>
+			<f:attribute name="api.path" value="common/TableLookup" />
+			<f:attribute name="src.paths"
+				value="classes/org/tiefaces/showcase/tablelookup/Item.java,classes/org/tiefaces/showcase/tablelookup/ItemSearchBean.java,classes/org/tiefaces/showcase/tablelookup/ItemSearchHelper.java" />
+
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="description-extra">
+		<ui:include src="/includes/common/desc-tablelookup.xhtml" />
+	</ui:define>
+
+
+	<ui:define name="demo">
+		<h:form>
+			<tie:tablelookup lookupBean="#{itemSearchBean}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+				paginator="true" rows="10" searchButtonText="Search"
+				searchButtonStyle="font-size: 12px;">
+
+			<f:facet name="{Exporters}">
+		            <h:commandLink>
+		                <p:graphicImage name="/layout/img/excel.png" width="24"/>
+		                <p:dataExporter type="xls" target="tbl" fileName="prices" />
+		            </h:commandLink>
+		 
+		            <h:commandLink>
+		                <p:graphicImage name="/layout/img/pdf.png" width="24"/>
+		                <p:dataExporter type="pdf" target="tbl" fileName="prices"/>
+		            </h:commandLink>
+		 
+		            <h:commandLink>
+		                <p:graphicImage name="/layout/img/csv.png" width="24"/>
+		                <p:dataExporter type="csv" target="tbl" fileName="prices" />
+		            </h:commandLink>
+		 
+		            <h:commandLink>
+		                <p:graphicImage name="/layout/img/xml.png" width="24"/>
+		                <p:dataExporter type="xml" target="tbl" fileName="prices" />
+		            </h:commandLink>
+		        </f:facet>				
+
+			</tie:tablelookup>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

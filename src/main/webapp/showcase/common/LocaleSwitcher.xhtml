@@ -1,0 +1,35 @@
+<ui:composition template="/templates/showcase.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:tie="http://java.sun.com/jsf/composite/tiefaces">
+
+	<ui:define name="meta">
+		<f:metadata>
+			<f:attribute name="api.path" value="common/LocaleSwitcher" />
+			<f:attribute name="src.paths"
+				value="faces-config.xml,classes/ApplicationMessages.properties,classes/ApplicationMessages_fr.properties" />
+
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="description-extra">
+		<ui:include src="/includes/common/desc-localeswitcher.xhtml" />
+	</ui:define>
+
+
+	<ui:define name="demo">
+	<f:view locale="tieLocaleBean.locale"> 
+		<h:form>
+			<table style="width: 100%">
+				<tr>
+					<td> <h:outputText value="#{msg['test.label']}" /></td>
+					<td> <tie:localeswitcher id="switcher1" /></td>
+				</tr>
+			</table>
+		</h:form>
+	</f:view>	
+	</ui:define>
+
+</ui:composition>

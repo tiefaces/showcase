@@ -1,0 +1,69 @@
+<div class="block">
+ <p> The CDI annotation <a href="http://omnifaces.org/docs/javadoc/2.0/org/omnifaces/cdi/Eager.html" title="annotation in org.omnifaces.cdi"><code>Eager</code></a> specifies that a scoped bean is to be eagerly instantiated. </p>
+ <p> JSF's own native managed beans are being deprecated in favor of CDI managed beans. One feature that those native JSF managed beans had that's not directly available for CDI managed beans is the ability to eagerly instantiate application scoped beans. </p>
+ <p> OmniFaces fills this void and even goes one step further by introducing the <code>@Eager</code> annotation that can be applied to <code>@RequestScoped</code>, <code>@ViewScoped</code>, <code>@SessionScoped</code> and <code>@ApplicationScoped</code> beans. This causes these beans to be instantiated automatically at the start of each such scope instead of on demand when a bean is first referenced. </p>
+ <p> In case of <code>@RequestScoped</code> and <code>@ViewScoped</code> beans instantiation happens per request URI / view and an extra attribute is required for specifying this. </p>
+ <p> Currently supported scopes: </p>
+ <ol> 
+  <li> CDI <a href="https://docs.oracle.com/javaee/7/api/javax/enterprise/context/RequestScoped.html?is-external=true" title="class or interface in javax.enterprise.context"><code>RequestScoped</code></a> </li>
+  <li> OmniFaces <a href="http://omnifaces.org/docs/javadoc/2.0/org/omnifaces/cdi/ViewScoped.html" title="annotation in org.omnifaces.cdi"><code>ViewScoped</code></a> </li>
+  <li> CDI <a href="https://docs.oracle.com/javaee/7/api/javax/enterprise/context/SessionScoped.html?is-external=true" title="class or interface in javax.enterprise.context"><code>SessionScoped</code></a> </li>
+  <li> CDI <a href="https://docs.oracle.com/javaee/7/api/javax/enterprise/context/ApplicationScoped.html?is-external=true" title="class or interface in javax.enterprise.context"><code>ApplicationScoped</code></a> </li>
+ </ol> 
+ <p> E.g. The following bean will be instantiated during application's startup: </p>
+ <pre class=" prettyprint"><code class="lang-java"> @Eager
+ @ApplicationScoped
+ public class MyEagerApplicationScopedBean {
+
+     @PostConstruct
+     public void init() {
+         System.out.println("Application scoped init!");
+     }
+ }</code></pre> 
+ <p> <em>Note: you can also use the stereotype <a href="http://omnifaces.org/docs/javadoc/2.0/org/omnifaces/cdi/Startup.html" title="annotation in org.omnifaces.cdi"><code>Startup</code></a> for this instead.</em> </p>
+ <p> The following bean will be instantiated whenever a session is created: </p>
+ <pre class=" prettyprint"><code class="lang-java"> @Eager
+ @SessionScoped
+ public class MyEagerSessionScopedBean implements Serializable {
+
+     private static final long serialVersionUID = 1L;
+
+     @PostConstruct
+     public void init() {
+         System.out.println("Session scoped init!");
+     }
+ }</code></pre> 
+ <p> The following bean will be instantiated whenever the URI <code>/components/cache</code> (relatively to the application root) is requested, i.e. when an app is deployed to <code>/myapp</code> at localhost this will correspond to a URL like <code>http://localhost:8080/myapp/components/cache</code>: </p>
+ <pre class=" prettyprint"><code class="lang-java"> @Eager(requestURI = "/components/cache")
+ @RequestScoped
+ public class MyEagerRequestScopedBean {
+
+     @PostConstruct
+     public void init() {
+         System.out.println("/components/cache requested");
+     }
+ }</code></pre> 
+ <h3> Compatibility </h3> 
+ <p> In some (older) containers, most notably GlassFish 3, the CDI request scope is not available in a <a href="https://docs.oracle.com/javaee/7/api/javax/servlet/ServletRequestListener.html?is-external=true" title="class or interface in javax.servlet"><code>ServletRequestListener</code></a> (this is actually not spec complicant, as CDI demands this scope to be active then, but it is what it is). </p>
+ <p> Additionally in some containers, most notably GlassFish 3 again, instantiating session scoped beans from a <a href="https://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpSessionListener.html?is-external=true" title="class or interface in javax.servlet.http"><code>HttpSessionListener</code></a> will corrupt "something" in the container. The instantiating of the beans will succeed, but if the session is later accessed an exception like the following will be thrown: </p>
+ <pre class=" prettyprint"><code class="lang-java"> java.lang.IllegalArgumentException: Should never reach here
+     at org.apache.catalina.connector.SessionTracker.track(SessionTracker.java:168)
+     at org.apache.catalina.connector.Request.doGetSession(Request.java:2939)
+     at org.apache.catalina.connector.Request.getSession(Request.java:2583)
+     at org.apache.catalina.connector.RequestFacade.getSession(RequestFacade.java:920)
+     at javax.servlet.http.HttpServletRequestWrapper.getSession(HttpServletRequestWrapper.java:259)
+     at com.sun.faces.context.ExternalContextImpl.getSession(ExternalContextImpl.java:155)
+     at javax.faces.context.ExternalContextWrapper.getSession(ExternalContextWrapper.java:396)
+     at javax.faces.context.ExternalContextWrapper.getSession(ExternalContextWrapper.java:396)
+     ...</code></pre> If any or both of those problems occur, a filter needs to be installed instead in 
+ <code>web.xml</code> as follows: 
+ <pre class=" prettyprint"><code class="lang-xhtml"> &lt;filter&gt;
+     &lt;filter-name&gt;eagerBeansFilter&lt;/filter-name&gt;
+     &lt;filter-class&gt;org.omnifaces.cdi.eager.EagerBeansFilter&lt;/filter-class&gt;
+ &lt;/filter&gt;
+ &lt;filter-mapping&gt;
+ &lt;filter-name&gt;eagerBeansFilter&lt;/filter-name&gt;
+     &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+ &lt;/filter-mapping&gt;</code></pre> 
+ <p> Note that the <a href="http://omnifaces.org/docs/javadoc/2.0/org/omnifaces/cdi/eager/EagerBeansFilter.html" title="class in org.omnifaces.cdi.eager"><code>EagerBeansFilter</code></a> will automatically disable the request/session listener by calling <a href="http://omnifaces.org/docs/javadoc/2.0/org/omnifaces/cdi/eager/EagerBeansWebListener.html#disable--"><code>EagerBeansWebListener.disable()</code></a>.</p>
+</div>
