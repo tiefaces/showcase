@@ -21,6 +21,18 @@
 
 
 	<ui:define name="demo">
+
+		<h3>Simple datatable without paginator</h3>
+
+		<h:form>
+			<tie:tablelookup lookupBean="#{itemSearchBean}"
+				searchButtonText="Search"
+				searchButtonStyle="font-size: 12px;">
+			</tie:tablelookup>
+		</h:form>
+
+		<h3>Datatable with paginator and export function</h3>
+
 		<h:form>
 			<tie:tablelookup lookupBean="#{itemSearchBean}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
@@ -51,6 +63,7 @@
 
 			</tie:tablelookup>
 		</h:form>
+		
 	</ui:define>
 
 </ui:composition>

@@ -14,7 +14,11 @@
 		type="java.lang.String" />
 	<cc:attribute name="paginator" required="false" default="false"
 		type="java.lang.Boolean" />
-	<cc:attribute name="rows" required="false" default="10"
+	<cc:attribute name="paginatorPosition" required="false" default="bottom"
+		type="java.lang.String" />
+	<cc:attribute name="paginatorAlwaysVisible" required="false" default="false"
+		type="java.lang.Boolean" />
+	<cc:attribute name="rows" required="false" default=""
 		type="java.lang.String" />
 	<cc:attribute name="style" required="false" default=""
 		type="java.lang.String" />
@@ -40,10 +44,10 @@
 	<div id="#{cc.clientId}">
 
 		<p:dataTable
-		 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
-         paginator="true" rows="10"
-         paginatorPosition="bottom"
-		 paginatorAlwaysVisible = "false"
+		 paginatorTemplate= "#{cc.attrs.paginatorTemplate}" 
+         paginator="#{cc.attrs.paginator}" rows="#{cc.attrs.rows}" 
+         paginatorPosition="#{cc.attrs.paginatorPosition}"
+		 paginatorAlwaysVisible = "#{cc.attrs.paginatorAlwaysVisible}"
 		 style="#{cc.attrs.style}"
 			styleClass="#{cc.attrs.styleClass}"
 			tableStyle="#{cc.attrs.tableStyle}" id="tbl"
