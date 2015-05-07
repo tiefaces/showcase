@@ -32,6 +32,13 @@ public class ItemSearchBean extends tableLookupBean {
 	}
 
 
+	@Override
+	public void selectSearchResult(Object result) {
+		// TODO Auto-generated method stub
+		// Only used for dialog lookup
+	}
+
+
 
 
 

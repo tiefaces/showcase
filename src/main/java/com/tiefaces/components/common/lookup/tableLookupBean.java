@@ -50,5 +50,7 @@ public abstract class tableLookupBean {
 		public void setSearchItem(Object searchItem) {
 			this.searchItem = searchItem;
 		}
+		
+		public abstract void selectSearchResult(Object result);
 
 	}

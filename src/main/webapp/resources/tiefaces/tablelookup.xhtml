@@ -36,6 +36,15 @@
 		type="java.lang.String" />
 	<cc:attribute name="searchButtonColumnStyle" required="false"
 		default="" type="java.lang.String" />
+	<cc:attribute name="showSelectButton" required="false"
+		default="false" type="java.lang.Boolean" />
+	<cc:attribute name="selectButtonIcon" required="false"
+		default="ui-icon-circle-check" type="java.lang.String" />
+	<cc:attribute name="selectButtonText" required="false" default=""
+		type="java.lang.String" />
+	<cc:attribute name="selectButtonButtonStyle" required="false" default=""
+		type="java.lang.String" />
+		
 </cc:interface>
 
 <!-- IMPLEMENTATION -->
@@ -76,9 +85,15 @@
 					<p:commandButton id="searchBtn" icon="#{cc.attrs.searchButtonIcon}"
 						value="#{cc.attrs.searchButtonText}"
 						style="#{cc.attrs.searchButtonStyle}"
-						actionListener="#{cc.attrs.lookupBean.search}" update="@form">
+						actionListener="#{cc.attrs.lookupBean.search}" update="tbl">
 					</p:commandButton>
 				</f:facet>
+				
+			    <p:commandButton icon="#{cc.attrs.selectButtonIcon}" 
+			    value="#{cc.attrs.selectButtonText}"
+			    style="#{cc.attrs.selectButtonStyle}" 
+			    actionListener="#{cc.attrs.lookupBean.selectSearchResult(result)}" />
+				
 			</p:column>
 		</p:dataTable>
 	</div>
