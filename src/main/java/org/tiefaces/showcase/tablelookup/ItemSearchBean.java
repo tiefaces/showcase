@@ -6,11 +6,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import com.tiefaces.common.ColumnModel;
-import com.tiefaces.components.common.lookup.tableLookupBean;
+import com.tiefaces.components.common.lookup.TieTableLookupBean;
 
 @ManagedBean
 @ViewScoped
-public class ItemSearchBean extends tableLookupBean {
+public class ItemSearchBean extends TieTableLookupBean {
 
 	@Override
 	protected void init() {

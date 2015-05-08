@@ -6,6 +6,12 @@
 	version="2.1">
 
 	<application>
+	
+		<action-listener>org.primefaces.application.DialogActionListener</action-listener>
+		<navigation-handler>
+			org.primefaces.application.DialogNavigationHandler</navigation-handler>
+		<view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+			
 		<locale-config>
 			<default-locale>en</default-locale>
 			<supported-locale>fr</supported-locale>
@@ -16,4 +22,11 @@
 		</resource-bundle>
 	</application>
 
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>tieDialogTableLookup</from-outcome>
+			<to-view-id>/dialog/tieDialogTableLookup.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
 </faces-config>

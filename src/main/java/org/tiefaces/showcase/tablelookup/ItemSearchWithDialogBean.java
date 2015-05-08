@@ -8,11 +8,11 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 import com.tiefaces.common.ColumnModel;
-import com.tiefaces.components.common.lookup.tableLookupBean;
+import com.tiefaces.components.common.lookup.TieTableLookupBean;
 
 @ManagedBean
 @ViewScoped
-public class ItemSearchWithDialogBean extends tableLookupBean {
+public class ItemSearchWithDialogBean extends TieTableLookupBean {
 
 	@Override
 	protected void init() {

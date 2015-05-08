@@ -8,13 +8,13 @@ import org.tiefaces.showcase.tablelookup.Item;
 
 import com.tiefaces.common.ColumnModel;
 
-public abstract class tableLookupBean {
+public abstract class TieTableLookupBean {
 
 		private List<ColumnModel> columns;
 		private List<Object> results;
 		private Object searchItem;
 
-		public tableLookupBean() {
+		public TieTableLookupBean() {
 			super();
 		}
 
