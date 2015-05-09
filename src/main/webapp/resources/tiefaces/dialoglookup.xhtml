@@ -7,21 +7,23 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <!-- INTERFACE -->
-<cc:interface componentType="dialogLookupComponent">
+<cc:interface componentType="tiedialogLookupComponent">
 	<cc:attribute name="dialogButtonTitle" required="false" default=""
 		type="java.lang.String" />
 	<cc:attribute name="dialogButtonIcon" required="false" default="ui-icon-search"
 		type="java.lang.String" />
 	<cc:attribute name="dialogButtonText" required="false" default=""
 		type="java.lang.String" />
+	<cc:attribute name="dialogTitle" required="false" default=""
+		type="java.lang.String" />
 	<cc:attribute name="dialogWidth" required="false" default="800"
 		type="java.lang.String" />
 	<cc:attribute name="dialogHeight" required="false" default="400"
 		type="java.lang.String" />
-	<cc:attribute name="dialogReturnAction" required="true" method-signature="void action()" />
+	<cc:attribute name="dialogReturnAction" required="true" method-signature="void action(org.primefaces.event.SelectEvent)" />
 	<cc:attribute name="dialogReturnUpdate" required="true" type="java.lang.String" />
 	<cc:attribute name="lookupBean" required="true"
-		type="com.tiefaces.components.common.lookup.tableLookupBean" />
+		type="com.tiefaces.components.common.lookup.TieTableLookupBean" />
 	<cc:attribute name="paginatorTemplate" required="false" default=""
 		type="java.lang.String" />
 	<cc:attribute name="paginator" required="false" default="false"
@@ -65,8 +67,9 @@
 	<div id="#{cc.clientId}">
 
 							<p:commandButton
-								title="#{cc.attrs.popupButtonTitle}"
-								icon="#{cc.attrs.popupButtonIcon}"
+								title="#{cc.attrs.dialogButtonTitle}"
+								icon="#{cc.attrs.dialogButtonIcon}"
+								value="#{cc.attrs.dialogButtonText}"
 								actionListener="#{cc.openDialog}">
 								<p:ajax event="dialogReturn"
 									listener="#{cc.attrs.dialogReturnAction}"

@@ -8,14 +8,14 @@ xmlns:h="http://java.sun.com/jsf/html"
 xmlns:p="http://primefaces.org/ui">
 
 
-<f:view contentType="text/html" locale="#{localeBean.locale}">
+
 <h:head>
-<title>#{dialogBean.dialogTitle}</title>
+<title>"#{tieDialogLookupBean.attrs.dialogTitle}</title>
 <f:facet name="first">
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 </f:facet>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        </h:head>
+</h:head>
 
 <h:outputStylesheet name="tiefaces/lookup.css" />
 <h:body>
@@ -60,8 +60,8 @@ xmlns:p="http://primefaces.org/ui">
 			    <p:commandButton icon="#{tieDialogLookupBean.attrs.selectButtonIcon}" 
 			    value="#{tieDialogLookupBean.attrs.selectButtonText}"
 			    style="#{tieDialogLookupBean.attrs.selectButtonStyle}" 
-			    actionListener="#{tieDialogLookupBean.attrs.lookupBean.selectSearchResult(result)}"
-			    rendered="#{tieDialogLookupBean.attrs.showSelectButton}" />
+			    actionListener="#{tieDialogLookupBean.selectResultFromDialog(result)}"
+			    />
 				
 			</p:column>
 		</p:dataTable>
@@ -69,5 +69,5 @@ xmlns:p="http://primefaces.org/ui">
 		</h:form>
     </h:body>    
 
-</f:view>
+
 </html>
