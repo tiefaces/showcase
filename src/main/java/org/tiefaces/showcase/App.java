@@ -38,7 +38,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 import org.tiefaces.utility.FacesUtility;
 
-import com.tiefaces.components.sql.SQLRunner;
+import com.tiefaces.components.common.sql.SQLRunner;
+
 
 
 

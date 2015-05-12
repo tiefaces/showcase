@@ -35,8 +35,9 @@ public class ItemSearchWithDialogBean extends TieTableLookupBean {
 
 	}
 
+	
+	// Below are only used for pop up window search
 	private Item selectedItem = null;
-
 	@Override
 	public void selectSearchResult(Object result) {
 		if (result != null) {

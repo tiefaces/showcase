@@ -99,7 +99,7 @@
 		</dependency>
 	    <dependency>
 	         <groupId>tiefaces</groupId>
-	         <artifactId>tiefaces-common-locale</artifactId>
+	         <artifactId>tiefaces</artifactId>
 	         <version>0.1</version>
 	      </dependency>		
 	</dependencies>

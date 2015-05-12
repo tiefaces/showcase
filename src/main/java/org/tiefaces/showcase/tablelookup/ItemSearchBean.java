@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.context.RequestContext;
+
 import com.tiefaces.common.ColumnModel;
 import com.tiefaces.components.common.lookup.TieTableLookupBean;
 
@@ -32,15 +34,24 @@ public class ItemSearchBean extends TieTableLookupBean {
 	}
 
 
+	// Below are only used for pop up window search
+	private Item selectedItem = null;
 	@Override
 	public void selectSearchResult(Object result) {
-		// TODO Auto-generated method stub
-		// Only used for dialog lookup
+		if (result != null) {
+			this.setSelectedItem((Item) result);
+			RequestContext context = RequestContext.getCurrentInstance();
+			context.execute("PF('tielookupDialog').hide();");
+			context.update("form:panel");
+		}
 	}
 
+	public Item getSelectedItem() {
+		return selectedItem;
+	}
 
-
-
-
+	public void setSelectedItem(Item selectedItem) {
+		this.selectedItem = selectedItem;
+	}
 
 }

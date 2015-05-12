@@ -2,18 +2,22 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 >
-	<h3>Dialog lookup</h3>
+	<h3>Search in dialog window</h3>
 	<p>
-	Business user want to search data in a popup window and return the result back to parent window. How to do that? This demonstrate how to use dialog window with tablelookup component together to achieve this. 
+	Implemented with PrimeFaces dialog framework. This's quite different from table lookup pop window although looks similar. More portable and easy to use.
 	</p>
 	<h3>Interfaces</h3>
 	<p>
 	In additional to table lookup:
 	</p>
 	<p>
-    <b>showSelectButton</b> required="false" default="false" type="java.lang.Boolean"<br/>
-	<b>selectButtonIcon</b> required="false" default="ui-icon-circle" type="java.lang.String"<br/>      
-	<b>selectButtonText</b> required="false" default="" type="java.lang.String"<br/>
-	<b>selectButtonStyle</b> required="false" default="" type="java.lang.String"<br/>  
+	<b>dialogButtonTitle</b> required="false" default="" type="java.lang.String" <br/>
+	<b>dialogButtonIcon</b> required="false" default="ui-icon-search" type="java.lang.String" <br/>
+	<b>dialogButtonText</b> required="false" default="" type="java.lang.String" <br/>
+	<b>dialogTitle</b> required="false" default="" type="java.lang.String" <br/>
+	<b>dialogWidth</b> required="false" default="800" type="java.lang.String" <br/>
+	<b>dialogHeight</b> required="false" default="400" type="java.lang.String" <br/>
+	<b>dialogReturnAction</b> required="true" method-signature="void action(org.primefaces.event.SelectEvent)" <br/>
+	<b>dialogReturnUpdate</b> required="true" type="java.lang.String" <br/>
 	</p>        
 </ui:composition>
