@@ -10,7 +10,7 @@
 		<f:metadata>
 			<f:attribute name="api.path" value="common/TableLookup" />
 			<f:attribute name="src.paths"
-				value="classes/org/tiefaces/showcase/tablelookup/Item.java,classes/org/tiefaces/showcase/tablelookup/ItemSearchWithDialogBean.java,classes/org/tiefaces/showcase/tablelookup/ItemSearchHelper.java" />
+				value="classes/org/tiefaces/showcase/tablelookup/Item.java,classes/org/tiefaces/showcase/tablelookup/ItemSearchBean.java,classes/org/tiefaces/showcase/tablelookup/ItemSearchHelper.java" />
 
 		</f:metadata>
 	</ui:define>
@@ -40,7 +40,7 @@
 						dialogTitle="Search Item Dialog"
 						dialogReturnAction="#{itemPageBean.selectSearchResultForItem1}"
 						dialogReturnUpdate=":form:panel"
-						lookupBean="#{itemSearchWithDialogBean}" searchButtonText="Search"
+						lookupBean="#{itemSearchBean}" searchButtonText="Search"
 						searchButtonStyle="font-size: 12px;" showSelectButton="true"
 						selectButtonText="Select" selectButtonStyle="font-size: 12px;">
 					</tie:dialoglookup>	
@@ -55,7 +55,7 @@
 						dialogTitle="Search Item Dialog"
 						dialogReturnAction="#{itemPageBean.selectSearchResultForItem2}"
 						dialogReturnUpdate=":form:panel"
-						lookupBean="#{itemSearchWithDialogBean}" searchButtonText="Search"
+						lookupBean="#{itemSearchBean}" searchButtonText="Search"
 						searchButtonStyle="font-size: 12px;" showSelectButton="true"
 						selectButtonText="Select" selectButtonStyle="font-size: 12px;">
 					</tie:dialoglookup>	
