@@ -1,0 +1,20 @@
+<ui:composition template="/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"	
+>
+	<ui:define name="contentTitle">Download</ui:define>
+
+	<ui:define name="content">
+
+		<h3>Click the button below to download Tiefaces #{_tieFacesVersion}</h3>
+
+<h:form>
+    <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s">
+        <p:fileDownload value="#{download.file}" />
+    </p:commandButton>
+</h:form>
+
+	</ui:define>
+</ui:composition>
