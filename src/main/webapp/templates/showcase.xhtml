@@ -23,11 +23,7 @@
 	<ui:define name="title">#{page.current.title} - TieFaces Showcase</ui:define>
 
 	<ui:define name="contentTitle">
-		<!-- 
-			The below p:selectOneMenu components are disabled in other phases than render response, because they 
-			otherwise complain that the model value cannot be set even though there's no form. 
-			See also http://stackoverflow.com/q/14068891/157882
-		 -->
+
 		<h:outputText value="#{page.current.title}" styleClass="pages" />
 
 	</ui:define>
@@ -35,17 +31,14 @@
 	<ui:define name="content">
 		<h:outputStylesheet library="showcase" name="css/showcase.css" />
 		<h:outputStylesheet library="showcase" name="css/prettify.css" />
-
 		<ui:insert name="description">
-			<h:outputText value="#{page.current.description}" escape="false" /><!-- Copies content from 1st API documentation. -->
+			<h:outputText value="#{page.current.description}" escape="false" />
 		</ui:insert>
 		<ui:insert name="description-extra" />
-
-		<ui:fragment >
+		<ui:fragment>
 			<p:panel id="demo" header="Demo">
 				<ui:insert name="demo" />
 			</p:panel>
-
 			<p:panel id="source" header="Source code">
 				<p:tabView id="sources" scrollable="true" value="#{page.current.sources}" var="source">
 					<p:tab id="tab" title="#{source.title}">
@@ -54,6 +47,5 @@
 				</p:tabView>
 			</p:panel>
 		</ui:fragment>
-
 	</ui:define>
 </ui:composition>

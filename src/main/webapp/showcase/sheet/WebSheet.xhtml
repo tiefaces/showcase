@@ -1,16 +1,42 @@
-<ui:composition template="/templates/layout.xhtml"
+<ui:composition template="/templates/showcase.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
->
-	<ui:define name="contentTitle">Web Sheet</ui:define>
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:tie="http://java.sun.com/jsf/composite/tiefaces">
 
-	<ui:define name="content">
-		<p>
-			Coming soon !
-		</p>
+	<ui:define name="meta">
+		<f:metadata>
+			<f:attribute name="api.path" value="common/TableLookup" />
+			<f:attribute name="src.paths"
+				value="classes/org/tiefaces/showcase/websheet/WebSheet1.java" />
 
-		<hr />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="description-extra">
+		<ui:include src="/includes/common/desc-dialoglookup.xhtml" />
+	</ui:define>
+
+
+	<ui:define name="demo">
+
+		<h3>Web Sheet 1</h3>
+
+		<h:form id="form">
+
+
+			<p:panel id="panel" style="margin-bottom:10px;">
+					<tie:websheet webSheetBean="#{webSheet1}"
+					>
+					</tie:websheet>
+			</p:panel>
+
+
+
+		</h:form>
 
 	</ui:define>
+
 </ui:composition>

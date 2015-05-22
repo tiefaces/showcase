@@ -31,7 +31,7 @@ import javax.faces.bean.RequestScoped;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.tiefaces.utility.FacesUtility;
+import com.tiefaces.common.FacesUtility;
 import static org.tiefaces.showcase.App.scrape;
 
 @ManagedBean

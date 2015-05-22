@@ -1,0 +1,29 @@
+
+ .ui-layout-center .ui-layout-unit-content {
+     overflow-x:auto !important;
+ }     
+ 
+#websheet .ui-widget {
+    font-size: 12px !important;	
+}
+
+#websheet .ui-inputfield {
+    padding: 5px !important;
+}
+
+#websheet .ui-datatable td {
+    padding: 2px 4px !important;
+}
+
+
+
+#websheet .inputColumnWidth {
+	width:  100% !important;
+	display:block !important;
+	padding-right: 10px !important;
+	-moz-box-sizing: border-box !important;
+	box-sizing: border-box !important;
+	font-weight: normal !important;
+    white-space: pre-wrap !important;
+    border-radius: 0 !important;
+}

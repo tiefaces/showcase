@@ -20,7 +20,6 @@ import javax.servlet.ServletContext;
 
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-import org.tiefaces.utility.FacesUtility;
 
 @ManagedBean
 public class Download {
@@ -28,7 +27,7 @@ public class Download {
     private StreamedContent file;
 	
 	public Download() {     
-		String version = (String) FacesUtility.evaluateExpressionGet("#{_tieFacesVersion}");
+		String version = (String) com.tiefaces.common.FacesUtility.evaluateExpressionGet("#{_tieFacesVersion}");
         InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream ("/WEB-INF/lib/tiefaces-"+version+".jar");
 		file = new DefaultStreamedContent(stream, "application/zip", "tiefaces-"+version+".jar");
 	}

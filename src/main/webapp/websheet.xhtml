@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<!-- INTERFACE -->
+<cc:interface componentType="tiedialogLookupComponent">
+	<cc:attribute name="dialogButtonTitle" required="false" default=""
+		type="java.lang.String" />
+	<cc:attribute name="dialogButtonIcon" required="false"
+		default="ui-icon-search" type="java.lang.String" />
+	<cc:attribute name="dialogButtonText" required="false" default=""
+		type="java.lang.String" />
+	<cc:attribute name="dialogTitle" required="false" default=""
+		type="java.lang.String" />
+	<cc:attribute name="dialogWidth" required="false" default="800"
+		type="java.lang.String" />
+	<cc:attribute name="dialogHeight" required="false" default="400"
+		type="java.lang.String" />
+	<cc:attribute name="dialogReturnAction" required="true"
+		method-signature="void action(org.primefaces.event.SelectEvent)" />
+	<cc:attribute name="dialogReturnUpdate" required="true"
+		type="java.lang.String" />
+	<cc:attribute name="lookupBean" required="true"
+		type="com.tiefaces.components.common.lookup.TieTableLookupBean" />
+	<cc:attribute name="paginatorTemplate" required="false" default=""
+		type="java.lang.String" />
+	<cc:attribute name="paginator" required="false" default="false"
+		type="java.lang.Boolean" />
+	<cc:attribute name="paginatorPosition" required="false"
+		default="bottom" type="java.lang.String" />
+	<cc:attribute name="paginatorAlwaysVisible" required="false"
+		default="false" type="java.lang.Boolean" />
+	<cc:attribute name="rows" required="false" default=""
+		type="java.lang.String" />
+	<cc:attribute name="style" required="false" default=""
+		type="java.lang.String" />
+	<cc:attribute name="styleClass" required="false" default=""
+		type="java.lang.String" />
+	<cc:attribute name="tableStyle" required="false" default=""
+		type="java.lang.String" />
+	<cc:attribute name="rendered" required="false" default="true"
+		type="java.lang.Boolean" />
+	<cc:attribute name="searchButtonIcon" required="false"
+		default="ui-icon-search" type="java.lang.String" />
+	<cc:attribute name="searchButtonText" required="false" default=""
+		type="java.lang.String" />
+	<cc:attribute name="searchButtonStyle" required="false" default=""
+		type="java.lang.String" />
+	<cc:attribute name="searchButtonColumnStyle" required="false"
+		default="" type="java.lang.String" />
+	<cc:attribute name="showSelectButton" required="false" default="false"
+		type="java.lang.Boolean" />
+	<cc:attribute name="selectButtonIcon" required="false"
+		default="ui-icon-circle-check" type="java.lang.String" />
+	<cc:attribute name="selectButtonText" required="false" default=""
+		type="java.lang.String" />
+	<cc:attribute name="selectButtonButtonStyle" required="false"
+		default="" type="java.lang.String" />
+
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+	<h:outputStylesheet name="tiefaces/websheet.css" />
+	<div id="#{cc.clientId}">
+
+		<p:tabView id="tabview" scrollable="true" style="height: 30px;"
+			binding="#{tieWebSheetBean.SheetTabView}">
+			<p:ajax event="tabChange" listener="#{tieWebSheetBean.onTabChange}"
+				update="tabview websheets" />
+			<c:forEach items="#{tieWebSheetBean.tabs}" var="tab"
+				varStatus="status">
+				<p:tab id="#{tab.id}" title="#{tab.title}" />
+			</c:forEach>
+		</p:tabView>
+
+
+		<div id="websheet">
+			<p:dataTable id="websheets" var="dataRow"
+				rendered="#{cc.attrs.rendered}" value="#{tieWebSheetBean.bodyRows}"
+				paginator="#{tieWebSheetBean.multiplePage}"
+				paginatorPosition="bottom" rows="#{tieWebSheetBean.maxRowsPerPage}"
+				paginatorAlwaysVisible="false"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="#{tieWebSheetBean.maxRowsPerPage},#{tieWebSheetBean.maxRowsPerPage * 2 }"
+				rowIndexVar="rowindex" widgetVar="websheetTable"
+				tableStyle="table-layout: fixed; width:#{tieWebSheetBean.tableWidthStyle} ">
+
+				<p:columnGroup type="header">
+					<c:forEach items="#{tieWebSheetBean.headerRows}" var="headerrow"
+						varStatus="loopheaderrow">
+						<p:row>
+							<p:column width="18" rendered="false" />
+							<c:forEach items="#{headerrow}" var="headerrowcolumn"
+								varStatus="loopheaderrowcolumn">
+								<p:column rowspan="#{headerrowcolumn.rowspan}"
+									colspan="#{headerrowcolumn.colspan}"
+									headerText="#{headerrowcolumn.headertext}"
+									style="#{headerrowcolumn.style}" />
+							</c:forEach>
+						</p:row>
+					</c:forEach>
+				</p:columnGroup>
+
+				<p:column width="18" style="text-align: center;" rendered="false">
+					<h:outputText value="#{dataRow[0].poiCell.rowIndex + 1}" />
+				</p:column>
+
+				<c:forEach items="#{tieWebSheetBean.columns}" var="column"
+					varStatus="loop">
+					<p:column rendered="#{not empty dataRow[loop.index]}"
+						colspan="#{dataRow[loop.index].colspan}"
+						style="#{dataRow[loop.index].style}">
+						<h:outputText id="cocalc#{loop.index}"
+							rendered="#{empty dataRow[loop.index].inputType}"
+							style="#{dataRow[loop.index].style}"
+							styleClass="formFieldInputColumnWidth"
+							value="#{dataRow[loop.index].cellValue}" />
+						<p:inputText id="column#{loop.index}"
+							value="#{dataRow[loop.index].cellValue}"
+							style="#{dataRow[loop.index].validStyle}"
+							styleClass="formFieldInputColumnWidth"
+							readonly="#{cc.attrs.readnoly}" autocomplete="off"
+							rendered="#{(!empty dataRow[loop.index].inputType) and ( dataRow[loop.index].inputType != 'textarea' ) }"
+							onkeypress="if (event.keyCode == 13) { onchange(); return false; }">
+
+							<p:ajax event="change" process="@this"
+								listener="#{tieWebSheetBean.valueChangeEvent}" />
+
+						</p:inputText>
+						<p:inputTextarea id="coarea#{loop.index}" rows="3"
+							value="#{dataRow[loop.index].cellValue}"
+							style="#{dataRow[loop.index].style}"
+							styleClass="inputTextarea formFieldInputColumnWidth"
+							readonly="#{cc.attrs.readonly}" autocomplete="off"
+							rendered="#{dataRow[loop.index].inputType == 'textarea'}">
+
+							<p:ajax event="change" process="@this"
+								listener="#{tieWebSheetBean.valueChangeEvent}" />
+						</p:inputTextarea>
+						<h:outputText id="msgcolumn#{loop.index}" style="color:red"
+							styleClass="formFieldInputColumnWidth"
+							value="#{dataRow[loop.index].errormsg}" />
+					</p:column>
+				</c:forEach>
+
+			</p:dataTable>
+
+
+		</div>
+
+
+	</div>
+</cc:implementation>
+</html>

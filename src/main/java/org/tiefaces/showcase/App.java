@@ -36,7 +36,7 @@ import javax.sql.DataSource;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
-import org.tiefaces.utility.FacesUtility;
+import com.tiefaces.common.FacesUtility;
 
 import com.tiefaces.components.common.sql.SQLRunner;
 
@@ -112,7 +112,7 @@ public class App {
 			Set<String> pagePaths = new TreeSet<>(FacesUtility.getResourcePaths(groupPath));
 
 			for (String pagePath : pagePaths) {
-				String viewId = FacesUtility.stripPrefixPath(SHOWCASE_PATH, pagePath.split("\\.")[0]);
+				String viewId = FacesUtility.removePrefixPath(SHOWCASE_PATH, pagePath.split("\\.")[0]);
 				String title = viewId.split("/")[2];
 				pages.put(pagePath, new Page(pagePath, viewId, title));
 			}
