@@ -36,6 +36,7 @@ public class FacesCell {
 	private Cell poiCell; // reference to poi cell object
 	private String style = ""; // cell web css style  
 	private String colspan = "1"; // cell column span default set to 1
+	private String rowspan = "1"; // row span default set to 1
 	private int columnIndex; // column index in the datatable.
 	private boolean invalid = false; // indicate the cell hold invalid data when set to true
 	private String errormsg; // hold error message when the cell is invalid
@@ -122,6 +123,14 @@ public class FacesCell {
 	}
 	public void setErrormsg(String errormsg) {
 		this.errormsg = errormsg;
+	}
+
+	public String getRowspan() {
+		return rowspan;
+	}
+
+	public void setRowspan(String rowspan) {
+		this.rowspan = rowspan;
 	}
 
 }

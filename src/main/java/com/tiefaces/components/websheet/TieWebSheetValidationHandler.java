@@ -209,7 +209,7 @@ return true;
 //}
 
 
-public  boolean validatePage(String tabName,Workbook wb, Map<String, SheetConfiguration> sheetConfigMap, FormulaEvaluator formulaEvaluator,DataFormatter dataFormatter, List<List<FacesCell>> bodyRows,ScriptEngine engine) {
+public  boolean validatePage(String tabName,Workbook wb, Map<String, SheetConfiguration> sheetConfigMap, FormulaEvaluator formulaEvaluator,DataFormatter dataFormatter, List<List<Object>> bodyRows,ScriptEngine engine) {
 boolean allpass = true;
 
 boolean passEmptyCheck=true;
@@ -231,8 +231,9 @@ public boolean validateRow(int irow, String tabName, boolean passEmptyCheck) {
 boolean pass = true;
 SheetConfiguration sheetConfig = parent.getSheetConfigMap().get(tabName);
 if (sheetConfig != null) {
-		List<FacesCell> cellRow =  parent.getBodyRows().get(irow);
-		for (int icol=0; icol < cellRow.size(); icol++) {
+		List<Object> cellRow =  parent.getBodyRows().get(irow);
+		// only validate cell object. bodyrow start with rowinfo object following cell objects
+		for (int icol=1; icol < cellRow.size(); icol++) {
 			try {
 				validateWithRowCol( irow, icol, null, true, passEmptyCheck);
 			}

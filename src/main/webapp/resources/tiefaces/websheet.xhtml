@@ -16,6 +16,8 @@
 		type="java.lang.Boolean" />
 	<cc:attribute name="readonly" required="false" default="false"
 		type="java.lang.Boolean" />
+	<cc:attribute name="showLineNumber" required="false" default="true"
+		type="java.lang.Boolean" />
 	<cc:attribute name="paginator" required="false" default="#{cc.attrs.webSheetBean.multiplePage}"
 		type="java.lang.Boolean" />
 	<cc:attribute name="paginatorTemplate" required="false" default="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -24,9 +26,9 @@
 		default="bottom" type="java.lang.String" />
 	<cc:attribute name="paginatorAlwaysVisible" required="false"
 		default="false" type="java.lang.Boolean" />
-	<cc:attribute name="rows" required="false" default="#{cc.attrs.webSheetBean.maxRowsPerPage}"
+	<cc:attribute name="maxRowsPerPage" required="false" default="#{cc.attrs.webSheetBean.maxRowsPerPage}"
 		type="java.lang.String" />
-	<cc:attribute name="rowsPerPageTemplate" required="false" default="#{cc.attrs.webSheetBean.maxRowsPerPage / 2} #{cc.attrs.webSheetBean.maxRowsPerPage} #{cc.attrs.webSheetBean.maxRowsPerPage * 2}"
+	<cc:attribute name="rowsPerPageTemplate" required="false" default="#{cc.attrs.webSheetBean.maxRowsPerPage} #{cc.attrs.webSheetBean.maxRowsPerPage * 2}"
 		type="java.lang.String" />
 	<cc:attribute name="tableWidthStyle" required="false" default="#{cc.attrs.webSheetBean.tableWidthStyle}"
 		type="java.lang.String" />
@@ -38,24 +40,25 @@
 	<h:outputStylesheet name="tiefaces/websheet.css" />
 	<div id="#{cc.clientId}">
 	
-		 <p:tabView id="websheettab" scrollable="true" style="height: 35px;" binding="#{cc.attrs.webSheetBean.webFormTabView}" rendered="#{cc.attrs.rendered}">
+		 <p:tabView scrollable="true" style="height: 35px;" binding="#{cc.attrs.webSheetBean.webFormTabView}" rendered="#{cc.attrs.rendered}">
 			<p:ajax event="tabChange" listener="#{cc.attrs.webSheetBean.onTabChange}" update="@form"  /> 
 		     <c:forEach items="#{cc.attrs.webSheetBean.tabs}" var="tab" varStatus="status" >
-		         <p:tab id="#{tab.id}" title="#{tab.title}" rendered="#{cc.attrs.rendered}" />
+		         <p:tab  title="#{tab.title}" rendered="#{cc.attrs.rendered}" />
 		     </c:forEach>
 		 </p:tabView>
 	  	
 
 		<div id="websheet">
-			<p:dataTable id="websheettable" var="dataRow"
+			<p:dataTable var="dataRow"
+			    binding="#{tiewebsheettable}"
 				rendered="#{cc.attrs.rendered}"
 				value="#{cc.attrs.webSheetBean.bodyRows}"
-				paginator="#{cc.attrs.paginator}"
+				paginator="#{cc.attrs.paginator}" 
 				paginatorPosition="#{cc.attrs.paginatorPosition}"
-				rows="#{cc.attrs.rows}"
-				paginatorAlwaysVisible="#{cc.attrs.paginatorAlwaysVisible}"
+				rows="#{cc.attrs.webSheetBean.maxRowsPerPage}"
+				paginatorAlwaysVisible="cc.attrs.paginatorAlwaysVisible"
 				paginatorTemplate="#{cc.attrs.paginatorTemplate}"
-				rowsPerPageTemplate="#{cc.attrs.webSheetBean.rowsPerPageTemplate}"
+				rowsPerPageTemplate="#{cc.attrs.rowsPerPageTemplate}"
 				rowIndexVar="rowindex" widgetVar="webSheetTable"
 				tableStyle="table-layout: fixed; width:#{cc.attrs.tableWidthStyle} ">
 
@@ -64,7 +67,7 @@
 					<c:forEach items="#{cc.attrs.webSheetBean.headerRows}"
 						var="headerrow" varStatus="loopheaderrow">
 						<p:row>
-							<p:column width="18" rendered="false" />
+							<p:column width="18" rendered="#{cc.attrs.showLineNumber}" />
 							<c:forEach items="#{headerrow}" var="headerrowcolumn"
 								varStatus="loopheaderrowcolumn">
 								<p:column rowspan="#{headerrowcolumn.rowspan}"
@@ -76,26 +79,27 @@
 					</c:forEach>
 				</p:columnGroup>
 
-				<p:column width="18" style="text-align: center;" rendered="false">
-					<h:outputText value="#{dataRow[0].poiCell.rowIndex + 1}" />
+				<p:column width="18" style="text-align: center;" rendered="#{cc.attrs.showLineNumber and dataRow[0].rendered}">
+					<h:outputText value="#{dataRow[0].rowIndex + 1}" />
 				</p:column>
 
 				<c:forEach items="#{cc.attrs.webSheetBean.columns}" var="column"
 					varStatus="loop">
-					<p:column rendered="#{not empty dataRow[loop.index]}"
-						colspan="#{dataRow[loop.index].colspan}"
-						style="#{dataRow[loop.index].style}">
+					<p:column rendered="#{not empty dataRow[loop.index +1] and dataRow[0].rendered }"
+						rowspan="#{dataRow[loop.index +1].rowspan}"
+						colspan="#{dataRow[loop.index +1].colspan}"
+						style="#{dataRow[loop.index +1].style}">
 						<h:outputText id="cocalc#{loop.index}"
-							rendered="#{empty dataRow[loop.index].inputType}"
-							style="#{dataRow[loop.index].style}"
+							rendered="#{empty dataRow[loop.index +1].inputType}"
+							style="#{dataRow[loop.index +1].style}"
 							styleClass="inputColumnWidth"
-							value="#{dataRow[loop.index].cellValue}" />
+							value="#{dataRow[loop.index +1].cellValue}" />
 						<p:inputText id="column#{loop.index}"
-							value="#{dataRow[loop.index].cellValue}"
-							style="#{dataRow[loop.index].validStyle}"
+							value="#{dataRow[loop.index +1].cellValue}"
+							style="#{dataRow[loop.index +1].validStyle}"
 							styleClass="inputColumnWidth"
 							readonly="#{cc.attrs.readonly}" autocomplete="off"
-							rendered="#{(!empty dataRow[loop.index].inputType) and ( dataRow[loop.index].inputType != 'textarea' ) }"
+							rendered="#{(!empty dataRow[loop.index +1].inputType) and ( dataRow[loop.index +1].inputType != 'textarea' ) }"
 							onkeypress="if (event.keyCode == 13) { onchange(); return false; }">
 
 							<p:ajax event="change" process="@this"
@@ -103,18 +107,18 @@
 
 						</p:inputText>
 						<p:inputTextarea id="coarea#{loop.index}" rows="3"
-							value="#{dataRow[loop.index].cellValue}"
-							style="#{dataRow[loop.index].style}"
+							value="#{dataRow[loop.index +1].cellValue}"
+							style="#{dataRow[loop.index +1].style}"
 							styleClass="inputTextarea inputColumnWidth"
 							readonly="#{cc.attrs.readonly}" autocomplete="off"
-							rendered="#{dataRow[loop.index].inputType == 'textarea'}">
+							rendered="#{dataRow[loop.index +1].inputType == 'textarea'}">
 
 							<p:ajax event="change" process="@this"
 								listener="#{cc.attrs.webSheetBean.valueChangeEvent}" />
 						</p:inputTextarea>
 						<h:outputText id="msgcolumn#{loop.index}" style="color:red"
 							styleClass="inputColumnWidth"
-							value="#{dataRow[loop.index].errormsg}" />
+							value="#{dataRow[loop.index +1].errormsg}" />
 					</p:column>
 				</c:forEach>
 

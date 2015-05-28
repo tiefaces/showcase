@@ -51,7 +51,11 @@ public class TieWebSheetComponent extends UINamingContainer {
 		{	
 			webSheetBean.setWebFormClientId(this.getClientId() + ":"
 					+ TIEConstants.TIE_WEBSHEET_COMPONENT_ID);
-			debug("websheetbean = "+webSheetBean);
+			
+			String maxrows = (String) this.getAttributes().get("maxRowsPerPage");
+			if ((maxrows != null)&&(!maxrows.isEmpty()))
+			webSheetBean.setMaxRowsPerPage(Integer.valueOf(maxrows));
+			debug("websheetbean max rows = "+webSheetBean.getMaxRowsPerPage());
 			debug("webclientid = "+webSheetBean.getWebFormClientId());
 		}
 		super.encodeBegin(context);

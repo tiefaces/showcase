@@ -57,7 +57,7 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 	private static final long serialVersionUID = 3495468356246589276L;
 
 	private List<String> columns;
-	private List<List<FacesCell>> bodyRows;
+	private List<List<Object>> bodyRows;
 	private List<List<HeaderCell>> headerRows;
 	private Workbook wb;
 	private FormulaEvaluator formulaEvaluator;
@@ -66,6 +66,7 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 	private Map<String, SheetConfiguration> sheetConfigMap;
 	private ScriptEngine engine;
 	private String currentTabName;
+	private int currentTopRow;
 	private Boolean fullValidation = false;
 
 	private TieWebSheetLoader webSheetLoader = null;
@@ -110,11 +111,11 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 		return webFormClientId;
 	}
 
-	public final List<List<FacesCell>> getBodyRows() {
+	public final List<List<Object>> getBodyRows() {
 		return bodyRows;
 	}
 
-	public final void setBodyRows(List<List<FacesCell>> bodyRows) {
+	public final void setBodyRows(List<List<Object>> bodyRows) {
 		this.bodyRows = bodyRows;
 	}
 
@@ -201,7 +202,16 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 	public final void setExcelType(String excelType) {
 		this.excelType = excelType;
 	}
+	
 
+	public int getCurrentTopRow() {
+		return currentTopRow;
+	}
+
+	public void setCurrentTopRow(int currentTopRow) {
+		this.currentTopRow = currentTopRow;
+	}
+	
 	public final void initWorkBook() {
 		if (this.getWb() == null) {
 
@@ -434,11 +444,14 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 				int rowCounts = webDataTable.getRowCount();
 				for (int i = first; i <= (first + rowsToRender); i++) {
 					if (i < rowCounts) {
-						for (FacesCell cell : bodyRows.get(i)) {
+						for (Object cellobject : bodyRows.get(i)) {
+							if (cellobject instanceof FacesCell) {
+								FacesCell cell = (FacesCell) cellobject;
 							if (cell.getPoiCell().getCellType() == Cell.CELL_TYPE_FORMULA) {
 								RequestContext.getCurrentInstance().update(
 										tblName + ":" + i + ":cocalc"
 												+ cell.getColumnIndex());
+							}
 							}
 						}
 					}

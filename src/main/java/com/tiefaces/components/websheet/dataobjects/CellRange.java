@@ -53,22 +53,33 @@ public class CellRange {
 	
 	public CellRange(String range)
  {
-		
+
 		if ((range != null) && range.contains(":")) {
-			
-			 String[] rlist = range.split(":");
-			 
-			 if (rlist.length == 2) {
-				 
-				 CellReference ref0 = new CellReference(rlist[0].trim());
-				 CellReference ref1 = new CellReference(rlist[1].trim());
-				 
-				this.setTopRow(ref0.getRow());
-				this.setLeftCol(ref0.getCol());
-				this.setBottomRow(ref1.getRow());
-				this.setRightCol(ref1.getCol());
-				 
-			 }
+
+			String[] rlist = range.split(":");
+
+			if (rlist.length == 2) {
+				if (rlist[0].trim().endsWith("$0")) // no row configured
+				{
+					CellReference ref0 = new CellReference(rlist[0].trim()
+							.replaceAll("$0", "$1"));
+					CellReference ref1 = new CellReference(rlist[1].trim()
+							.replaceAll("$0", "$1"));
+					this.setTopRow(-1);
+					this.setLeftCol(ref0.getCol());
+					this.setBottomRow(-1);
+					this.setRightCol(ref1.getCol());
+
+				} else {
+					CellReference ref0 = new CellReference(rlist[0].trim());
+					CellReference ref1 = new CellReference(rlist[1].trim());
+					this.setTopRow(ref0.getRow());
+					this.setLeftCol(ref0.getCol());
+					this.setBottomRow(ref1.getRow());
+					this.setRightCol(ref1.getCol());
+				}
+
+			}
 		}
 	}
  

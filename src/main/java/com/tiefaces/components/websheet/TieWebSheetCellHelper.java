@@ -22,9 +22,14 @@ import java.util.Map;
 
 import javax.faces.component.UIComponent;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFPalette;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Color;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
@@ -32,6 +37,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 
 import com.tiefaces.common.FacesUtility;
 import com.tiefaces.components.websheet.dataobjects.CellFormAttributes;
@@ -161,10 +169,11 @@ public class TieWebSheetCellHelper {
 	}
 
 	public FacesCell getFacesCellFromBodyRow(int row, int col,
-			List<List<FacesCell>> bodyRows) {
+			List<List<Object>> bodyRows) {
 		FacesCell cell = null;
 		try {
-			cell = bodyRows.get(row).get(col);
+			// bodyrows start with rowinfo fowllowing FacesCell object. So here use col + 1 to get real column
+			cell = (FacesCell) bodyRows.get(row).get(col + 1);
 		} catch (Exception e) {
 			debug("Web Form WebFormHelper getFacesCellFromBodyRow Error row = "
 					+ row + " col = " + col + "; error = "
@@ -296,7 +305,7 @@ public class TieWebSheetCellHelper {
 				repeatZone);
 		List<CellFormAttributes> result = map.get(key);
 		if ((result == null) && repeatZone) {
-			key = "$" + GetExcelColumnName(cell.getColumnIndex());
+			key = "$" + TieWebSheetUtility.GetExcelColumnName(cell.getColumnIndex());
 			result = map.get(key);
 		}
 		return result;
@@ -307,7 +316,7 @@ public class TieWebSheetCellHelper {
 			int bodyTopRow, boolean repeatZone) {
 
 		String key;
-		String columnLetter = GetExcelColumnName(cell.getColumnIndex());
+		String columnLetter = TieWebSheetUtility.GetExcelColumnName(cell.getColumnIndex());
 
 		if (repeatZone)
 			key = "$" + columnLetter + "$" + (bodyTopRow + 1);
@@ -337,21 +346,21 @@ public class TieWebSheetCellHelper {
 		return oldCellAddr;
 	}
 
-	public String findCellRangeAddressWithOffset(int row, int col,
-			int initRows, int bodyTopRow, boolean repeatZone,
-			boolean bodyPopulated) {
-		String key;
-		if (bodyPopulated)
-			key = "$" + col + "$" + row;
-		else {
-
-			if (repeatZone)
-				key = "$" + col + "$" + bodyTopRow;
-			else
-				key = "$" + col + "$" + (row - initRows + 1);
-		}
-		return key;
-	}
+//	public String findCellRangeAddressWithOffset(int row, int col,
+//			int initRows, int bodyTopRow, boolean repeatZone,
+//			boolean bodyPopulated) {
+//		String key;
+//		if (bodyPopulated)
+//			key = "$" + col + "$" + row;
+//		else {
+//
+//			if (repeatZone)
+//				key = "$" + col + "$" + bodyTopRow;
+//			else
+//				key = "$" + col + "$" + (row - initRows + 1);
+//		}
+//		return key;
+//	}
 
 	public List<CellFormAttributes> findCellAttributes(
 			SheetConfiguration sheetConfig, Cell cell, int row, int bodyTopRow) {
@@ -372,37 +381,8 @@ public class TieWebSheetCellHelper {
 
 	}
 
-	public String GetExcelColumnName(int number) {
-		String converted = "";
-		// Repeatedly divide the number by 26 and convert the
-		// remainder into the appropriate letter.
-		while (number >= 0) {
-			int remainder = number % 26;
-			converted = (char) (remainder + 'A') + converted;
-			number = (number / 26) - 1;
-		}
 
-		return converted;
-	}
 
-	public Cell getCellByReference(String cellRef, Sheet sheet) {
-
-		// Sheet sheet =
-		// wb.getSheet(sheetConfigMap.get(currentTabName).getSheetName());
-		Cell c = null;
-		try {
-			CellReference ref = new CellReference(cellRef);
-			Row r = sheet.getRow(ref.getRow());
-			if (r != null) {
-				c = r.getCell(ref.getCol(), Row.CREATE_NULL_AS_BLANK);
-			}
-		} catch (Exception ex) {
-			// use log.debug because mostly it's expected
-			debug("WebForm WebFormHelper getCellByReference cellRef = "
-					+ cellRef + "; error = " + ex.getLocalizedMessage());
-		}
-		return c;
-	}
 
 	// This method mainly doing 2 things
 	// 1. covert $A to $A$rowIndex
@@ -432,7 +412,7 @@ public class TieWebSheetCellHelper {
 				temp_str = find_str + "$" + (rowIndex + 1);
 			} else
 				temp_str = find_str;
-			replace_str = getCellValue(getCellByReference(temp_str, sheet));
+			replace_str = getCellValue(TieWebSheetUtility.getCellByReference(temp_str, sheet));
 			if (replace_str == null)
 				replace_str = "";
 			attrValue = attrValue.replace(find_str, replace_str);
@@ -511,14 +491,15 @@ public class TieWebSheetCellHelper {
 		}
 		CellRangeAddress caddress = null;
 		Cell cell = fcell.getPoiCell();
-		String key = findCellRangeAddressWithOffset(cell.getRowIndex(),
-				cell.getColumnIndex(), initRows, bodyTopRow, repeatZone,
-				sheetConfig.isBodyPopulated());
+		String key = "$" + cell.getColumnIndex() + "$" + cell.getRowIndex(); 
 		caddress = cellRangeMap.get(key);
-
 		if (caddress != null) {
+			// has col or row span
 			fcell.setColspan((caddress.getLastColumn()
 					- caddress.getFirstColumn() + 1)
+					+ "");
+			fcell.setRowspan((caddress.getLastRow()
+					- caddress.getFirstRow() + 1)
 					+ "");
 		}
 	}
@@ -535,6 +516,26 @@ public class TieWebSheetCellHelper {
 			webStyle.append("font-size: " + font.getFontHeightInPoints()
 					+ "pt;");
 			webStyle.append("font-weight:" + font.getBoldweight() + ";");
+			String decoration="";
+			if (font.getUnderline()!= 0) decoration += " underline";
+			if (font.getStrikeout()) decoration += " line-through";
+			if (decoration.length()>0)
+				webStyle.append("text-decoration:" + decoration + ";");
+		    short[] rgbfix={256,256,256};
+			if (font instanceof HSSFFont)
+			{
+			   HSSFColor color = ((HSSFFont) font).getHSSFColor((HSSFWorkbook)wb);
+			   if (color != null)  rgbfix = color.getTriplet();
+			}
+			else if (font instanceof XSSFFont)
+			{
+			   XSSFColor color = ((XSSFFont) font).getXSSFColor();
+			   if (color != null) {
+				   rgbfix = TieWebSheetUtility.getTripletFromXSSFColor(color);
+			   }
+			}
+			if (rgbfix[0]!=256) 
+			webStyle.append("color:rgb("+ FacesUtility.strJoin(rgbfix,",") +");");
 		}
 		return webStyle.toString();
 
@@ -563,11 +564,22 @@ public class TieWebSheetCellHelper {
 				break;
 			}
 			}
-			int bkColorIndex = cellStyle.getFillForegroundColor();
-			HSSFColor color = HSSFColor.getIndexHash().get(bkColorIndex);
-			if (color != null) {
-				webStyle.append("background-color:rgb("
-						+ FacesUtility.strJoin(color.getTriplet(), ",") + ");");
+
+			if (poiCell instanceof HSSFCell) {
+				int bkColorIndex = cellStyle.getFillForegroundColor();
+				HSSFColor color = HSSFColor.getIndexHash().get(bkColorIndex);
+				if (color != null)
+					webStyle.append("background-color:rgb("
+							+ FacesUtility.strJoin(color.getTriplet(), ",")
+							+ ");");
+			} else if (poiCell instanceof XSSFCell) {
+				XSSFColor color = ((XSSFCell) poiCell).getCellStyle()
+						.getFillForegroundColorColor();
+				if (color != null)
+					webStyle.append("background-color:rgb("
+							+ FacesUtility.strJoin(TieWebSheetUtility
+									.getTripletFromXSSFColor(color), ",")
+							+ ");");
 			}
 		} else {
 			webStyle.append(getAlignmentFromCellType(poiCell));
@@ -589,7 +601,7 @@ public class TieWebSheetCellHelper {
 	public void setupCellStyle(Workbook wb, Sheet sheet1, FacesCell fcell,
 			double totalWidth) {
 		Cell poiCell = fcell.getPoiCell();
-		String webStyle = getCellStyle(wb, poiCell);
+		String webStyle = getCellStyle(wb, poiCell) + getCellFontStyle(wb, poiCell);
 
 		CellStyle cellStyle = poiCell.getCellStyle();
 		if ((cellStyle != null) && (!cellStyle.getLocked())) {
@@ -709,37 +721,10 @@ public class TieWebSheetCellHelper {
 				targetCell = "$" + rowcol[1] + "$" + (row + initialRows - 1);
 			}
 		}
-		Cell cell = getCellByReference(targetCell, sheet);
+		Cell cell = TieWebSheetUtility.getCellByReference(targetCell, sheet);
 		return cell;
 	}
 
-	public static final short EXCEL_COLUMN_WIDTH_FACTOR = 256;
-	public static final short EXCEL_ROW_HEIGHT_FACTOR = 20;
-	public static final int UNIT_OFFSET_LENGTH = 7;
-	public static final int[] UNIT_OFFSET_MAP = new int[] { 0, 36, 73, 109,
-			146, 182, 219 };
 
-	public short pixel2WidthUnits(int pxs) {
-		short widthUnits = (short) (EXCEL_COLUMN_WIDTH_FACTOR * (pxs / UNIT_OFFSET_LENGTH));
-		widthUnits += UNIT_OFFSET_MAP[(pxs % UNIT_OFFSET_LENGTH)];
-		return widthUnits;
-	}
-
-	public int widthUnits2Pixel(double widthUnits) {
-		int pixels = (int) (widthUnits / EXCEL_COLUMN_WIDTH_FACTOR)
-				* UNIT_OFFSET_LENGTH;
-		int offsetWidthUnits = (int) (widthUnits % EXCEL_COLUMN_WIDTH_FACTOR);
-		pixels += Math.floor((float) offsetWidthUnits
-				/ ((float) EXCEL_COLUMN_WIDTH_FACTOR / UNIT_OFFSET_LENGTH));
-		return pixels;
-	}
-
-	public int heightUnits2Pixel(short heightUnits) {
-		int pixels = (heightUnits / EXCEL_ROW_HEIGHT_FACTOR);
-		int offsetWidthUnits = heightUnits % EXCEL_ROW_HEIGHT_FACTOR;
-		pixels += Math.floor((float) offsetWidthUnits
-				/ ((float) EXCEL_ROW_HEIGHT_FACTOR / UNIT_OFFSET_LENGTH));
-		return pixels;
-	}
 
 }

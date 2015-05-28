@@ -124,10 +124,14 @@ public class TieWebSheetView  {
 	public void setWebDataTable(DataTable webDataTable) {
 		this.webDataTable = webDataTable;
 	}
-	private int maxRowsPerPage = 80;
+	private Integer maxRowsPerPage = 80;
 
-	public int getMaxRowsPerPage() {
+	public Integer getMaxRowsPerPage() {
 		return maxRowsPerPage;
+	}
+
+	public void setMaxRowsPerPage(Integer maxRowsPerPage) {
+		this.maxRowsPerPage = maxRowsPerPage;
 	}
 
 	private String tableWidthStyle="100%;";
