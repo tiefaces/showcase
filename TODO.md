@@ -11,6 +11,14 @@ Place tasks for each release as planned, once completed, remove tasks and place 
 - Change the way for loading body. For repeat type, populate the body row first, then assamble the datatable.
 - Now body also support Row/Col span 
 - Add font/color support for body
+- Add version to Configuration Tab. This will enable future change on configuration structures.
+- Add form width, max row per pages to configuration tab
+- Now hidden column/rows handled
+- Support no configuration tab sheet. E.g. load pure Excel Spreadsheet. If found no configuration, then assume user want to load the entire workbooks as web sheets.
+- Add image(picture) support
+- Add row height support
+
+
 
 ### New Features ###
 
@@ -19,15 +27,15 @@ Place tasks for each release as planned, once completed, remove tasks and place 
 ### Unit Testing/Logging ###
 
 # Others # {#todo_others}
-- Add version to Configuration Tab. This will enable future change on configuration structures.
-- Add form width, max row per pages to configuration tab
 
+- User px or percentage for column width depend on user's preference as current percentage doesn't work well in some cases.
+
+- form width not handled well
+- formula with range not handled well. looks like it's POI bug
+
+- value change event refresh cell list should be cached instead of iterate through entire page.
 - support excel data validation
+
 - support excel comments
-
-- handle hidden column/rows
-
-- Support no configuration tab sheet. E.g. load pure Excel Spreadsheet. If found no configuration, then assume user want to load the entire workbooks as web sheets.
 - Support add/delete row in Repeat style form
-
 - Add unit test for web sheet

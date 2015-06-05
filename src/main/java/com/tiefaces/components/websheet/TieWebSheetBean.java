@@ -32,6 +32,8 @@ import javax.faces.event.AjaxBehaviorEvent;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.Picture;
+import org.apache.poi.ss.usermodel.PictureData;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
@@ -58,11 +60,12 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 
 	private List<String> columns;
 	private List<List<Object>> bodyRows;
-	private List<List<HeaderCell>> headerRows;
+	private List<List<Object>> headerRows;
 	private Workbook wb;
 	private FormulaEvaluator formulaEvaluator;
 	private DataFormatter dataFormatter;
 
+	private Map<String, Picture> picturesMap; 
 	private Map<String, SheetConfiguration> sheetConfigMap;
 	private ScriptEngine engine;
 	private String currentTabName;
@@ -71,6 +74,7 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 
 	private TieWebSheetLoader webSheetLoader = null;
 	private TieWebSheetCellHelper cellHelper = null;
+	private TieWebSheetPicturesHelper picHelper = null;
 	private TieWebSheetDataHandler dataHandler = null;
 	private TieWebSheetValidationHandler validationHandler = null;
 
@@ -99,6 +103,7 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 		cellHelper = new TieWebSheetCellHelper(this);
 		dataHandler = new TieWebSheetDataHandler(this);
 		validationHandler = new TieWebSheetValidationHandler(this);
+		picHelper = new TieWebSheetPicturesHelper(this);
 		initialLoad();
 	}
 
@@ -119,11 +124,11 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 		this.bodyRows = bodyRows;
 	}
 
-	public final List<List<HeaderCell>> getHeaderRows() {
+	public final List<List<Object>> getHeaderRows() {
 		return headerRows;
 	}
 
-	public final void setHeaderRows(List<List<HeaderCell>> headerRows) {
+	public final void setHeaderRows(List<List<Object>> headerRows) {
 		this.headerRows = headerRows;
 	}
 
@@ -195,6 +200,11 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 		return validationHandler;
 	}
 	
+	
+	public TieWebSheetPicturesHelper getPicHelper() {
+		return picHelper;
+	}
+
 	public final String getExcelType() {
 		return excelType;
 	}
@@ -212,6 +222,14 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 		this.currentTopRow = currentTopRow;
 	}
 	
+	public Map<String, Picture> getPicturesMap() {
+		return picturesMap;
+	}
+
+	public void setPicturesMap(Map<String, Picture> picturesMap) {
+		this.picturesMap = picturesMap;
+	}
+
 	public final void initWorkBook() {
 		if (this.getWb() == null) {
 
@@ -438,7 +456,7 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 			// refresh current page calculation fields
 			UIComponent s = facesContext.getViewRoot().findComponent(tblName);
 			if (s != null) {
-				this.setWebDataTable((DataTable) s);
+				DataTable webDataTable =(DataTable) s;
 				int first = webDataTable.getFirst();
 				int rowsToRender = webDataTable.getRowsToRender();
 				int rowCounts = webDataTable.getRowCount();
@@ -448,6 +466,9 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 							if (cellobject instanceof FacesCell) {
 								FacesCell cell = (FacesCell) cellobject;
 							if (cell.getPoiCell().getCellType() == Cell.CELL_TYPE_FORMULA) {
+								cell.evaluate();
+								debug("refresh obj name ="+tblName + ":" + i + ":cocalc"
+												+ cell.getColumnIndex()+" formula = "+cell.getPoiCell().getCellFormula()+" value = "+cell.getCellValue());
 								RequestContext.getCurrentInstance().update(
 										tblName + ":" + i + ":cocalc"
 												+ cell.getColumnIndex());
@@ -484,6 +505,7 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 	public final void setSheetConfigMap(Map<String, SheetConfiguration> sheetConfigMap) {
 		this.sheetConfigMap = sheetConfigMap;
 	}
+	
 	
 	public abstract InputStream loadWebSheetTemplate();
 	public abstract void initialLoad();

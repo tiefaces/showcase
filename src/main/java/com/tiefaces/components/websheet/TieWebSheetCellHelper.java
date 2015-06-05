@@ -504,7 +504,21 @@ public class TieWebSheetCellHelper {
 		}
 	}
 
-	public String getCellFontStyle(Workbook wb, Cell poiCell) {
+	public String getRowStyle(Workbook wb, Cell poiCell, String inputType, float rowHeight ) {
+
+		CellStyle cellStyle = poiCell.getCellStyle();
+		if (cellStyle != null) {
+			short fontIdx = cellStyle.getFontIndex();
+			Font font = wb.getFontAt(fontIdx);
+			float maxHeight = rowHeight;
+			if (!inputType.isEmpty()) {
+				maxHeight = Math.min( font.getFontHeightInPoints() + 6, rowHeight);
+			}	
+			return "height:" +  TieWebSheetUtility.pointsToPixels(maxHeight)+"px;";
+		}
+		return "";
+	}
+	public String getCellFontStyle(Workbook wb, Cell poiCell,String inputType, float rowHeight) {
 
 		CellStyle cellStyle = poiCell.getCellStyle();
 		StringBuffer webStyle = new StringBuffer();
@@ -516,6 +530,7 @@ public class TieWebSheetCellHelper {
 			webStyle.append("font-size: " + font.getFontHeightInPoints()
 					+ "pt;");
 			webStyle.append("font-weight:" + font.getBoldweight() + ";");
+			
 			String decoration="";
 			if (font.getUnderline()!= 0) decoration += " underline";
 			if (font.getStrikeout()) decoration += " line-through";
@@ -536,51 +551,44 @@ public class TieWebSheetCellHelper {
 			}
 			if (rgbfix[0]!=256) 
 			webStyle.append("color:rgb("+ FacesUtility.strJoin(rgbfix,",") +");");
+			
 		}
 		return webStyle.toString();
 
 	}
 
-	public String getCellStyle(Workbook wb, Cell poiCell) {
+	public String getCellStyle(Workbook wb, Cell poiCell, String inputType) {
 
 		CellStyle cellStyle = poiCell.getCellStyle();
 		StringBuffer webStyle = new StringBuffer();
 		if (cellStyle != null) {
-			switch (cellStyle.getAlignment()) {
-			case CellStyle.ALIGN_LEFT: {
-				webStyle.append("text-align: left;");
-				break;
-			}
-			case CellStyle.ALIGN_RIGHT: {
-				webStyle.append("text-align: right;");
-				break;
-			}
-			case CellStyle.ALIGN_CENTER: {
-				webStyle.append("text-align: center;");
-				break;
-			}
-			case CellStyle.ALIGN_GENERAL: {
-				webStyle.append(getAlignmentFromCellType(poiCell));
-				break;
-			}
-			}
+			if (!inputType.isEmpty()) {
+				webStyle.append(getAlignmentFromCell(poiCell,cellStyle));
+				webStyle.append(getVerticalAlignmentFromCell(poiCell,cellStyle));
+			}	
+			webStyle.append(getBgColorFromCell(poiCell,cellStyle));
+		} else {
+//			webStyle.append(getAlignmentFromCellType(poiCell));
+		}
+		return webStyle.toString();
 
-			if (poiCell instanceof HSSFCell) {
-				int bkColorIndex = cellStyle.getFillForegroundColor();
-				HSSFColor color = HSSFColor.getIndexHash().get(bkColorIndex);
-				if (color != null)
-					webStyle.append("background-color:rgb("
-							+ FacesUtility.strJoin(color.getTriplet(), ",")
-							+ ");");
-			} else if (poiCell instanceof XSSFCell) {
-				XSSFColor color = ((XSSFCell) poiCell).getCellStyle()
-						.getFillForegroundColorColor();
-				if (color != null)
-					webStyle.append("background-color:rgb("
-							+ FacesUtility.strJoin(TieWebSheetUtility
-									.getTripletFromXSSFColor(color), ",")
-							+ ");");
-			}
+	}
+
+	public String getColumnStyle(Workbook wb, FacesCell fcell, float rowHeight) {
+
+		Cell poiCell = fcell.getPoiCell();
+		String inputType = fcell.getInputType();
+		CellStyle cellStyle = poiCell.getCellStyle();
+		StringBuffer webStyle = new StringBuffer();
+		if (cellStyle != null) {
+			if (fcell.isContainPic()) {
+				webStyle.append("vertical-align: top;");
+			} else {	
+				webStyle.append(getAlignmentFromCell(poiCell,cellStyle));
+				webStyle.append(getVerticalAlignmentFromCell(poiCell,cellStyle));
+			}	
+			webStyle.append(getBgColorFromCell(poiCell,cellStyle));
+			webStyle.append(getRowStyle(wb, poiCell, inputType, rowHeight));			
 		} else {
 			webStyle.append(getAlignmentFromCellType(poiCell));
 		}
@@ -588,9 +596,76 @@ public class TieWebSheetCellHelper {
 
 	}
 
-	public double calcTotalWidth(Sheet sheet1, int firstCol, int lastCol) {
 
-		double totalWidth = 0;
+	private String getAlignmentFromCell(Cell poiCell, CellStyle cellStyle) {
+		
+		String style="";
+		switch (cellStyle.getAlignment()) {
+		case CellStyle.ALIGN_LEFT: {
+			style = "text-align: left;";
+			break;
+		}
+		case CellStyle.ALIGN_RIGHT: {
+			style = "text-align: right;";
+			break;
+		}
+		case CellStyle.ALIGN_CENTER: {
+			style = "text-align: center;";
+			break;
+		}
+		case CellStyle.ALIGN_GENERAL: {
+			style = getAlignmentFromCellType(poiCell);
+			break;
+		}
+		}		
+		return style;
+	}
+	private String getVerticalAlignmentFromCell(Cell poiCell, CellStyle cellStyle) {
+		
+		String style="";
+		switch (cellStyle.getVerticalAlignment()) {
+		case CellStyle.VERTICAL_TOP: {
+			style ="vertical-align: top;";
+			break;
+		}
+		case CellStyle.VERTICAL_CENTER: {
+			style = "vertical-align: middle;";
+			break;
+		}
+		case CellStyle.VERTICAL_BOTTOM: {
+			style = "vertical-align: bottom;";
+			break;
+		}
+		}
+		return style;
+	}	
+	
+	private String getBgColorFromCell(Cell poiCell, CellStyle cellStyle) {
+		
+		String style="";
+		if (poiCell instanceof HSSFCell) {
+			int bkColorIndex = cellStyle.getFillForegroundColor();
+			HSSFColor color = HSSFColor.getIndexHash().get(bkColorIndex);
+			if (color != null)
+				style ="background-color:rgb("
+						+ FacesUtility.strJoin(color.getTriplet(), ",")
+						+ ");";
+		} else if (poiCell instanceof XSSFCell) {
+			XSSFColor color = ((XSSFCell) poiCell).getCellStyle()
+					.getFillForegroundColorColor();
+			if (color != null)
+				style="background-color:rgb("
+						+ FacesUtility.strJoin(TieWebSheetUtility
+								.getTripletFromXSSFColor(color), ",")
+						+ ");";
+		}
+		return style;
+	}
+	
+	
+	public int calcTotalWidth(Sheet sheet1, int firstCol, int lastCol) {
+
+		int totalWidth = 0;
 		for (int i = firstCol; i <= lastCol; i++) {
 
 			totalWidth += sheet1.getColumnWidth(i);
@@ -599,9 +674,8 @@ public class TieWebSheetCellHelper {
 	}
 
 	public void setupCellStyle(Workbook wb, Sheet sheet1, FacesCell fcell,
-			double totalWidth) {
+			float rowHeight) {
 		Cell poiCell = fcell.getPoiCell();
-		String webStyle = getCellStyle(wb, poiCell) + getCellFontStyle(wb, poiCell);
 
 		CellStyle cellStyle = poiCell.getCellStyle();
 		if ((cellStyle != null) && (!cellStyle.getLocked())) {
@@ -609,7 +683,11 @@ public class TieWebSheetCellHelper {
 			if (fcell.getInputType().isEmpty())
 				fcell.setInputType(getInputTypeFromCellType(poiCell));
 		}
+		String webStyle = getCellStyle(wb, poiCell, fcell.getInputType()) 
+				+ getCellFontStyle(wb, poiCell, fcell.getInputType(), rowHeight) 
+				+ getRowStyle(wb, poiCell, fcell.getInputType(), rowHeight);
 		fcell.setStyle(webStyle);
+		fcell.setColumnStyle(getColumnStyle(wb, fcell, rowHeight));
 	}
 
 	private String getAlignmentFromCellType(Cell poiCell) {

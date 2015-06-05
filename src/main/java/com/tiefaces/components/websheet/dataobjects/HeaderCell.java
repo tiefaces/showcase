@@ -30,8 +30,9 @@ public class HeaderCell {
 	
 	private String rowspan; // cell row span attribute
 	private String colspan; // cell column span attribute
-	private String headertext; // header text label
+	private String cellValue; // header text label
 	private String style; // cell web css style attriubte    
+	private String columnStyle; // cell web css style attriubte    
 	
 	/**
 	 * Constructor.
@@ -40,13 +41,14 @@ public class HeaderCell {
 	 * @param style cell web css style attriubte
 	 * @param headertext header text label
 	 */
-	public HeaderCell(String rowspan, String colspan, String style, String headertext) {
+	public HeaderCell(String rowspan, String colspan, String style, String columnStyle, String cellValue) {
 		super();
 		this.rowspan = rowspan;
 		this.colspan = colspan;
 		this.style = style;
-		this.headertext = headertext;
-		debug("header cell construction: rowspan = "+rowspan+" colspan="+colspan+" style="+style+" headertext="+headertext);
+		this.columnStyle = columnStyle;
+		this.cellValue = cellValue;
+		debug("header cell construction: rowspan = "+rowspan+" colspan="+colspan+" style="+style+" columnStyle="+columnStyle+" cellValue="+cellValue);
 	}
 	public String getRowspan() {
 		return rowspan;
@@ -60,11 +62,18 @@ public class HeaderCell {
 	public void setColspan(String colspan) {
 		this.colspan = colspan;
 	}
-	public String getHeadertext() {
-		return headertext;
+	
+	public String getCellValue() {
+		return cellValue;
 	}
-	public void setHeadertext(String headertext) {
-		this.headertext = headertext;
+	public void setCellValue(String cellValue) {
+		this.cellValue = cellValue;
+	}
+	public String getColumnStyle() {
+		return columnStyle;
+	}
+	public void setColumnStyle(String columnStyle) {
+		this.columnStyle = columnStyle;
 	}
 	public String getStyle() {
 		return style;
@@ -86,7 +95,9 @@ public class HeaderCell {
         sb.append(",");        
         sb.append("style = " + style);
         sb.append(",");        
-        sb.append("headertext = " + headertext);
+        sb.append("columnStyle = " + columnStyle);
+        sb.append(",");        
+        sb.append("cellValue = " + cellValue);
         sb.append("}");
         return sb.toString();
     }	

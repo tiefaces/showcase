@@ -10,7 +10,7 @@
 		<f:metadata>
 			<f:attribute name="api.path" value="common/TableLookup" />
 			<f:attribute name="src.paths"
-				value="classes/org/tiefaces/showcase/websheet/WebSheet2.java" />
+				value="classes/org/tiefaces/showcase/websheet/WebSheet1.java,classes/org/tiefaces/showcase/websheet/WebSheet2.java" />
 
 		</f:metadata>
 	</ui:define>
@@ -38,6 +38,22 @@
 
 
 		</h:form>
+		
+	<h3>Web Sheet demo : configured</h3>
+			
+		<h:form id="form1">
+
+
+			<p:panel id="panel1" style="margin-bottom:10px;">
+					<tie:websheet id="sheet1" webSheetBean="#{webSheet1}"
+					showLineNumber = "false" 
+					>
+					</tie:websheet>
+			</p:panel>
+
+
+
+		</h:form>		
 
 
 	</ui:define>

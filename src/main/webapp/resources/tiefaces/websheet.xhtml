@@ -49,8 +49,7 @@
 	  	
 
 		<div id="websheet">
-			<p:dataTable var="dataRow"
-			    binding="#{tiewebsheettable}"
+			<p:dataTable id="websheettable" var="dataRow"
 				rendered="#{cc.attrs.rendered}"
 				value="#{cc.attrs.webSheetBean.bodyRows}"
 				paginator="#{cc.attrs.paginator}" 
@@ -72,8 +71,13 @@
 								varStatus="loopheaderrowcolumn">
 								<p:column rowspan="#{headerrowcolumn.rowspan}"
 									colspan="#{headerrowcolumn.colspan}"
-									headerText="#{headerrowcolumn.headertext}"
-									style="#{headerrowcolumn.style}" />
+									style="#{headerrowcolumn.columnStyle}" >
+									  <f:facet name="header">
+										  <h:outputText value="#{headerrowcolumn.cellValue}"
+											style="#{headerrowcolumn.style}"
+											styleClass="inputColumnWidth" />
+									  </f:facet>
+								</p:column>	
 							</c:forEach>
 						</p:row>
 					</c:forEach>
@@ -88,7 +92,7 @@
 					<p:column rendered="#{not empty dataRow[loop.index +1] and dataRow[0].rendered }"
 						rowspan="#{dataRow[loop.index +1].rowspan}"
 						colspan="#{dataRow[loop.index +1].colspan}"
-						style="#{dataRow[loop.index +1].style}">
+						style="#{dataRow[loop.index +1].columnStyle}">
 						<h:outputText id="cocalc#{loop.index}"
 							rendered="#{empty dataRow[loop.index +1].inputType}"
 							style="#{dataRow[loop.index +1].style}"
@@ -118,7 +122,13 @@
 						</p:inputTextarea>
 						<h:outputText id="msgcolumn#{loop.index}" style="color:red"
 							styleClass="inputColumnWidth"
+							rendered="#{(dataRow[loop.index +1].invalid)}" 
 							value="#{dataRow[loop.index +1].errormsg}" />
+				        <p:graphicImage id="pictures#{loop.index}" style="#{dataRow[loop.index +1].pictureStyle}" value="#{tieWebSheetPicturesService.picture}"
+				        rendered="#{(dataRow[loop.index +1].containPic)}"
+				        >
+				        <f:param name="pictureViewId" value="#{dataRow[loop.index +1].pictureViewId}" />
+				        </p:graphicImage>							
 					</p:column>
 				</c:forEach>
 

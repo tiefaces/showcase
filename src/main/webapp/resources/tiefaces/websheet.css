@@ -12,15 +12,14 @@
 }
 
 #websheet .ui-datatable td {
-    padding: 2px 4px !important;
+    padding: 2px !important;
 }
 
 
 
 #websheet .inputColumnWidth {
 	width:  100% !important;
-	display:block !important;
-	padding-right: 10px !important;
+	padding: 0px 4px 0px 0px !important;
 	-moz-box-sizing: border-box !important;
 	box-sizing: border-box !important;
     white-space: pre-wrap !important;

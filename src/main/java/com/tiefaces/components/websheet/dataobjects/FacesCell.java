@@ -12,7 +12,14 @@
  */
 package com.tiefaces.components.websheet.dataobjects;
 
+import java.util.Map;
+
+import javax.faces.context.FacesContext;
+
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.PictureData;
+import org.primefaces.model.StreamedContent;
 
 import com.tiefaces.components.websheet.TieWebSheetBean;
 
@@ -35,12 +42,16 @@ public class FacesCell {
 	private TieWebSheetBean parent = null; // reference to bean object
 	private Cell poiCell; // reference to poi cell object
 	private String style = ""; // cell web css style  
+	private String columnStyle = ""; // column css style
 	private String colspan = "1"; // cell column span default set to 1
 	private String rowspan = "1"; // row span default set to 1
 	private int columnIndex; // column index in the datatable.
 	private boolean invalid = false; // indicate the cell hold invalid data when set to true
 	private String errormsg; // hold error message when the cell is invalid
 	private String inputType = ""; // data type for input cell. could be text/text area/number etc
+	private boolean containPic = false; // indicate the cell hold picture when set to true
+	private String pictureId; //picture Id for retrieve picture when containPic = true
+	private String pictureStyle = "";
 
 	/**
 	 * Constructor.
@@ -118,6 +129,48 @@ public class FacesCell {
 	public void setInvalid(boolean invalid) {
 		this.invalid = invalid;
 	}
+	
+	
+	public boolean isContainPic() {
+		return containPic;
+	}
+
+	public void setContainPic(boolean containPic) {
+		this.containPic = containPic;
+	}
+
+	public String getPictureStyle() {
+		return pictureStyle;
+	}
+
+	public void setPictureStyle(String pictureStyle) {
+		this.pictureStyle = pictureStyle;
+	}
+
+	public String getPictureViewId() {
+		if (this.containPic) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			String pictureViewId =  context.getViewRoot().getViewId() + this.pictureId;
+			Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+			if (sessionMap.get(pictureId) == null) {
+				sessionMap.put(pictureViewId, parent.getPicturesMap().get(pictureId).getPictureData());
+System.out.println(" put session map id = "+pictureViewId );				
+			}	
+			return pictureViewId;
+		} else {
+			return null;
+		}
+	}
+
+
+	public String getPictureId() {
+		return pictureId;
+	}
+
+	public void setPictureId(String pictureId) {
+		this.pictureId = pictureId;
+	}
+
 	public String getErrormsg() {
 		return errormsg;
 	}
@@ -131,6 +184,21 @@ public class FacesCell {
 
 	public void setRowspan(String rowspan) {
 		this.rowspan = rowspan;
+	}
+	
+	public String getColumnStyle() {
+		return columnStyle;
+	}
+
+	public void setColumnStyle(String columnStyle) {
+		this.columnStyle = columnStyle;
+	}
+
+	public void evaluate(){
+		if ((this.getPoiCell()!= null) && (this.getPoiCell().getCellType() == Cell.CELL_TYPE_FORMULA)  && (parent!=null)) {
+		FormulaEvaluator evaluator = parent.getFormulaEvaluator();
+		evaluator.evaluateFormulaCell(getPoiCell());
+		}
 	}
 
 }

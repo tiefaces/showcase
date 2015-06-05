@@ -117,13 +117,7 @@ public class TieWebSheetView  {
 		this.tabType = tabType;
 	}
 	
-	protected DataTable webDataTable;
-    public DataTable getWebDataTable() {
-		return webDataTable;
-	}
-	public void setWebDataTable(DataTable webDataTable) {
-		this.webDataTable = webDataTable;
-	}
+
 	private Integer maxRowsPerPage = 80;
 
 	public Integer getMaxRowsPerPage() {
