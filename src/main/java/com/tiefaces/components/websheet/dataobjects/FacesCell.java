@@ -31,7 +31,7 @@ import com.tiefaces.components.websheet.TieWebSheetBean;
  */
 public class FacesCell {
 
-	private boolean debug = false;
+	private boolean debug = true;
 
 	private void debug(String msg) {
 		if (debug) {
@@ -194,7 +194,7 @@ System.out.println(" put session map id = "+pictureViewId );
 		this.columnStyle = columnStyle;
 	}
 
-	public void evaluate(){
+	public void cellEvaluate(){
 		if ((this.getPoiCell()!= null) && (this.getPoiCell().getCellType() == Cell.CELL_TYPE_FORMULA)  && (parent!=null)) {
 		FormulaEvaluator evaluator = parent.getFormulaEvaluator();
 		evaluator.evaluateFormulaCell(getPoiCell());

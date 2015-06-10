@@ -20,7 +20,7 @@ public class WebSheet2 extends TieWebSheetBean {
 
 	@Override
 	public InputStream loadWebSheetTemplate() {
-		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELISTWITHOUT.xls");
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELIST.xls");
 	//	((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream ("/WEB-INF/lib/tiefaces-"+version+".jar");
 		return stream;         
 	}

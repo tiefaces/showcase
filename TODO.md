@@ -17,6 +17,7 @@ Place tasks for each release as planned, once completed, remove tasks and place 
 - Support no configuration tab sheet. E.g. load pure Excel Spreadsheet. If found no configuration, then assume user want to load the entire workbooks as web sheets.
 - Add image(picture) support
 - Add row height support
+- Fix issue with color not correct if user use customized color palate
 
 
 
@@ -28,6 +29,18 @@ Place tasks for each release as planned, once completed, remove tasks and place 
 
 # Others # {#todo_others}
 
+- use scanner to determind user input data type before set as cell value
+- for null cell do not create blank cell instead use null as poicell in facescell and show blank on web
+- create style array for web for saving memory
+- input data with actual value instead of formatted string
+
+- implement insert/delete row for repeat type form
+
+- think about change to cdi for memory issue
+
+- setup 100% style as default for old version template
+
+ 
 - User px or percentage for column width depend on user's preference as current percentage doesn't work well in some cases.
 
 - form width not handled well

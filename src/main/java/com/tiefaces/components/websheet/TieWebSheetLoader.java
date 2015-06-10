@@ -80,8 +80,13 @@ public class TieWebSheetLoader implements Serializable {
 		int totalWidth = parent.getCellHelper().calcTotalWidth(sheet1, left,
 				right);
 		debug("totalwidth = " + totalWidth);
-		parent.setTableWidthStyle(TieWebSheetUtility
+		String formWidthStyle = sheetConfig.getFormWidth();
+		if ((formWidthStyle == null) || (formWidthStyle.isEmpty()))		
+			parent.setTableWidthStyle(TieWebSheetUtility
 				.widthUnits2Pixel(totalWidth) + "px;");
+		else
+			parent.setTableWidthStyle("100%;");
+			
 		debug("change to pixel = " + parent.getTableWidthStyle());
 		parent.setHeaderRows(new ArrayList<List<Object>>());
 
@@ -263,7 +268,7 @@ public class TieWebSheetLoader implements Serializable {
 
 		for (int i = top; i < (top + initRows); i++) {
 			if ((!bodyPopulated) && (i > top))
-				parent.getCellHelper().copyRow(sheet1, top, i);
+				parent.getCellHelper().copyRow(wb, sheet1, top, i);
 			initExcelRow(i, top, sheet1, sheetConfig);
 		}
 		if (initRows > 0)
@@ -312,6 +317,10 @@ public class TieWebSheetLoader implements Serializable {
 		SheetConfiguration sheetConfig = parent.getSheetConfigMap()
 				.get(tabName);
 
+		
+		parent.setMaxRowsPerPage(parent.getSheetConfigMap().get(tabName).getMaxRowPerPage());
+		parent.setBodyAllowAddRows(parent.getSheetConfigMap().get(tabName).isBodyAllowAddRows());
+
 		// populate repeat rows before setup cell range map
 		populateBodyRepeatRows(sheetConfig);
 		Map<String, CellRangeAddress> cellRangeMap = parent.getCellHelper()
@@ -328,8 +337,6 @@ public class TieWebSheetLoader implements Serializable {
 		//reset datatable current page to 1 
 		setDataTablePage(0);
 		saveObjs();
-
-		RequestContext.getCurrentInstance().update("form2:sheet2:websheettable:1:pictures0");
 	}
 	
 	private void setDataTablePage(int first) {
@@ -382,7 +389,7 @@ public class TieWebSheetLoader implements Serializable {
 		for (int i = top; i <= bottom; i++) {
 			if ((i >= top) && (i < (top + initRows))) {
 				if (i > top)
-					parent.getCellHelper().copyRow(sheet1, top, i);
+					parent.getCellHelper().copyRow(parent.getWb(), sheet1, top, i);
 				debug("Web Form populateBodyRepeatRows copy row = " + i);
 			}
 		}
@@ -440,8 +447,18 @@ public class TieWebSheetLoader implements Serializable {
 				if (!skippedRegionCells.contains(cellindex) && !sheet1.isColumnHidden(cindex)) {
 					Cell cell = null;
 					// if (i < (top + initRows)) {
-					if (row != null)
-						cell = row.getCell(cindex, Row.CREATE_NULL_AS_BLANK);
+					if (row != null) {
+						//cell = row.getCell(cindex, Row.CREATE_NULL_AS_BLANK);
+						cell = row.getCell(cindex);
+						if (cell == null) {
+							cell = row.createCell(cindex);
+							System.out.println(" create null as blank cell = "+row.getCell(cindex));
+						} else
+							System.out.println(" not null cell = "+row.getCell(cindex));
+							
+					}
+					
+					
 					// } else {
 					// cell = row.getCell(cindex);
 					// }

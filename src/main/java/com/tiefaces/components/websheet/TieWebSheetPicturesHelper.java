@@ -92,8 +92,8 @@ public class TieWebSheetPicturesHelper {
 						// HSSFPictureData picData = pictures.get(pictureIndex);
 						HSSFPictureData picData = pic.getPictureData();
 						String picIndex = wb.getSheetName(i) + "$"
-								+ String.valueOf(anchor.getRow1()) + "$"
-								+ String.valueOf(anchor.getCol1());
+								+ String.valueOf(anchor.getCol1()) + "$"
+								+ String.valueOf(anchor.getRow1()) ;
 						picMap.put(picIndex, pic);
 					}
 				}
@@ -122,8 +122,8 @@ public class TieWebSheetPicturesHelper {
 							XSSFClientAnchor anchor = pic.getPreferredSize();
 							CTMarker ctMarker = anchor.getFrom();
 							String picIndex = wb.getSheetName(i) + "$"
-									+ ctMarker.getRow() + "&"
-									+ ctMarker.getCol();
+									+ ctMarker.getCol() + "$"
+									+ ctMarker.getRow() ;
 							picMap.put(picIndex, pic);
 						}
 					}

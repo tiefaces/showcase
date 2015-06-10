@@ -54,7 +54,7 @@
 				value="#{cc.attrs.webSheetBean.bodyRows}"
 				paginator="#{cc.attrs.paginator}" 
 				paginatorPosition="#{cc.attrs.paginatorPosition}"
-				rows="#{cc.attrs.webSheetBean.maxRowsPerPage}"
+				rows="#{cc.attrs.maxRowsPerPage}"
 				paginatorAlwaysVisible="cc.attrs.paginatorAlwaysVisible"
 				paginatorTemplate="#{cc.attrs.paginatorTemplate}"
 				rowsPerPageTemplate="#{cc.attrs.rowsPerPageTemplate}"
@@ -78,6 +78,7 @@
 											styleClass="inputColumnWidth" />
 									  </f:facet>
 								</p:column>	
+								<p:column width="12" rendered = "#{webFormBean.bodyAllowAddRows}" />
 							</c:forEach>
 						</p:row>
 					</c:forEach>
@@ -131,6 +132,14 @@
 				        </p:graphicImage>							
 					</p:column>
 				</c:forEach>
+				<p:column width="12" style="text-align: center;" rendered = "#{cc.attrs.webSheetBean.bodyAllowAddRows and dataRow[0].rendered and dataRow[0].repeatZone }" >
+	            	<p:commandLink actionListener="#{cc.attrs.webSheetBean.addrow}" title="Add Row">
+	            		<h:outputText  styleClass="ui-icon ui-icon-plus" style="margin:0 10% 0 10%"/>
+	            	</p:commandLink>
+	            	<p:commandLink actionListener="#{cc.attrs.webSheetBean.deleterow}" title="Delete Row" >
+	            		<h:outputText  styleClass="ui-icon ui-icon-minus" style="margin:0 10% 0 10%"/>
+	            	</p:commandLink>
+            	</p:column>
 
 
 			</p:dataTable>

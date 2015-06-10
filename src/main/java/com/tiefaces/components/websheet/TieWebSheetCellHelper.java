@@ -50,12 +50,16 @@ public class TieWebSheetCellHelper {
 
 	private TieWebSheetBean parent = null;
 
-	private static boolean debug = false;
+	private static boolean debug =true;
 
 	private static void debug(String msg) {
 		if (debug) {
 			System.out.println("TieWebSheetCellHelper: " + msg);
 		}
+	}
+
+	public TieWebSheetCellHelper() {
+		super();
 	}
 
 	public TieWebSheetCellHelper(TieWebSheetBean parent) {
@@ -70,8 +74,26 @@ public class TieWebSheetCellHelper {
 
 		String result;
 		try {
-			result = parent.getDataFormatter().formatCellValue(poiCell,
-					parent.getFormulaEvaluator());
+System.out.println(" get cell value celltype = "+ poiCell.getCellType());				  
+			
+			  if (poiCell.getCellType() == 2) {
+				  //poiCell.setCellType(Cell.CELL_TYPE_FORMULA);
+				  parent.getFormulaEvaluator().evaluate(poiCell);
+System.out.println(" formula type = "+ poiCell.getCachedFormulaResultType() + "formula = "+ poiCell.getCellFormula());		
+				if ( poiCell.getCachedFormulaResultType() == Cell.CELL_TYPE_NUMERIC)
+					debug(" formula value = "+ poiCell.getNumericCellValue());
+//				 poiCell.setCellType(poiCell.getCachedFormulaResultType()); 
+//				 String formula = poiCell.getCellFormula();
+//				result = parent.getDataFormatter().formatCellValue(poiCell,
+//						parent.getFormulaEvaluator());
+//				poiCell.setCellType(2);
+//				poiCell.setCellFormula(formula);
+//				parent.getFormulaEvaluator().evaluateFormulaCell(poiCell);
+				}
+//			  else
+					result = parent.getDataFormatter().formatCellValue(poiCell,
+							parent.getFormulaEvaluator());
+				  
 			debug(" cell row= " + poiCell.getRowIndex() + " col = "
 					+ poiCell.getColumnIndex() + " dataformatString = "
 					+ poiCell.getCellStyle().getDataFormatString()
@@ -196,7 +218,7 @@ public class TieWebSheetCellHelper {
 	// / <param name="worksheet">WorkSheet containing rows to be copied</param>
 	// / <param name="sourceRowNum">Source Row Number</param>
 	// / <param name="destinationRowNum">Destination Row Number</param>
-	public void copyRow(Sheet worksheet, int sourceRowNum, int destinationRowNum) {
+	public void copyRow(Workbook wb, Sheet worksheet, int sourceRowNum, int destinationRowNum) {
 		// Get the source / new row
 		Row newRow = worksheet.getRow(destinationRowNum);
 		Row sourceRow = worksheet.getRow(sourceRowNum);
@@ -223,7 +245,7 @@ public class TieWebSheetCellHelper {
 			}
 
 			// Copy style from old cell and apply to new cell
-			CellStyle newCellStyle = parent.getWb().createCellStyle();
+			CellStyle newCellStyle = wb.createCellStyle();
 			newCellStyle.cloneStyleFrom(oldCell.getCellStyle());
 			;
 			newCell.setCellStyle(newCellStyle);
@@ -287,6 +309,91 @@ public class TieWebSheetCellHelper {
 		}
 	}
 
+	
+	/* Refactor row formulas */
+	// properly refactor an excel formulat on a row change
+	public String formulaRowRefactor(String formula, int sourceRow, int copyRow) {
+		String buf = "";
+		String new_formula = "";
+		int i;
+		char c;
+		boolean skipNext = false, inParen = false;
+		for (i = 0; i < formula.length(); i++) {
+			c = formula.charAt(i);
+			if (c == '\'') {
+				if (buf.length() > 0 && buf.length() < 4 && i-buf.length()-1 >= 0 && TieWebSheetUtility.isUpperAlpha(formula.charAt(i-buf.length()-1))) {
+					if (!skipNext) {
+						new_formula += carefulRowFormulaRefactorString(buf,sourceRow,copyRow);
+						buf = "";
+					} else {
+						new_formula += buf;
+						skipNext = false;
+						buf = "";
+					}
+				} else {
+					new_formula += buf;
+					buf = "";
+				}
+				inParen = (inParen ? false : true);
+				new_formula += c;
+			} else if (!inParen) {
+				if (c == '$') {
+					if (buf.length() > 0 && buf.length() < 4 && i-buf.length()-1 >= 0 && TieWebSheetUtility.isUpperAlpha(formula.charAt(i-buf.length()-1))) {
+						if (!skipNext) {
+							new_formula += carefulColFormulaRefactorString(buf,sourceRow,copyRow);
+							buf = "";
+						} else {
+							new_formula += buf;
+							skipNext = false;
+							buf = "";
+						}
+					} else {
+						new_formula += buf;
+						buf = "";
+					}
+					skipNext = true;
+					new_formula += c;
+				} else if (skipNext) {
+					if (!TieWebSheetUtility.isNumeric(c)) {
+						skipNext = false;
+					}
+					new_formula += c;
+				} else {
+					if (TieWebSheetUtility.isNumeric(c)) {
+						buf += c;
+					} else {
+						if (buf.length() > 0 && i-buf.length()-1 >= 0 && TieWebSheetUtility.isUpperAlpha(formula.charAt(i-buf.length()-1))) {
+							new_formula += carefulRowFormulaRefactorString(buf,sourceRow,copyRow);
+							buf = "";
+						} else {
+							new_formula += buf;
+							buf = "";
+						}
+						new_formula += c;
+					}
+				}
+			} else {
+				new_formula += c;
+			}
+		}
+		if (!skipNext && !inParen && buf.length() > 0 && i-buf.length()-1 >= 0 && TieWebSheetUtility.isUpperAlpha(formula.charAt(i-buf.length()-1))) {
+			new_formula += carefulRowFormulaRefactorString(buf,sourceRow,copyRow);
+			buf = "";
+		} else {
+			new_formula += buf;
+			buf = "";
+		}
+		return new_formula;
+	}	
+	
+	public int carefulRowFormulaRefactorString(String formula, int sourceRow, int copyRow) {
+		return copyRow + (Integer.parseInt(formula) - sourceRow);
+	}	
+	
+	public String carefulColFormulaRefactorString(String formula, int sourceCol, int copyCol) {
+		return TieWebSheetUtility.GetExcelColumnName((copyCol + (TieWebSheetUtility.convertColToInt(formula) - sourceCol)));
+	}	
+	
 	public boolean containsCell(CellRangeAddress cr, int rowIx, int colIx) {
 		if (cr.getFirstRow() <= rowIx && cr.getLastRow() >= rowIx
 				&& cr.getFirstColumn() <= colIx && cr.getLastColumn() >= colIx) {
@@ -337,7 +444,7 @@ public class TieWebSheetCellHelper {
 			return null;
 		}
 		int row = Integer.parseInt(rowcol[0]);
-		int initialRows = Integer.parseInt(sheetConfig.getBodyInitialRows());
+		int initialRows = sheetConfig.getBodyInitialRows();
 		if ((sheetConfig.getFormBodyType().equalsIgnoreCase("Repeat"))
 				&& (row > (sheetConfig.getBodyCellRange().getTopRow() + 1))) {
 			return "$" + rowcol[1] + "$" + (row + initialRows - 1);
@@ -367,8 +474,7 @@ public class TieWebSheetCellHelper {
 
 		boolean repeatZone = false;
 		if (sheetConfig.getFormBodyType().equalsIgnoreCase("Repeat")) {
-			int initRows = Integer.parseInt(sheetConfig.getBodyInitialRows()
-					.trim());
+			int initRows = sheetConfig.getBodyInitialRows();
 			if (initRows < 1)
 				initRows = 1;
 			if ((row >= 0) && (row < (initRows)))
@@ -504,6 +610,7 @@ public class TieWebSheetCellHelper {
 		}
 	}
 
+	
 	public String getRowStyle(Workbook wb, Cell poiCell, String inputType, float rowHeight ) {
 
 		CellStyle cellStyle = poiCell.getCellStyle();
@@ -565,8 +672,8 @@ public class TieWebSheetCellHelper {
 			if (!inputType.isEmpty()) {
 				webStyle.append(getAlignmentFromCell(poiCell,cellStyle));
 				webStyle.append(getVerticalAlignmentFromCell(poiCell,cellStyle));
-			}	
-			webStyle.append(getBgColorFromCell(poiCell,cellStyle));
+			};	
+			webStyle.append(getBgColorFromCell(wb, poiCell,cellStyle));
 		} else {
 //			webStyle.append(getAlignmentFromCellType(poiCell));
 		}
@@ -587,7 +694,7 @@ public class TieWebSheetCellHelper {
 				webStyle.append(getAlignmentFromCell(poiCell,cellStyle));
 				webStyle.append(getVerticalAlignmentFromCell(poiCell,cellStyle));
 			}	
-			webStyle.append(getBgColorFromCell(poiCell,cellStyle));
+			webStyle.append(getBgColorFromCell(wb, poiCell,cellStyle));
 			webStyle.append(getRowStyle(wb, poiCell, inputType, rowHeight));			
 		} else {
 			webStyle.append(getAlignmentFromCellType(poiCell));
@@ -640,16 +747,33 @@ public class TieWebSheetCellHelper {
 		return style;
 	}	
 	
-	private String getBgColorFromCell(Cell poiCell, CellStyle cellStyle) {
+	private String getBgColorFromCell(Workbook wb, Cell poiCell, CellStyle cellStyle) {
 		
 		String style="";
 		if (poiCell instanceof HSSFCell) {
 			int bkColorIndex = cellStyle.getFillForegroundColor();
 			HSSFColor color = HSSFColor.getIndexHash().get(bkColorIndex);
-			if (color != null)
-				style ="background-color:rgb("
-						+ FacesUtility.strJoin(color.getTriplet(), ",")
-						+ ");";
+			if (color != null ) {
+				// correct color for customPalette
+			    HSSFPalette palette = ((HSSFWorkbook) wb).getCustomPalette();
+			    HSSFColor color2 = palette.getColor(bkColorIndex);			
+				if (!color.getHexString().equalsIgnoreCase(color2.getHexString()))
+					color = color2;
+//				String hexStr = color.getHexString(); 
+//				if (poiCell.getRowIndex() == 3 && poiCell.getColumnIndex() == 0) {
+//					System.out.println(" hex str  = "+hexStr);					
+//				}
+//				if (!hexStr.equalsIgnoreCase("0:0:0")) {
+//					if (hexStr.equalsIgnoreCase("FFFF:FFFF:FFFF")) { 
+//						System.out.println(" poiCell row = "+poiCell.getRowIndex() + " col = "+ poiCell.getColumnIndex());					
+//						style ="background-color:rgb(0,0,0);";
+//					}
+//					else
+						style ="background-color:rgb("
+								+ FacesUtility.strJoin(color.getTriplet(), ",")
+								+ ");";
+//				}
+			}	
 		} else if (poiCell instanceof XSSFCell) {
 			XSSFColor color = ((XSSFCell) poiCell).getCellStyle()
 					.getFillForegroundColorColor();
@@ -744,8 +868,7 @@ public class TieWebSheetCellHelper {
 	public int getInitRowsFromConfig(SheetConfiguration sheetConfig) {
 		int initRows = 1;
 		if (sheetConfig.getFormBodyType().equalsIgnoreCase("Repeat")) {
-			initRows = Integer
-					.parseInt(sheetConfig.getBodyInitialRows().trim());
+			initRows = sheetConfig.getBodyInitialRows();
 			if (initRows < 1)
 				initRows = 1;
 		}
@@ -803,6 +926,42 @@ public class TieWebSheetCellHelper {
 		return cell;
 	}
 
-
+	
+	public Cell setCellFromString(Cell c, String value) {
+		try {
+			if (value.length() == 0) {
+				c.setCellType(Cell.CELL_TYPE_BLANK);
+			} else if (TieWebSheetUtility.isNumeric(value)) {
+				double val = Double.parseDouble(value.replace(""+',', ""));
+				c.setCellType(Cell.CELL_TYPE_NUMERIC);
+				c.setCellValue(val);
+			} else if (TieWebSheetUtility.isDate(value)) {
+				String date = TieWebSheetUtility.parseDate(value);
+				c.setCellType(Cell.CELL_TYPE_STRING);
+				c.setCellValue(date);
+			} else {
+				c.setCellType(Cell.CELL_TYPE_STRING);
+				c.setCellValue(value);
+			}
+		} catch (Exception e) {
+			c.setCellType(Cell.CELL_TYPE_STRING);
+			c.setCellValue(value);
+		}
+		return c;
+	}	
+	
+	public static void main(String args[]) {
+		System.out.println(Double.parseDouble("1330455.98"));
+		try { //C:\Users\Joe\Desktop\Projects\Rec
+			TieWebSheetCellHelper me = new TieWebSheetCellHelper(); 
+			String oldFormula = "SUM(D17:D18)";
+			String newFormula = me.formulaRowRefactor(oldFormula, 14, 15);
+System.out.println(" new Formula ="+newFormula);			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

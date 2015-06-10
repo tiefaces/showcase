@@ -253,8 +253,7 @@ public String findFirstInvalidSheet(boolean passEmptyCheck) {
 		SheetConfiguration sheetConfig = entry.getValue();
 		String tabName = entry.getKey();
 		Sheet sheet = parent.getWb().getSheet(sheetConfig.getSheetName());				
-		int initialRows = 1;
-		if (sheetConfig.getBodyInitialRows()!= null) initialRows = Integer.parseInt(sheetConfig.getBodyInitialRows());
+		int initialRows = sheetConfig.getBodyInitialRows();
 		int topRow = sheetConfig.getBodyCellRange().getTopRow();
 		for (int datarow=0; datarow< initialRows; datarow++) {
 			if (!validateDataRow(datarow,initialRows,topRow,sheet,sheetConfig,passEmptyCheck)) return tabName;

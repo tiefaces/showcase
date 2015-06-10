@@ -136,7 +136,17 @@ public class TieWebSheetView  {
 	public void setTableWidthStyle(String tableWidthStyle) {
 		this.tableWidthStyle = tableWidthStyle;
 	}
-	
+
+	private boolean bodyAllowAddRows;
+
+	public boolean isBodyAllowAddRows() {
+		return bodyAllowAddRows;
+	}
+
+	public void setBodyAllowAddRows(boolean bodyAllowAddRows) {
+		this.bodyAllowAddRows = bodyAllowAddRows;
+	}  
+
 
 	
 }

@@ -44,6 +44,8 @@ public final class TIEConstants {
 	public static final String TIE_WEBSHEET_CONFIGURATION_SCHEMA_FORM_PAGE_TYPE			="Form Page Type";
 	public static final String TIE_WEBSHEET_CONFIGURATION_SCHEMA_FORM_WIDTH				="Form Width";
 	public static final String TIE_WEBSHEET_CONFIGURATION_SCHEMA_MAX_ROWS_PER_PAGE		="Max Rows Per Page";
+	public static final String TIE_WEBSHEET_CONFIGURATION_SCHEMA_SAVED_ROWS_BEFORE		="Saved Rows Before Repeat";
+	public static final String TIE_WEBSHEET_CONFIGURATION_SCHEMA_SAVED_ROWS_AFTER		="Saved Rows After Rpeat";
 	public static final String TIE_WEBSHEET_CONFIGURATION_SCHEMA_TARGET_COLUMN_CELL		="Target Column/Cell";
 	public static final String TIE_WEBSHEET_CONFIGURATION_SCHEMA_ATTRIBUTE_TYPE			="Attributes Type";
 	public static final String TIE_WEBSHEET_CONFIGURATION_SCHEMA_ATTRIBUTE_VALUE		="Attributes Value";

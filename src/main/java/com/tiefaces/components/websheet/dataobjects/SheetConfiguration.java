@@ -37,11 +37,15 @@ public class SheetConfiguration {
 	private CellRange bodyCellRange; // transfer formBodyRange to CellRange object
 	private CellRange footerCellRange; // transfer formFooterRange to CellRange object
 	private String formBodyType; // formBodyType: Repeat or Free
-	private String bodyAllowAddRows; // whether allow dynamic insert row in form body 
-	private String bodyInitialRows; // initial rows number for form body. support EL.
+	private boolean bodyAllowAddRows; // whether allow dynamic insert row in form body 
+	private int bodyInitialRows; // initial rows number for form body. support EL.
 	private boolean bodyPopulated; // runtime holder
+	private String formWidth;  // formWidth Style
+	private int maxRowPerPage; // max rows per page
 	private Map<String, List<CellFormAttributes>> cellFormAttributes; // Map collection for form attributes
-
+	private int savedRowsBefore=0; // Saved Rows before repeat row
+	private int savedRowsAfter=0;  // Saved Rows after repeat row
+	
 	public String getSheetName() {
 		return sheetName;
 	}
@@ -103,18 +107,20 @@ public class SheetConfiguration {
 	public void setFormBodyType(String formBodyType) {
 		this.formBodyType = formBodyType;
 	}
-	public String getBodyAllowAddRows() {
+	
+	public boolean isBodyAllowAddRows() {
 		return bodyAllowAddRows;
 	}
-	public void setBodyAllowAddRows(String bodyAllowAddRows) {
+	public void setBodyAllowAddRows(boolean bodyAllowAddRows) {
 		this.bodyAllowAddRows = bodyAllowAddRows;
 	}
-	public String getBodyInitialRows() {
+	public int getBodyInitialRows() {
 		return bodyInitialRows;
 	}
-	public void setBodyInitialRows(String bodyInitialRows) {
+	public void setBodyInitialRows(int bodyInitialRows) {
 		this.bodyInitialRows = bodyInitialRows;
 	}
+	
 	public boolean isBodyPopulated() {
 		return bodyPopulated;
 	}
@@ -140,6 +146,30 @@ public class SheetConfiguration {
 	public void setFormFiscalYear(String formFiscalYear) {
 		this.formFiscalYear = formFiscalYear;
 	}
+	public String getFormWidth() {
+		return formWidth;
+	}
+	public void setFormWidth(String formWidth) {
+		this.formWidth = formWidth;
+	}
+	public int getMaxRowPerPage() {
+		return maxRowPerPage;
+	}
+	public void setMaxRowPerPage(int maxRowPerPage) {
+		this.maxRowPerPage = maxRowPerPage;
+	}
+	public int getSavedRowsBefore() {
+		return savedRowsBefore;
+	}
+	public void setSavedRowsBefore(int savedRowsBefore) {
+		this.savedRowsBefore = savedRowsBefore;
+	}
+	public int getSavedRowsAfter() {
+		return savedRowsAfter;
+	}
+	public void setSavedRowsAfter(int savedRowsAfter) {
+		this.savedRowsAfter = savedRowsAfter;
+	}	
 	/**
 	 * Obtain a human readable representation.
 	 * @return String Human readable label

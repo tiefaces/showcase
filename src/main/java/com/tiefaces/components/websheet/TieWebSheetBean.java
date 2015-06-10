@@ -48,8 +48,7 @@ import com.tiefaces.components.websheet.dataobjects.SheetConfiguration;
 
 import javax.script.ScriptEngine;
 
-@ManagedBean
-@ViewScoped
+
 public abstract class TieWebSheetBean extends TieWebSheetView implements
 		Serializable {
 
@@ -466,7 +465,6 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 							if (cellobject instanceof FacesCell) {
 								FacesCell cell = (FacesCell) cellobject;
 							if (cell.getPoiCell().getCellType() == Cell.CELL_TYPE_FORMULA) {
-								cell.evaluate();
 								debug("refresh obj name ="+tblName + ":" + i + ":cocalc"
 												+ cell.getColumnIndex()+" formula = "+cell.getPoiCell().getCellFormula()+" value = "+cell.getCellValue());
 								RequestContext.getCurrentInstance().update(

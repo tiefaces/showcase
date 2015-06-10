@@ -74,7 +74,9 @@ public class TieWebSheetConfigurationHandler {
 		if (version >=1 ) {
 				schemaMap.put(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_FORM_WIDTH,9);
 				schemaMap.put(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_MAX_ROWS_PER_PAGE,10);
-				attributeStartColumn = 11;
+				schemaMap.put(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_SAVED_ROWS_BEFORE,11);
+				schemaMap.put(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_SAVED_ROWS_AFTER,12);
+				attributeStartColumn = 13;
 		}
 		schemaMap.put(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_TARGET_COLUMN_CELL,attributeStartColumn);
 		schemaMap.put(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_ATTRIBUTE_TYPE,attributeStartColumn+1);
@@ -104,6 +106,7 @@ public class TieWebSheetConfigurationHandler {
 		Iterator<Row> rowIterator = sheet1.iterator();
 		String newTabName=null;
 		String oldTabName=null;
+		int version =0;
 		SheetConfiguration sheetConfig=null;
 		Map<String, Integer> schemaMap = null;
 		
@@ -112,12 +115,11 @@ public class TieWebSheetConfigurationHandler {
 			Row row = rowIterator.next();
 			if (row.getRowNum() ==0) {
 				if (rowCell(row,0).equalsIgnoreCase(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_VERSION)) {
-					schemaMap = buildSchemaMap(Integer.parseInt(rowCell(row,1)));
+					version =  Integer.parseInt(rowCell(row,1));
 					startRow = 2;  // start from row 2 if has version control.
 				}	
-				else
-					schemaMap = buildSchemaMap(0);
-					debug("startrow = "+startRow+" schemaMap = "+schemaMap);				
+				schemaMap = buildSchemaMap(version);
+				debug("startrow = "+startRow+" schemaMap = "+schemaMap);				
 			} else if (row.getRowNum()>= startRow) {  // skip header rows
 				// For each row, iterate through each columns
 				newTabName = rowCell(row, schemaMap.get(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_TAB_NAME));
@@ -146,14 +148,42 @@ public class TieWebSheetConfigurationHandler {
 						sheetConfig.setFormBodyType(TIEConstants.TIE_WEBSHEET_FORM_TYPE_REPEAT);
 					else
 						sheetConfig.setFormBodyType(TIEConstants.TIE_WEBSHEET_FORM_TYPE_FREE);
-					sheetConfig.setBodyAllowAddRows(rowCell(row,schemaMap.get(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_ALLOW_ADD_ROW)));
-					tempStr = rowCell(row,schemaMap.get(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_INIT_ROWS)).trim();
+					tempStr = rowCell(row,schemaMap.get(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_ALLOW_ADD_ROW)).trim();
+					if (tempStr.equalsIgnoreCase("TRUE")) 
+						sheetConfig.setBodyAllowAddRows(true);
+					else
+						sheetConfig.setBodyAllowAddRows(false);
 					
+					tempStr = rowCell(row,schemaMap.get(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_INIT_ROWS)).trim();
 					if (tempStr.startsWith("#{")) {
 						tempStr = FacesUtility.evaluateExpression(tempStr, String.class);
 					}
-					sheetConfig.setBodyInitialRows(tempStr);
-					sheetConfig.setFormPageTypeId( rowCell(row,schemaMap.get(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_FORM_PAGE_TYPE))); 
+					if (!tempStr.isEmpty())
+						sheetConfig.setBodyInitialRows(Integer.parseInt(tempStr));
+					else
+						sheetConfig.setBodyInitialRows(1);
+					sheetConfig.setFormPageTypeId( rowCell(row,schemaMap.get(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_FORM_PAGE_TYPE)));
+					
+					sheetConfig.setMaxRowPerPage(80);
+					sheetConfig.setSavedRowsBefore(0);
+					sheetConfig.setSavedRowsAfter(0);
+					if (version >=1) {
+						sheetConfig.setFormWidth(rowCell(row,schemaMap.get(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_FORM_WIDTH)));
+						tempStr = rowCell(row,schemaMap.get(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_MAX_ROWS_PER_PAGE)).trim();
+						if ((tempStr!=null)&&(!tempStr.isEmpty()))
+							if (Integer.parseInt(tempStr)>0) sheetConfig.setMaxRowPerPage(Integer.parseInt(tempStr));
+						tempStr = rowCell(row,schemaMap.get(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_SAVED_ROWS_BEFORE)).trim();
+						if (!tempStr.isEmpty())
+							if (Integer.parseInt(tempStr)>0) sheetConfig.setSavedRowsBefore(Integer.parseInt(tempStr));
+						tempStr = rowCell(row,schemaMap.get(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_SAVED_ROWS_AFTER)).trim();
+						if (!tempStr.isEmpty())
+							if (Integer.parseInt(tempStr)>0) sheetConfig.setSavedRowsAfter(Integer.parseInt(tempStr));
+					}
+					else
+					{	
+						sheetConfig.setFormWidth("100%;");
+					}	
+					
 					
 					sheetConfig.setCellFormAttributes(new HashMap<String, List<CellFormAttributes>>());
 					sheetConfig.getCellFormAttributes().put(rowCell(row,schemaMap.get(TIEConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_TARGET_COLUMN_CELL)), new ArrayList<CellFormAttributes>());
