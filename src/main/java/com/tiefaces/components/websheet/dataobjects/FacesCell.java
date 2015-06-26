@@ -81,14 +81,20 @@ public class FacesCell {
 	}
 	public String getCellValue() {
 
-		String result = parent.getCellHelper().getCellValue(poiCell);
+		String result = parent.getCellHelper().getCellValueWithoutFormat(poiCell);
 		 debug("Web Form FacesCell getCellValue = " + result
 		 +" input type = "+ inputType);
 		return result;
 	}
+	public String getCellFormatValue() {
+		
+		String result = parent.getCellHelper().getCellValueWithFormat(poiCell); 
+debug("Web Form FacesCell getCellFormatValue = " + result +" input type = "+ inputType);
+		return result; 
+	}	
 	public void setCellValue(String cellValue) {
 
-		String oldValue = parent.getCellHelper().getCellValue(poiCell);
+		String oldValue = parent.getCellHelper().getCellValueWithoutFormat(poiCell);
 		String newValue = cellValue;
 		if (this.getInputType().equalsIgnoreCase("textarea")
 				&& (newValue != null)) {

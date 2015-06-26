@@ -33,15 +33,22 @@ public class RowInfo {
 	private boolean rendered;
 	
 	private float rowheight; 
-	
-	public RowInfo(int row) {
+
+	private boolean repeatZone;
+
+	public RowInfo(int rowIndex) {
 		super();
-		this.rowIndex = row;
+		this.rowIndex = rowIndex;
 	}
 
 	public int getRowIndex() {
 		return rowIndex;
 	}
+	
+	public void setRowIndex(int rowIndex) {
+		this.rowIndex = rowIndex;
+	}
+	
 
 	public boolean isRendered() {
 		return rendered;
@@ -59,6 +66,15 @@ public class RowInfo {
 		this.rowheight = rowheight;
 	}
 
+	public boolean isRepeatZone() {
+		return repeatZone;
+	}
+
+	public void setRepeatZone(boolean repeatZone) {
+		this.repeatZone = repeatZone;
+	}
+	
+	
 	
 	
 	

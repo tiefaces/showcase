@@ -100,7 +100,7 @@ public void validateWithRowCol( int row, int col,
 		boolean oldStatus = cell.isInvalid();
 		
 		if (useExistingValue) {
-			value = parent.getCellHelper().getCellValue(cell.getPoiCell());
+			value = parent.getCellHelper().getCellValueWithoutFormat(cell.getPoiCell());
 		}
 		
 		if (value==null) value = "";
@@ -274,7 +274,7 @@ private boolean validateDataRow(int datarow,int initialRows,int topRow, Sheet sh
 	    		if ((attr.getType().equalsIgnoreCase("input")||attr.getType().equalsIgnoreCase("check"))) {
 	    			if (cell==null) cell = parent.getCellHelper().getCellReferenceWithConfig(targetCell, datarow,initialRows, sheetConfig, sheet);
 		    		if (cell != null) {
-			    		String cellValue = parent.getCellHelper().getCellValueWithConfig(cell);
+			    		String cellValue = parent.getCellHelper().getCellValueWithoutFormat(cell);
 			    		if (!(passEmptyCheck&&cellValue.isEmpty())) {
 				    		if (!doValidation(cellValue,attr, topRow + datarow ,sheet)) {
 				    			debug("Web Form ValidationHandler validateDatarow targetCell = "+ targetCell+" validation failed; datarow="+datarow);		    

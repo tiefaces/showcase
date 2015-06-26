@@ -4,7 +4,7 @@
 	xmlns:cc="http://java.sun.com/jsf/composite"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:c="http://java.sun.com/jsp/jstl/core"	
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:p="http://primefaces.org/ui">
 
 <!-- INTERFACE -->
@@ -18,19 +18,24 @@
 		type="java.lang.Boolean" />
 	<cc:attribute name="showLineNumber" required="false" default="true"
 		type="java.lang.Boolean" />
-	<cc:attribute name="paginator" required="false" default="#{cc.attrs.webSheetBean.multiplePage}"
+	<cc:attribute name="paginator" required="false"
+		default="#{cc.attrs.webSheetBean.multiplePage}"
 		type="java.lang.Boolean" />
-	<cc:attribute name="paginatorTemplate" required="false" default="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+	<cc:attribute name="paginatorTemplate" required="false"
+		default="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 		type="java.lang.String" />
 	<cc:attribute name="paginatorPosition" required="false"
 		default="bottom" type="java.lang.String" />
 	<cc:attribute name="paginatorAlwaysVisible" required="false"
 		default="false" type="java.lang.Boolean" />
-	<cc:attribute name="maxRowsPerPage" required="false" default="#{cc.attrs.webSheetBean.maxRowsPerPage}"
+	<cc:attribute name="maxRowsPerPage" required="false"
+		default="#{cc.attrs.webSheetBean.maxRowsPerPage}"
 		type="java.lang.String" />
-	<cc:attribute name="rowsPerPageTemplate" required="false" default="#{cc.attrs.webSheetBean.maxRowsPerPage} #{cc.attrs.webSheetBean.maxRowsPerPage * 2}"
+	<cc:attribute name="rowsPerPageTemplate" required="false"
+		default="#{cc.attrs.webSheetBean.maxRowsPerPage} #{cc.attrs.webSheetBean.maxRowsPerPage * 2}"
 		type="java.lang.String" />
-	<cc:attribute name="tableWidthStyle" required="false" default="#{cc.attrs.webSheetBean.tableWidthStyle}"
+	<cc:attribute name="tableWidthStyle" required="false"
+		default="#{cc.attrs.webSheetBean.tableWidthStyle}"
 		type="java.lang.String" />
 
 </cc:interface>
@@ -39,20 +44,25 @@
 <cc:implementation>
 	<h:outputStylesheet name="tiefaces/websheet.css" />
 	<div id="#{cc.clientId}">
-	
-		 <p:tabView scrollable="true" style="height: 35px;" binding="#{cc.attrs.webSheetBean.webFormTabView}" rendered="#{cc.attrs.rendered}">
-			<p:ajax event="tabChange" listener="#{cc.attrs.webSheetBean.onTabChange}" update="@form"  /> 
-		     <c:forEach items="#{cc.attrs.webSheetBean.tabs}" var="tab" varStatus="status" >
-		         <p:tab  title="#{tab.title}" rendered="#{cc.attrs.rendered}" />
-		     </c:forEach>
-		 </p:tabView>
-	  	
+
+		<div id="websheettabview">
+			<p:tabView scrollable="true" style="height: 35px;"
+				binding="#{cc.attrs.webSheetBean.webFormTabView}"
+				rendered="#{cc.attrs.rendered}">
+				<p:ajax event="tabChange"
+					listener="#{cc.attrs.webSheetBean.onTabChange}" update="@form" />
+				<c:forEach items="#{cc.attrs.webSheetBean.tabs}" var="tab"
+					varStatus="status">
+					<p:tab title="#{tab.title}" rendered="#{cc.attrs.rendered}" />
+				</c:forEach>
+			</p:tabView>
+		</div>
 
 		<div id="websheet">
 			<p:dataTable id="websheettable" var="dataRow"
 				rendered="#{cc.attrs.rendered}"
 				value="#{cc.attrs.webSheetBean.bodyRows}"
-				paginator="#{cc.attrs.paginator}" 
+				paginator="#{cc.attrs.paginator}"
 				paginatorPosition="#{cc.attrs.paginatorPosition}"
 				rows="#{cc.attrs.maxRowsPerPage}"
 				paginatorAlwaysVisible="cc.attrs.paginatorAlwaysVisible"
@@ -71,26 +81,28 @@
 								varStatus="loopheaderrowcolumn">
 								<p:column rowspan="#{headerrowcolumn.rowspan}"
 									colspan="#{headerrowcolumn.colspan}"
-									style="#{headerrowcolumn.columnStyle}" >
-									  <f:facet name="header">
-										  <h:outputText value="#{headerrowcolumn.cellValue}"
+									style="#{headerrowcolumn.columnStyle}">
+									<f:facet name="header">
+										<h:outputText value="#{headerrowcolumn.cellValue}"
 											style="#{headerrowcolumn.style}"
 											styleClass="inputColumnWidth" />
-									  </f:facet>
-								</p:column>	
-								<p:column width="12" rendered = "#{webFormBean.bodyAllowAddRows}" />
+									</f:facet>
+								</p:column>
+								<p:column width="16" rendered="#{webFormBean.bodyAllowAddRows}" />
 							</c:forEach>
 						</p:row>
 					</c:forEach>
 				</p:columnGroup>
 
-				<p:column width="18" style="text-align: center;" rendered="#{cc.attrs.showLineNumber and dataRow[0].rendered}">
+				<p:column width="18" style="text-align: center;"
+					rendered="#{cc.attrs.showLineNumber and dataRow[0].rendered}">
 					<h:outputText value="#{dataRow[0].rowIndex + 1}" />
 				</p:column>
 
 				<c:forEach items="#{cc.attrs.webSheetBean.columns}" var="column"
 					varStatus="loop">
-					<p:column rendered="#{not empty dataRow[loop.index +1] and dataRow[0].rendered }"
+					<p:column
+						rendered="#{not empty dataRow[loop.index +1] and dataRow[0].rendered }"
 						rowspan="#{dataRow[loop.index +1].rowspan}"
 						colspan="#{dataRow[loop.index +1].colspan}"
 						style="#{dataRow[loop.index +1].columnStyle}">
@@ -102,8 +114,8 @@
 						<p:inputText id="column#{loop.index}"
 							value="#{dataRow[loop.index +1].cellValue}"
 							style="#{dataRow[loop.index +1].validStyle}"
-							styleClass="inputColumnWidth"
-							readonly="#{cc.attrs.readonly}" autocomplete="off"
+							styleClass="inputColumnWidth" readonly="#{cc.attrs.readonly}"
+							autocomplete="off"
 							rendered="#{(!empty dataRow[loop.index +1].inputType) and ( dataRow[loop.index +1].inputType != 'textarea' ) }"
 							onkeypress="if (event.keyCode == 13) { onchange(); return false; }">
 
@@ -123,28 +135,42 @@
 						</p:inputTextarea>
 						<h:outputText id="msgcolumn#{loop.index}" style="color:red"
 							styleClass="inputColumnWidth"
-							rendered="#{(dataRow[loop.index +1].invalid)}" 
+							rendered="#{(dataRow[loop.index +1].invalid)}"
 							value="#{dataRow[loop.index +1].errormsg}" />
-				        <p:graphicImage id="pictures#{loop.index}" style="#{dataRow[loop.index +1].pictureStyle}" value="#{tieWebSheetPicturesService.picture}"
-				        rendered="#{(dataRow[loop.index +1].containPic)}"
-				        >
-				        <f:param name="pictureViewId" value="#{dataRow[loop.index +1].pictureViewId}" />
-				        </p:graphicImage>							
+						<p:graphicImage id="pictures#{loop.index}"
+							style="#{dataRow[loop.index +1].pictureStyle}"
+							value="#{tieWebSheetPicturesService.picture}"
+							rendered="#{(dataRow[loop.index +1].containPic)}">
+							<f:param name="pictureViewId"
+								value="#{dataRow[loop.index +1].pictureViewId}" />
+						</p:graphicImage>
 					</p:column>
 				</c:forEach>
-				<p:column width="12" style="text-align: center;" rendered = "#{cc.attrs.webSheetBean.bodyAllowAddRows and dataRow[0].rendered and dataRow[0].repeatZone }" >
-	            	<p:commandLink actionListener="#{cc.attrs.webSheetBean.addrow}" title="Add Row">
-	            		<h:outputText  styleClass="ui-icon ui-icon-plus" style="margin:0 10% 0 10%"/>
-	            	</p:commandLink>
-	            	<p:commandLink actionListener="#{cc.attrs.webSheetBean.deleterow}" title="Delete Row" >
-	            		<h:outputText  styleClass="ui-icon ui-icon-minus" style="margin:0 10% 0 10%"/>
-	            	</p:commandLink>
-            	</p:column>
-
-
+				<p:column width="16" style="text-align: center;"
+					rendered="#{cc.attrs.webSheetBean.bodyAllowAddRows}">
+					<h:panelGroup
+						rendered="#{dataRow[0].rendered and dataRow[0].repeatZone }">
+						<p:commandButton
+							actionListener="#{cc.attrs.webSheetBean.addRepeatRow(dataRow[0].rowIndex)}"
+							update="@form" title="Add Row" alt="Add Row" icon="ui-icon-plus"
+							styleClass="icon_button" />
+						<p:commandButton
+							actionListener="#{cc.attrs.webSheetBean.deleteRepeatRow(dataRow[0].rowIndex)}"
+							update="@form" title="Delete Row" alt="Delete Row"
+							icon="ui-icon-minus" styleClass="icon_button">
+							<p:confirm header="Confirmation" message="Are you sure?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+					</h:panelGroup>
+				</p:column>
 			</p:dataTable>
 
-
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+				<p:commandButton value="Yes" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
 		</div>
 
 

@@ -1,6 +1,7 @@
 package org.tiefaces.showcase.tablelookup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -27,9 +28,9 @@ public class ItemSearchBean extends TieTableLookupBean {
 
 
 	@Override
-	public void search() {
+	public List<Object> search() {
 		
-		this.setResults(ItemSearchHelper.dosearch(this.getSearchItem()) );
+		return ItemSearchHelper.dosearch(this.getSearchItem());
 		
 	}
 

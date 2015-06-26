@@ -37,6 +37,7 @@ import org.apache.poi.ss.usermodel.PictureData;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
@@ -508,6 +509,9 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 	public abstract InputStream loadWebSheetTemplate();
 	public abstract void initialLoad();
 
-	
+	   public void onCellEdit(CellEditEvent event) {
+		   
+		   System.out.println(" into celledit event row ="+event.getRowIndex());
+	    }   
 
 }

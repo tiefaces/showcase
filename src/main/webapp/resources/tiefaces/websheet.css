@@ -25,3 +25,11 @@
     white-space: pre-wrap !important;
     border-radius: 0 !important;
 }
+
+#websheet .icon_button {
+	width: 1.2em !important;
+}
+
+#websheettabview .ui-tabs-panel {
+	padding:0 !important;
+}

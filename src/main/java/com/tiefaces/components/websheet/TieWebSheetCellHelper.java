@@ -13,6 +13,7 @@
 
 package com.tiefaces.components.websheet;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -67,101 +68,101 @@ public class TieWebSheetCellHelper {
 		this.parent = parent;
 	}
 
-	public String getCellValue(Cell poiCell) {
+	public String getCellValueWithFormat(Cell poiCell) {
 
 		if (poiCell == null)
 			return null;
 
 		String result;
-		try {
-System.out.println(" get cell value celltype = "+ poiCell.getCellType());				  
-			
-			  if (poiCell.getCellType() == 2) {
-				  //poiCell.setCellType(Cell.CELL_TYPE_FORMULA);
-				  parent.getFormulaEvaluator().evaluate(poiCell);
-System.out.println(" formula type = "+ poiCell.getCachedFormulaResultType() + "formula = "+ poiCell.getCellFormula());		
-				if ( poiCell.getCachedFormulaResultType() == Cell.CELL_TYPE_NUMERIC)
-					debug(" formula value = "+ poiCell.getNumericCellValue());
-//				 poiCell.setCellType(poiCell.getCachedFormulaResultType()); 
-//				 String formula = poiCell.getCellFormula();
-//				result = parent.getDataFormatter().formatCellValue(poiCell,
-//						parent.getFormulaEvaluator());
-//				poiCell.setCellType(2);
-//				poiCell.setCellFormula(formula);
-//				parent.getFormulaEvaluator().evaluateFormulaCell(poiCell);
-				}
-//			  else
-					result = parent.getDataFormatter().formatCellValue(poiCell,
-							parent.getFormulaEvaluator());
-				  
-			debug(" cell row= " + poiCell.getRowIndex() + " col = "
-					+ poiCell.getColumnIndex() + " dataformatString = "
-					+ poiCell.getCellStyle().getDataFormatString()
-					+ " result value = " + result);
-		} catch (Exception e) {
-			debug("Web Form WebFormHelper getCellValue Error row = "
-					+ poiCell.getRowIndex() + " col = "
-					+ poiCell.getColumnIndex() + " error = "
-					+ e.getLocalizedMessage()
-					+ "; Change return result to blank");
+		try{
+			if (poiCell.getCellType()== Cell.CELL_TYPE_ERROR)  result ="";
+			else
+				result = parent.getDataFormatter().formatCellValue(poiCell, parent.getFormulaEvaluator());
+		}
+		catch(Exception e){
+			debug("Web Form WebFormHelper getCellValue Error row = "+ poiCell.getRowIndex()+" col = "+ poiCell.getColumnIndex()+" error = "+e.getLocalizedMessage()+"; Change return result to blank");
 			result = "";
 		}
+		debug("getCellValueWithFormat result = "+ result+" row = "+poiCell.getRowIndex()+" col = "+poiCell.getColumnIndex());
 		return result;
+	}		
 
-	}
+	public String getCellValueWithoutFormat(Cell poiCell){
+		
+		String result =  getCellValueAsString(poiCell);
+		debug("getCellValueWithoutFormat result = "+ result+" row = "+poiCell.getRowIndex()+" col = "+poiCell.getColumnIndex());
+		return result;
+	
+	}	
 
-	public void setCellValue(Cell poiCell, String newValue) {
+	private String getCellValueAsString(Cell poiCell){
+		
+		if(poiCell==null)
+			return null;
 
-		debug(" set cell value row = " + poiCell.getRowIndex() + " col = "
-				+ poiCell.getColumnIndex() + " value = " + newValue
-				+ " cellType = " + poiCell.getCellType());
-		switch (poiCell.getCellType()) {
+		switch (poiCell.getCellType()){
 		case Cell.CELL_TYPE_BOOLEAN:
-			if (newValue.equalsIgnoreCase("Y"))
-				poiCell.setCellValue(true);
+			if (poiCell.getBooleanCellValue())
+				return "Y";
 			else
-				poiCell.setCellValue(false);
-			break;
+				return "N";
 		case Cell.CELL_TYPE_NUMERIC:
+			String result;
+		    if (DateUtil.isCellDateFormatted(poiCell)) {
+		        result = poiCell.getDateCellValue().toString();
+		    } else {
+		        result = BigDecimal.valueOf(poiCell.getNumericCellValue()).toPlainString();
+		        // remove .0 from end for int
+		        if (result.endsWith(".0")) result = result.substring(0, result.length() -2);
+		    }				
+			return result;
+		case Cell.CELL_TYPE_STRING:
+			return poiCell.getStringCellValue();
+		case Cell.CELL_TYPE_BLANK:
+			return "";
+		}//switch
+		
+		return "";
+	
+	}	
 
-			if (DateUtil.isCellDateFormatted(poiCell)) {
-				if (newValue.isEmpty())
-					poiCell.setCellValue(newValue);
-				else {
-					try {
-						poiCell.setCellValue(new SimpleDateFormat(
-								"E MMM dd HH:mm:ss Z yyyy").parse(newValue));
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						debug("Web Form WebFormHelper setCellValue Error row = "
-								+ poiCell.getRowIndex()
-								+ " col = "
-								+ poiCell.getColumnIndex()
-								+ " error = "
-								+ e.getLocalizedMessage());
-					}
-				}
+	public Cell setCellValue(Cell c, String value) {
+
+		try {
+			if (value.length() == 0) {
+				c.setCellType(Cell.CELL_TYPE_BLANK);
+			} else if (TieWebSheetUtility.isNumeric(value)) {
+				double val = Double.parseDouble(value.replace(""+',', ""));
+				c.setCellType(Cell.CELL_TYPE_NUMERIC);
+				c.setCellValue(val);
+			} else if (TieWebSheetUtility.isDate(value)) {
+				String date = TieWebSheetUtility.parseDate(value);
+				c.setCellType(Cell.CELL_TYPE_STRING);
+				c.setCellValue(date);
 			} else {
-				poiCell.setCellValue(Double.parseDouble(newValue));
+				if (c.getCellType()==Cell.CELL_TYPE_BOOLEAN) {
+		        	if (value.equalsIgnoreCase("Y"))
+		        		c.setCellValue(true);
+		        	else
+		        		c.setCellValue(false);
+				} else {
+					c.setCellType(Cell.CELL_TYPE_STRING);
+					c.setCellValue(value);
+				}
 			}
-
-			break;
-		case Cell.CELL_TYPE_FORMULA:
-			break;
-		default:
-			poiCell.setCellType(Cell.CELL_TYPE_STRING);
-			poiCell.setCellValue(newValue);
-			break;
+		} catch (Exception e) {
+			c.setCellType(Cell.CELL_TYPE_STRING);
+			c.setCellValue(value);
 		}
-
-		return;
-
-	}
+		debug(" set cell value row = " + c.getRowIndex() + " col = "
+				+ c.getColumnIndex() + " value = " + value
+				+ " cellType = " + c.getCellType());
+		return c;
+	}	
 
 	public void reCalc() {
 
-		debug("************ into formulaevaluator");
+		debug("************ into formulaevaluator recalc");
 		parent.getFormulaEvaluator().clearAllCachedResultValues();
 		try {
 			parent.getFormulaEvaluator().evaluateAll();
@@ -195,6 +196,7 @@ System.out.println(" formula type = "+ poiCell.getCachedFormulaResultType() + "f
 		FacesCell cell = null;
 		try {
 			// bodyrows start with rowinfo fowllowing FacesCell object. So here use col + 1 to get real column
+			if (bodyRows.get(row).size() > (col + 1))
 			cell = (FacesCell) bodyRows.get(row).get(col + 1);
 		} catch (Exception e) {
 			debug("Web Form WebFormHelper getFacesCellFromBodyRow Error row = "
@@ -518,7 +520,7 @@ System.out.println(" formula type = "+ poiCell.getCachedFormulaResultType() + "f
 				temp_str = find_str + "$" + (rowIndex + 1);
 			} else
 				temp_str = find_str;
-			replace_str = getCellValue(TieWebSheetUtility.getCellByReference(temp_str, sheet));
+			replace_str = getCellValueWithoutFormat(TieWebSheetUtility.getCellByReference(temp_str, sheet));
 			if (replace_str == null)
 				replace_str = "";
 			attrValue = attrValue.replace(find_str, replace_str);
@@ -567,6 +569,19 @@ System.out.println(" formula type = "+ poiCell.getCachedFormulaResultType() + "f
 		return skipCellList;
 	}
 
+    public void removeRow(Sheet sheet, int rowIndex) {
+        int lastRowNum = sheet.getLastRowNum();
+        if (rowIndex >= 0 && rowIndex < lastRowNum) {
+            sheet.shiftRows(rowIndex + 1, lastRowNum, -1);
+        }
+        if (rowIndex == lastRowNum) {
+            Row removingRow = sheet.getRow(rowIndex);
+            if (removingRow != null) {
+                sheet.removeRow(removingRow);
+            }
+        }
+    }    	
+	
 	public void convertCell(SheetConfiguration sheetConfig, FacesCell fcell,
 			int rowindex, int initRows, int bodyTopRow, boolean repeatZone,
 			Map<String, CellRangeAddress> cellRangeMap) {
@@ -891,18 +906,11 @@ System.out.println(" formula type = "+ poiCell.getCachedFormulaResultType() + "f
 		Cell cell = getCellReferenceWithConfig(targetCell, datarow,
 				initialRows, sheetConfig, sheet);
 		if (cell != null) {
-			return getCellValue(cell);
+			return getCellValueWithoutFormat(cell);
 		}
 		return "";
 	}
 
-	public String getCellValueWithConfig(Cell cell) {
-
-		if (cell != null) {
-			return getCellValue(cell);
-		}
-		return "";
-	}
 
 	public Cell getCellReferenceWithConfig(String targetCell, int datarow,
 			int initialRows, SheetConfiguration sheetConfig, Sheet sheet) {
@@ -927,28 +935,7 @@ System.out.println(" formula type = "+ poiCell.getCachedFormulaResultType() + "f
 	}
 
 	
-	public Cell setCellFromString(Cell c, String value) {
-		try {
-			if (value.length() == 0) {
-				c.setCellType(Cell.CELL_TYPE_BLANK);
-			} else if (TieWebSheetUtility.isNumeric(value)) {
-				double val = Double.parseDouble(value.replace(""+',', ""));
-				c.setCellType(Cell.CELL_TYPE_NUMERIC);
-				c.setCellValue(val);
-			} else if (TieWebSheetUtility.isDate(value)) {
-				String date = TieWebSheetUtility.parseDate(value);
-				c.setCellType(Cell.CELL_TYPE_STRING);
-				c.setCellValue(date);
-			} else {
-				c.setCellType(Cell.CELL_TYPE_STRING);
-				c.setCellValue(value);
-			}
-		} catch (Exception e) {
-			c.setCellType(Cell.CELL_TYPE_STRING);
-			c.setCellValue(value);
-		}
-		return c;
-	}	
+	
 	
 	public static void main(String args[]) {
 		System.out.println(Double.parseDouble("1330455.98"));

@@ -20,8 +20,6 @@ import javax.faces.component.FacesComponent;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
 
-import com.tiefaces.common.TIEConstants;
-
 @FacesComponent("tieWebSheetComponent")
 public class TieWebSheetComponent extends UINamingContainer {
 
@@ -46,11 +44,11 @@ public class TieWebSheetComponent extends UINamingContainer {
 	@Override
 	public void encodeBegin(FacesContext context) throws IOException {
 		webSheetBean = (TieWebSheetBean) this.getAttributes().get(
-				TIEConstants.TIE_WEBSHEET_ATTRS_WEBSHEETBEAN);
+				TieWebSheetConstants.TIE_WEBSHEET_ATTRS_WEBSHEETBEAN);
 		if ((webSheetBean != null) && (webSheetBean.getWebFormClientId() == null))
 		{	
 			webSheetBean.setWebFormClientId(this.getClientId() + ":"
-					+ TIEConstants.TIE_WEBSHEET_COMPONENT_ID);
+					+ TieWebSheetConstants.TIE_WEBSHEET_COMPONENT_ID);
 			
 			String maxrows = (String) this.getAttributes().get("maxRowsPerPage");
 			if ((maxrows != null)&&(!maxrows.isEmpty()))
