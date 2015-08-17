@@ -18,22 +18,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.convert.FacesConverter;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Picture;
-import org.apache.poi.ss.usermodel.PictureData;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.context.RequestContext;
@@ -43,7 +48,9 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 import com.tiefaces.common.FacesUtility;
+import com.tiefaces.components.websheet.dataobjects.CellMap;
 import com.tiefaces.components.websheet.dataobjects.FacesCell;
+import com.tiefaces.components.websheet.dataobjects.FacesRow;
 import com.tiefaces.components.websheet.dataobjects.HeaderCell;
 import com.tiefaces.components.websheet.dataobjects.SheetConfiguration;
 
@@ -59,8 +66,8 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 	private static final long serialVersionUID = 3495468356246589276L;
 
 	private List<String> columns;
-	private List<List<Object>> bodyRows;
-	private List<List<Object>> headerRows;
+	private List<FacesRow> bodyRows;
+	private List<List<HeaderCell>> headerRows;
 	private Workbook wb;
 	private FormulaEvaluator formulaEvaluator;
 	private DataFormatter dataFormatter;
@@ -70,6 +77,7 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 	private ScriptEngine engine;
 	private String currentTabName;
 	private int currentTopRow;
+	private int currentLeftColumn;
 	private Boolean fullValidation = false;
 
 	private TieWebSheetLoader webSheetLoader = null;
@@ -94,7 +102,7 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 	}
 
 	@PostConstruct
-	public final void init() {
+	public void init() {
 		debug("TieWebSheetBean into postConstructor");
 		columns = new ArrayList<String>();
 		engine = (ScriptEngine) FacesUtility
@@ -108,95 +116,95 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 	}
 
 
-	public final void setWebFormClientId(String webFormClientId) {
+	public void setWebFormClientId(String webFormClientId) {
 		this.webFormClientId = webFormClientId;
 	}
 
-	public final String getWebFormClientId() {
+	public String getWebFormClientId() {
 		return webFormClientId;
 	}
 
-	public final List<List<Object>> getBodyRows() {
+	public List<FacesRow> getBodyRows() {
 		return bodyRows;
 	}
 
-	public final void setBodyRows(List<List<Object>> bodyRows) {
+	public void setBodyRows(List<FacesRow> bodyRows) {
 		this.bodyRows = bodyRows;
 	}
 
-	public final List<List<Object>> getHeaderRows() {
+	public List<List<HeaderCell>> getHeaderRows() {
 		return headerRows;
 	}
 
-	public final void setHeaderRows(List<List<Object>> headerRows) {
+	public void setHeaderRows(List<List<HeaderCell>> headerRows) {
 		this.headerRows = headerRows;
 	}
 
-	public final void setColumns(List<String> columns) {
+	public void setColumns(List<String> columns) {
 		this.columns = columns;
 	}
 
-	public final Workbook getWb() {
+	public Workbook getWb() {
 		return wb;
 	}
 
-	public final void setWb(Workbook wb) {
+	public void setWb(Workbook wb) {
 		this.wb = wb;
 	}
 
-	public final FormulaEvaluator getFormulaEvaluator() {
+	public FormulaEvaluator getFormulaEvaluator() {
 		return formulaEvaluator;
 	}
 
-	public final void setFormulaEvaluator(FormulaEvaluator formulaEvaluator) {
+	public void setFormulaEvaluator(FormulaEvaluator formulaEvaluator) {
 		this.formulaEvaluator = formulaEvaluator;
 	}
 
-	public final DataFormatter getDataFormatter() {
+	public DataFormatter getDataFormatter() {
 		return dataFormatter;
 	}
 
-	public final void setDataFormatter(DataFormatter dataFormatter) {
+	public void setDataFormatter(DataFormatter dataFormatter) {
 		this.dataFormatter = dataFormatter;
 	}
 
-	public final List<String> getColumns() {
+	public List<String> getColumns() {
 		return columns;
 	}
 
-	public final String getCurrentTabName() {
+	public String getCurrentTabName() {
 		return currentTabName;
 	}
 
-	public final void setCurrentTabName(String currentTabName) {
+	public void setCurrentTabName(String currentTabName) {
 		this.currentTabName = currentTabName;
 	}
 
-	public final Boolean getFullValidation() {
+	public Boolean getFullValidation() {
 		return fullValidation;
 	}
 
-	public final void setFullValidation(Boolean fullValidation) {
+	public void setFullValidation(Boolean fullValidation) {
 		this.fullValidation = fullValidation;
 	}
 
-	public final TieWebSheetCellHelper getCellHelper() {
+	public TieWebSheetCellHelper getCellHelper() {
 		return cellHelper;
 	}
 
-	public final ScriptEngine getEngine() {
+	public ScriptEngine getEngine() {
 		return engine;
 	}
 
-	public final TieWebSheetLoader getWebSheetLoader() {
+	public TieWebSheetLoader getWebSheetLoader() {
 		return webSheetLoader;
 	}
 
-	public final TieWebSheetDataHandler getDataHandler() {
+	public TieWebSheetDataHandler getDataHandler() {
 		return dataHandler;
 	}
 
-	public final TieWebSheetValidationHandler getValidationHandler() {
+	public TieWebSheetValidationHandler getValidationHandler() {
 		return validationHandler;
 	}
 	
@@ -205,11 +213,11 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 		return picHelper;
 	}
 
-	public final String getExcelType() {
+	public String getExcelType() {
 		return excelType;
 	}
 
-	public final void setExcelType(String excelType) {
+	public void setExcelType(String excelType) {
 		this.excelType = excelType;
 	}
 	
@@ -222,6 +230,16 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 		this.currentTopRow = currentTopRow;
 	}
 	
+	
+	
+	public int getCurrentLeftColumn() {
+		return currentLeftColumn;
+	}
+
+	public void setCurrentLeftColumn(int currentLeftColumn) {
+		this.currentLeftColumn = currentLeftColumn;
+	}
+
 	public Map<String, Picture> getPicturesMap() {
 		return picturesMap;
 	}
@@ -230,7 +248,7 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 		this.picturesMap = picturesMap;
 	}
 
-	public final void initWorkBook() {
+	public void initWorkBook() {
 		if (this.getWb() == null) {
 
 			int return_flag = webSheetLoader.loadWorkbook();
@@ -241,11 +259,11 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 		}
 	}
 
-	public final void loadWebSheet() {
+	public void loadWebSheet() {
 		webSheetLoader.loadWorkbook();
 	}
 
-	public final void onTabChange(TabChangeEvent event) {
+	public void onTabChange(TabChangeEvent event) {
 		String tabName = event.getTab().getTitle();
 
 		int sheetId = findTabIndexWithName(tabName);
@@ -256,10 +274,10 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 	}
 
 	private StreamedContent exportFile;
-	public final StreamedContent getExportFile() {
+	public StreamedContent getExportFile() {
 		return exportFile;
 	}
-	public final void doExportPrime() {
+	public void doExportPrime() {
 		try {
 
 			webSheetLoader.loadAllFields();
@@ -337,7 +355,7 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 		}
 	}
 
-	public final void doSave() {
+	public void doSave() {
 
 		fullValidation = false;
 		setFullValidationInView(fullValidation);
@@ -440,11 +458,16 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 		dataHandler.setUnsavedStatus(RequestContext.getCurrentInstance(), true);
 	}
 
-	public final void valueChangeEvent(AjaxBehaviorEvent event) {
+	public void valueChangeEvent(AjaxBehaviorEvent event) {
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		String tblName = getWebFormClientId();
 		UIComponent target = event.getComponent();
+		
+		int rowIndex = (Integer) target.getAttributes().get("data-row");
+		int colIndex = (Integer) target.getAttributes().get("data-column");
+debug("valueChangeEvent rowindex = "+rowIndex+" colindex = "+colIndex);		
+		
 		boolean pass = validationHandler.validateCell(target);
 		if (pass) {
 			// to improve performance, re-validate current row only
@@ -462,16 +485,15 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 				int rowCounts = webDataTable.getRowCount();
 				for (int i = first; i <= (first + rowsToRender); i++) {
 					if (i < rowCounts) {
-						for (Object cellobject : bodyRows.get(i)) {
-							if (cellobject instanceof FacesCell) {
-								FacesCell cell = (FacesCell) cellobject;
+						FacesRow dataRow = bodyRows.get(i);
+						for (int index=0; index < dataRow.getCells().size(); index++) {
+							FacesCell cell = dataRow.getCells().get(index);	
 							if (cell.getPoiCell().getCellType() == Cell.CELL_TYPE_FORMULA) {
 								debug("refresh obj name ="+tblName + ":" + i + ":cocalc"
-												+ cell.getColumnIndex()+" formula = "+cell.getPoiCell().getCellFormula()+" value = "+cell.getCellValue());
+												+ index +" formula = "+cell.getPoiCell().getCellFormula()+" value = "+cell.getCellValue());
 								RequestContext.getCurrentInstance().update(
 										tblName + ":" + i + ":cocalc"
-												+ cell.getColumnIndex());
-							}
+												+ index);
 							}
 						}
 					}
@@ -482,14 +504,14 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 		dataHandler.setUnsavedStatus(RequestContext.getCurrentInstance(), true);
 	}
 
-	public final boolean isMultiplePage() {
+	public boolean isMultiplePage() {
 		if ((bodyRows != null) && (bodyRows.size() > this.getMaxRowsPerPage()))
 			return true;
 		return false;
 	}
 
 	@PreDestroy
-	public final void finish() {
+	public void finish() {
 		debug("finishing view webformbean");
 		if (FacesContext.getCurrentInstance() == null) {
 			debug("session has gone");
@@ -497,15 +519,27 @@ public abstract class TieWebSheetBean extends TieWebSheetView implements
 
 	}
 
-	public final Map<String, SheetConfiguration> getSheetConfigMap() {
+	public Map<String, SheetConfiguration> getSheetConfigMap() {
 		return sheetConfigMap;
 	}
 
-	public final void setSheetConfigMap(Map<String, SheetConfiguration> sheetConfigMap) {
+	public void setSheetConfigMap(Map<String, SheetConfiguration> sheetConfigMap) {
 		this.sheetConfigMap = sheetConfigMap;
 	}
 	
 	
+	
+	private Map cellsMap = new CellMap(this);
+
+	
+	
+	
+	public Map getCellsMap() {
+		return cellsMap;
+	}
+
+
+
 	public abstract InputStream loadWebSheetTemplate();
 	public abstract void initialLoad();
 

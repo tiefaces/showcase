@@ -32,6 +32,7 @@ import org.primefaces.context.RequestContext;
 import com.tiefaces.common.FacesUtility;
 import com.tiefaces.components.websheet.dataobjects.CellFormAttributes;
 import com.tiefaces.components.websheet.dataobjects.FacesCell;
+import com.tiefaces.components.websheet.dataobjects.FacesRow;
 import com.tiefaces.components.websheet.dataobjects.SheetConfiguration;
 
 public class TieWebSheetValidationHandler {
@@ -209,7 +210,7 @@ return true;
 //}
 
 
-public  boolean validatePage(String tabName,Workbook wb, Map<String, SheetConfiguration> sheetConfigMap, FormulaEvaluator formulaEvaluator,DataFormatter dataFormatter, List<List<Object>> bodyRows,ScriptEngine engine) {
+public  boolean validatePage(String tabName,Workbook wb, Map<String, SheetConfiguration> sheetConfigMap, FormulaEvaluator formulaEvaluator,DataFormatter dataFormatter, List<FacesRow> bodyRows,ScriptEngine engine) {
 boolean allpass = true;
 
 boolean passEmptyCheck=true;
@@ -231,9 +232,8 @@ public boolean validateRow(int irow, String tabName, boolean passEmptyCheck) {
 boolean pass = true;
 SheetConfiguration sheetConfig = parent.getSheetConfigMap().get(tabName);
 if (sheetConfig != null) {
-		List<Object> cellRow =  parent.getBodyRows().get(irow);
-		// only validate cell object. bodyrow start with rowinfo object following cell objects
-		for (int icol=1; icol < cellRow.size(); icol++) {
+		List<FacesCell> cellRow =  parent.getBodyRows().get(irow).getCells();
+		for (int icol=0; icol < cellRow.size(); icol++) {
 			try {
 				validateWithRowCol( irow, icol, null, true, passEmptyCheck);
 			}

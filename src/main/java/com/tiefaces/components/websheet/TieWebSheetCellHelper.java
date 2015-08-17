@@ -45,6 +45,7 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import com.tiefaces.common.FacesUtility;
 import com.tiefaces.components.websheet.dataobjects.CellFormAttributes;
 import com.tiefaces.components.websheet.dataobjects.FacesCell;
+import com.tiefaces.components.websheet.dataobjects.FacesRow;
 import com.tiefaces.components.websheet.dataobjects.SheetConfiguration;
 
 public class TieWebSheetCellHelper {
@@ -75,7 +76,10 @@ public class TieWebSheetCellHelper {
 
 		String result;
 		try{
-			if (poiCell.getCellType()== Cell.CELL_TYPE_ERROR)  result ="";
+			int cellType = poiCell.getCellType();
+		    if (cellType == Cell.CELL_TYPE_FORMULA) 
+	    	cellType = parent.getFormulaEvaluator().evaluate(poiCell).getCellType();			
+			if (cellType== Cell.CELL_TYPE_ERROR)  result ="";
 			else
 				result = parent.getDataFormatter().formatCellValue(poiCell, parent.getFormulaEvaluator());
 		}
@@ -87,20 +91,23 @@ public class TieWebSheetCellHelper {
 		return result;
 	}		
 
-	public String getCellValueWithoutFormat(Cell poiCell){
-		
-		String result =  getCellValueAsString(poiCell);
-		debug("getCellValueWithoutFormat result = "+ result+" row = "+poiCell.getRowIndex()+" col = "+poiCell.getColumnIndex());
-		return result;
 	
-	}	
-
-	private String getCellValueAsString(Cell poiCell){
+	// get input cell value. non input return blank
+	public static String getCellValueWithoutFormat(Cell poiCell){
 		
 		if(poiCell==null)
 			return null;
 
-		switch (poiCell.getCellType()){
+		if (poiCell.getCellType() == Cell.CELL_TYPE_FORMULA) {
+			return getCellStringValueWithType(poiCell, poiCell.getCachedFormulaResultType());
+		} else {
+			return getCellStringValueWithType(poiCell, poiCell.getCellType());
+		}	
+	}		
+
+	private static String getCellStringValueWithType(Cell poiCell, int cellType) {
+		
+		switch (cellType){
 		case Cell.CELL_TYPE_BOOLEAN:
 			if (poiCell.getBooleanCellValue())
 				return "Y";
@@ -118,13 +125,13 @@ public class TieWebSheetCellHelper {
 			return result;
 		case Cell.CELL_TYPE_STRING:
 			return poiCell.getStringCellValue();
-		case Cell.CELL_TYPE_BLANK:
-			return "";
 		}//switch
 		
+		// others all return blank
 		return "";
-	
 	}	
+	
+
 
 	public Cell setCellValue(Cell c, String value) {
 
@@ -192,12 +199,12 @@ public class TieWebSheetCellHelper {
 	}
 
 	public FacesCell getFacesCellFromBodyRow(int row, int col,
-			List<List<Object>> bodyRows) {
+			List<FacesRow> bodyRows) {
 		FacesCell cell = null;
 		try {
 			// bodyrows start with rowinfo fowllowing FacesCell object. So here use col + 1 to get real column
-			if (bodyRows.get(row).size() > (col + 1))
-			cell = (FacesCell) bodyRows.get(row).get(col + 1);
+			if (bodyRows.get(row).getCells().size() > col)
+			cell =  bodyRows.get(row).getCells().get(col);
 		} catch (Exception e) {
 			debug("Web Form WebFormHelper getFacesCellFromBodyRow Error row = "
 					+ row + " col = " + col + "; error = "
@@ -618,10 +625,10 @@ public class TieWebSheetCellHelper {
 			// has col or row span
 			fcell.setColspan((caddress.getLastColumn()
 					- caddress.getFirstColumn() + 1)
-					+ "");
+					);
 			fcell.setRowspan((caddress.getLastRow()
 					- caddress.getFirstRow() + 1)
-					+ "");
+					);
 		}
 	}
 

@@ -4,8 +4,6 @@ import java.io.InputStream;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.servlet.ServletContext;
 
 import com.tiefaces.components.websheet.TieWebSheetBean;
 
@@ -20,7 +18,7 @@ public class WebSheet2 extends TieWebSheetBean {
 
 	@Override
 	public InputStream loadWebSheetTemplate() {
-		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELIST.xls");
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/CCAC1.xls");
 	//	((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream ("/WEB-INF/lib/tiefaces-"+version+".jar");
 		return stream;         
 	}

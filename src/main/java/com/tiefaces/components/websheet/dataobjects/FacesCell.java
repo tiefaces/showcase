@@ -43,8 +43,8 @@ public class FacesCell {
 	private Cell poiCell; // reference to poi cell object
 	private String style = ""; // cell web css style  
 	private String columnStyle = ""; // column css style
-	private String colspan = "1"; // cell column span default set to 1
-	private String rowspan = "1"; // row span default set to 1
+	private int colspan = 1; // cell column span default set to 1
+	private int rowspan = 1; // row span default set to 1
 	private int columnIndex; // column index in the datatable.
 	private boolean invalid = false; // indicate the cell hold invalid data when set to true
 	private String errormsg; // hold error message when the cell is invalid
@@ -117,12 +117,6 @@ debug("Web Form FacesCell getCellFormatValue = " + result +" input type = "+ inp
 	public void setInputType(String inputType) {
 		this.inputType = inputType;
 	}
-	public String getColspan() {
-		return colspan;
-	}
-	public void setColspan(String colspan) {
-		this.colspan = colspan;
-	}
 	public int getColumnIndex() {
 		return columnIndex;
 	}
@@ -184,14 +178,23 @@ System.out.println(" put session map id = "+pictureViewId );
 		this.errormsg = errormsg;
 	}
 
-	public String getRowspan() {
+	
+	public int getColspan() {
+		return colspan;
+	}
+
+	public void setColspan(int colspan) {
+		this.colspan = colspan;
+	}
+
+	public int getRowspan() {
 		return rowspan;
 	}
 
-	public void setRowspan(String rowspan) {
+	public void setRowspan(int rowspan) {
 		this.rowspan = rowspan;
 	}
-	
+
 	public String getColumnStyle() {
 		return columnStyle;
 	}
@@ -200,11 +203,5 @@ System.out.println(" put session map id = "+pictureViewId );
 		this.columnStyle = columnStyle;
 	}
 
-	public void cellEvaluate(){
-		if ((this.getPoiCell()!= null) && (this.getPoiCell().getCellType() == Cell.CELL_TYPE_FORMULA)  && (parent!=null)) {
-		FormulaEvaluator evaluator = parent.getFormulaEvaluator();
-		evaluator.evaluateFormulaCell(getPoiCell());
-		}
-	}
 
 }
