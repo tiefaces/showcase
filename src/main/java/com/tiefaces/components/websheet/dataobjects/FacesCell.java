@@ -39,8 +39,6 @@ public class FacesCell {
 		}
 	}
 
-	private TieWebSheetBean parent = null; // reference to bean object
-	private Cell poiCell; // reference to poi cell object
 	private String style = ""; // cell web css style  
 	private String columnStyle = ""; // column css style
 	private int colspan = 1; // cell column span default set to 1
@@ -53,20 +51,7 @@ public class FacesCell {
 	private String pictureId; //picture Id for retrieve picture when containPic = true
 	private String pictureStyle = "";
 
-	/**
-	 * Constructor.
-	 * @param poiCell POI cell object
-	 * @param parent TieWebSheetBean object
-	 */
-	public FacesCell(Cell poiCell, TieWebSheetBean parent) {
-		super();
-		this.poiCell = poiCell;
-		this.parent = parent;
-	}
 	
-	public Cell getPoiCell() {
-		return poiCell;
-	}
 	public String getStyle() {
 		return style;
 	}
@@ -78,37 +63,6 @@ public class FacesCell {
 			return style + "border-color: red;";
 		else
 			return style;
-	}
-	public String getCellValue() {
-
-		String result = parent.getCellHelper().getCellValueWithoutFormat(poiCell);
-		 debug("Web Form FacesCell getCellValue = " + result
-		 +" input type = "+ inputType);
-		return result;
-	}
-	public String getCellFormatValue() {
-		
-		String result = parent.getCellHelper().getCellValueWithFormat(poiCell); 
-debug("Web Form FacesCell getCellFormatValue = " + result +" input type = "+ inputType);
-		return result; 
-	}	
-	public void setCellValue(String cellValue) {
-
-		String oldValue = parent.getCellHelper().getCellValueWithoutFormat(poiCell);
-		String newValue = cellValue;
-		if (this.getInputType().equalsIgnoreCase("textarea")
-				&& (newValue != null)) {
-			// remove "\r" because excel issue
-			newValue = newValue.replace("\r\n", "\n");
-		}
-		if (newValue != null && !newValue.equals(oldValue)) {
-			debug("Web Form FacesCell setCellValue Old: " + oldValue
-					+ ", New: " + newValue + ", row =" + poiCell.getRowIndex()
-					+ " col =" + poiCell.getColumnIndex() + " inputtype = "
-					+ this.getInputType());
-			parent.getCellHelper().setCellValue(poiCell, newValue);
-			parent.getCellHelper().reCalc();
-		}
 	}
 
 	public String getInputType() {
@@ -145,21 +99,6 @@ debug("Web Form FacesCell getCellFormatValue = " + result +" input type = "+ inp
 
 	public void setPictureStyle(String pictureStyle) {
 		this.pictureStyle = pictureStyle;
-	}
-
-	public String getPictureViewId() {
-		if (this.containPic) {
-			FacesContext context = FacesContext.getCurrentInstance();
-			String pictureViewId =  context.getViewRoot().getViewId() + this.pictureId;
-			Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
-			if (sessionMap.get(pictureId) == null) {
-				sessionMap.put(pictureViewId, parent.getPicturesMap().get(pictureId).getPictureData());
-System.out.println(" put session map id = "+pictureViewId );				
-			}	
-			return pictureViewId;
-		} else {
-			return null;
-		}
 	}
 
 

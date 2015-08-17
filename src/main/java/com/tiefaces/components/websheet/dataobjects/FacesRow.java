@@ -12,19 +12,8 @@
  */
 package com.tiefaces.components.websheet.dataobjects;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import javax.faces.context.FacesContext;
-
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.apache.poi.ss.usermodel.PictureData;
-import org.apache.poi.ss.usermodel.Row;
-import org.primefaces.model.StreamedContent;
-
-import com.tiefaces.components.websheet.TieWebSheetBean;
 
 /**
  * Row object used for JSF datatable.
@@ -41,7 +30,6 @@ public class FacesRow {
 		}
 	}
 
-	private TieWebSheetBean parent = null; // reference to bean object	
 	private int rowIndex;
 	private boolean rendered;
 	private float rowheight; 
@@ -49,10 +37,9 @@ public class FacesRow {
 	private List<FacesCell> cells;
 	
 
-	public FacesRow(int rowIndex, TieWebSheetBean parent) {
+	public FacesRow(int rowIndex) {
 		super();
 		this.rowIndex = rowIndex;
-		this.parent = parent;
 	}
 	
 	public int getRowIndex() {
@@ -86,31 +73,6 @@ public class FacesRow {
 
 	public void setCells(List<FacesCell> cells) {
 		this.cells = cells;
-	}
-	
-	public String cellValue(int colIndex) {
-		
-		Cell poiCell = parent.getWebSheetLoader().getPoiCellFromRowColumnIndex(rowIndex, colIndex);
-		if (poiCell != null) {
-			String result = parent.getCellHelper().getCellValueWithoutFormat(poiCell);
-			 debug("Web Form FacesCell getCellValue = " + result);
-			return result;
-		}
-		// return blank if null
-        return "";		
-		
-	}
-
-	public String cellFormatValue(int colIndex) {
-		
-		Cell poiCell = parent.getWebSheetLoader().getPoiCellFromRowColumnIndex(rowIndex, colIndex);
-		if (poiCell != null) {
-			String result = parent.getCellHelper().getCellValueWithFormat(poiCell);
-			 debug("Web Form FacesCell getCellFormatValue = " + result);
-			return result;
-		}
-		// return blank if null
-        return "";		
 	}
 	
 }

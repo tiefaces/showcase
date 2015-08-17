@@ -93,7 +93,7 @@ public class TieWebSheetCellHelper {
 
 	
 	// get input cell value. non input return blank
-	public static String getCellValueWithoutFormat(Cell poiCell){
+	public String getCellValueWithoutFormat(Cell poiCell){
 		
 		if(poiCell==null)
 			return null;
@@ -105,7 +105,7 @@ public class TieWebSheetCellHelper {
 		}	
 	}		
 
-	private static String getCellStringValueWithType(Cell poiCell, int cellType) {
+	private String getCellStringValueWithType(Cell poiCell, int cellType) {
 		
 		switch (cellType){
 		case Cell.CELL_TYPE_BOOLEAN:
@@ -198,20 +198,7 @@ public class TieWebSheetCellHelper {
 			return false;
 	}
 
-	public FacesCell getFacesCellFromBodyRow(int row, int col,
-			List<FacesRow> bodyRows) {
-		FacesCell cell = null;
-		try {
-			// bodyrows start with rowinfo fowllowing FacesCell object. So here use col + 1 to get real column
-			if (bodyRows.get(row).getCells().size() > col)
-			cell =  bodyRows.get(row).getCells().get(col);
-		} catch (Exception e) {
-			debug("Web Form WebFormHelper getFacesCellFromBodyRow Error row = "
-					+ row + " col = " + col + "; error = "
-					+ e.getLocalizedMessage());
-		}
-		return cell;
-	}
+
 
 	// / <summary>
 	// / Row Copy Command
@@ -588,13 +575,13 @@ public class TieWebSheetCellHelper {
             }
         }
     }    	
-	
-	public void convertCell(SheetConfiguration sheetConfig, FacesCell fcell,
+	// set up facesCell's attribute from poiCell and others.
+	public void convertCell(SheetConfiguration sheetConfig, FacesCell fcell,Cell poiCell,
 			int rowindex, int initRows, int bodyTopRow, boolean repeatZone,
 			Map<String, CellRangeAddress> cellRangeMap) {
 		boolean bodyPopulated = sheetConfig.isBodyPopulated();
 		List<CellFormAttributes> cellAttributes = findCellAttributesWithOffset(
-				sheetConfig, fcell.getPoiCell(), initRows, bodyTopRow,
+				sheetConfig, poiCell, initRows, bodyTopRow,
 				repeatZone);
 		if (cellAttributes != null) {
 			for (CellFormAttributes attr : cellAttributes) {
@@ -605,7 +592,7 @@ public class TieWebSheetCellHelper {
 					if (attrValue.contains("#{")) {
 						attrValue = FacesUtility.evaluateExpression(attrValue,
 								String.class);
-						setCellValue(fcell.getPoiCell(), attrValue);
+						setCellValue(poiCell, attrValue);
 					}
 				} else if (attrType.equalsIgnoreCase("input")) {
 					String attrValue = attr.getValue().toLowerCase();
@@ -618,8 +605,7 @@ public class TieWebSheetCellHelper {
 			}
 		}
 		CellRangeAddress caddress = null;
-		Cell cell = fcell.getPoiCell();
-		String key = "$" + cell.getColumnIndex() + "$" + cell.getRowIndex(); 
+		String key = "$" + poiCell.getColumnIndex() + "$" + poiCell.getRowIndex(); 
 		caddress = cellRangeMap.get(key);
 		if (caddress != null) {
 			// has col or row span
@@ -703,9 +689,8 @@ public class TieWebSheetCellHelper {
 
 	}
 
-	public String getColumnStyle(Workbook wb, FacesCell fcell, float rowHeight) {
+	public String getColumnStyle(Workbook wb, FacesCell fcell, Cell poiCell, float rowHeight) {
 
-		Cell poiCell = fcell.getPoiCell();
 		String inputType = fcell.getInputType();
 		CellStyle cellStyle = poiCell.getCellStyle();
 		StringBuffer webStyle = new StringBuffer();
@@ -819,9 +804,8 @@ public class TieWebSheetCellHelper {
 		return totalWidth;
 	}
 
-	public void setupCellStyle(Workbook wb, Sheet sheet1, FacesCell fcell,
+	public void setupCellStyle(Workbook wb, Sheet sheet1, FacesCell fcell, Cell poiCell,
 			float rowHeight) {
-		Cell poiCell = fcell.getPoiCell();
 
 		CellStyle cellStyle = poiCell.getCellStyle();
 		if ((cellStyle != null) && (!cellStyle.getLocked())) {
@@ -833,7 +817,7 @@ public class TieWebSheetCellHelper {
 				+ getCellFontStyle(wb, poiCell, fcell.getInputType(), rowHeight) 
 				+ getRowStyle(wb, poiCell, fcell.getInputType(), rowHeight);
 		fcell.setStyle(webStyle);
-		fcell.setColumnStyle(getColumnStyle(wb, fcell, rowHeight));
+		fcell.setColumnStyle(getColumnStyle(wb, fcell, poiCell, rowHeight));
 	}
 
 	private String getAlignmentFromCellType(Cell poiCell) {
@@ -860,13 +844,23 @@ public class TieWebSheetCellHelper {
 
 	}
 
-	public int[] getRowColFromComponentName(UIComponent component) {
-		String[] parts = component.getClientId().split(":");
-		int row = Integer.parseInt(parts[parts.length - 2]);
-		int col = Integer.parseInt(parts[parts.length - 1].substring(6));
-		int[] list = { row, col };
+	public int[] getRowColFromComponentAttributes(UIComponent target) {
+
+		int rowIndex = (Integer) target.getAttributes().get("data-row");
+		int colIndex = (Integer) target.getAttributes().get("data-column");
+	debug("getRowColFromComponentAttributes rowindex = "+rowIndex+" colindex = "+colIndex);		
+		int[] list = { rowIndex, colIndex };
 		return list;
 	}
+	
+	
+//	public int[] getRowColFromComponentName(UIComponent component) {
+//		String[] parts = component.getClientId().split(":");
+//		int row = Integer.parseInt(parts[parts.length - 2]);
+//		int col = Integer.parseInt(parts[parts.length - 1].substring(6));
+//		int[] list = { row, col };
+//		return list;
+//	}
 
 	public String[] getRowColFromExcelReferenceName(String excelRef) {
 		String[] parts = excelRef.split("\\$");
@@ -941,7 +935,50 @@ public class TieWebSheetCellHelper {
 		return cell;
 	}
 
+	public FacesCell getFacesCellFromBodyRow(int bodyrow, int bodycol,
+			List<FacesRow> bodyRows) {
+		FacesCell cell = null;
+		try {
+			if (bodyRows.get(bodyrow).getCells().size() > bodycol)
+			cell =  bodyRows.get(bodyrow).getCells().get(bodycol);
+		} catch (Exception e) {
+			debug("Web Form WebFormHelper getFacesCellFromBodyRow Error bodyrow = "
+					+ bodyrow + " bodycol = " + bodycol + "; error = "
+					+ e.getLocalizedMessage());
+		}
+		return cell;
+	}
+
 	
+	
+	public Cell getPoiCellWithRowColFromCurrentPage(int rowIndex, int colIndex) {
+		if (parent.getWb()!=null) {
+			return getPoiCellFromSheet(rowIndex, colIndex, parent.getWb().getSheetAt(parent.getWb().getActiveSheetIndex()));
+		}
+		return null;
+	}
+	
+	public Cell getPoiCellWithRowColFromTab(int rowIndex, int colIndex, String tabName) {
+		if (parent.getWb()!=null) {
+			return getPoiCellFromSheet(rowIndex, colIndex, parent.getWb().getSheet(parent.getSheetConfigMap().get(tabName).getSheetName()));			
+		}
+		return null;
+	}
+
+	private Cell getPoiCellFromSheet(int rowIndex, int colIndex, Sheet sheet1) {
+		if ((sheet1 != null) && (sheet1.getRow(rowIndex) != null) ) 
+			return sheet1.getRow(rowIndex).getCell(colIndex);
+		return null;
+	}	
+	
+	public FacesCell getFacesCellWithRowColFromCurrentPage(int rowIndex, int colIndex) {
+		if (parent.getBodyRows()!=null) {
+			int top = parent.getCurrentTopRow();
+			int left = parent.getCurrentLeftColumn();
+			return parent.getBodyRows().get(rowIndex - top).getCells().get(colIndex - left);
+		}
+		return null;
+	}		
 	
 	
 	public static void main(String args[]) {

@@ -473,9 +473,8 @@ debug("valueChangeEvent rowindex = "+rowIndex+" colindex = "+colIndex);
 			// to improve performance, re-validate current row only
 			// page validation take times. will happen when change tab(page) or
 			// reload page.
-			int[] rowcol = cellHelper.getRowColFromComponentName(target);
-			validationHandler.validateRow(rowcol[0], this.getCurrentTabName(),
-					true);
+			int[] rowcol = cellHelper.getRowColFromComponentAttributes(target);
+			validationHandler.validateRowInCurrentPage(rowcol[0], true);
 			// refresh current page calculation fields
 			UIComponent s = facesContext.getViewRoot().findComponent(tblName);
 			if (s != null) {
@@ -483,14 +482,16 @@ debug("valueChangeEvent rowindex = "+rowIndex+" colindex = "+colIndex);
 				int first = webDataTable.getFirst();
 				int rowsToRender = webDataTable.getRowsToRender();
 				int rowCounts = webDataTable.getRowCount();
+				int top = this.getCurrentTopRow();
+				int left = this.getCurrentLeftColumn();
 				for (int i = first; i <= (first + rowsToRender); i++) {
 					if (i < rowCounts) {
 						FacesRow dataRow = bodyRows.get(i);
 						for (int index=0; index < dataRow.getCells().size(); index++) {
-							FacesCell cell = dataRow.getCells().get(index);	
-							if (cell.getPoiCell().getCellType() == Cell.CELL_TYPE_FORMULA) {
+							Cell poiCell = this.getCellHelper().getPoiCellWithRowColFromCurrentPage(i+top, index+left);
+							if (poiCell.getCellType() == Cell.CELL_TYPE_FORMULA) {
 								debug("refresh obj name ="+tblName + ":" + i + ":cocalc"
-												+ index +" formula = "+cell.getPoiCell().getCellFormula()+" value = "+cell.getCellValue());
+												+ index +" formula = "+poiCell.getCellFormula());
 								RequestContext.getCurrentInstance().update(
 										tblName + ":" + i + ":cocalc"
 												+ index);

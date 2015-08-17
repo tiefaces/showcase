@@ -146,7 +146,7 @@
 							value="#{tieWebSheetPicturesService.picture}"
 							rendered="#{(dataRow.cells[loop.index].containPic)}">
 							<f:param name="pictureViewId"
-								value="#{dataRow.cells[loop.index].pictureViewId}" />
+								value="#{cc.attrs.webSheetBean.cellsMap[''.concat(dataRow.rowIndex).concat(':').concat(dataRow.cells[loop.index].columnIndex).concat(':picture')]}" />
 						</p:graphicImage>
 					</p:column>
 				</c:forEach>

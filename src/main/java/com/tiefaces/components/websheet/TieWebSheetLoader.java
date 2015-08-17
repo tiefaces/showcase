@@ -152,18 +152,18 @@ public class TieWebSheetLoader implements Serializable {
 					if (row != null)
 						cell = row.getCell(cindex, Row.CREATE_NULL_AS_BLANK);
 					if (cell != null) {
-						FacesCell fcell = new FacesCell(cell, parent);
-						parent.getCellHelper().convertCell(sheetConfig, fcell,
+						FacesCell fcell = new FacesCell();
+						parent.getCellHelper().convertCell(sheetConfig, fcell,cell,
 								(currentRow - top), 1, top, false,
 								cellRangeMap);
 						parent.getPicHelper().setupFacesCellPictures(sheet1, fcell, sheetName+cellindex);
 						parent.getCellHelper().setupCellStyle(parent.getWb(),
-								sheet1, fcell, row.getHeightInPoints());
+								sheet1, fcell,cell, row.getHeightInPoints());
 						fcell.setColumnStyle(fcell.getColumnStyle()+getColumnWidthStyle(sheet1,cellRangeMap,cellindex,cindex,totalWidth));
 						fcell.setColumnIndex(cindex);
 						
 						headercells.add(new HeaderCell(fcell.getRowspan()+"", fcell.getColspan()+"",fcell.getStyle(),fcell.getColumnStyle(),
-								fcell.getCellFormatValue()));						
+								parent.getCellHelper().getCellValueWithFormat(cell)));						
 					}
 				}	
 					
@@ -333,10 +333,7 @@ public class TieWebSheetLoader implements Serializable {
 				.skippedRegionCells(sheet1);
 		loadHeaderRows(sheetConfig, cellRangeMap, skippedRegionCells);
 		loadBodyRows(sheetConfig, cellRangeMap, skippedRegionCells);
-		parent.getValidationHandler().validatePage(tabName, parent.getWb(),
-				parent.getSheetConfigMap(), parent.getFormulaEvaluator(),
-				parent.getDataFormatter(), parent.getBodyRows(),
-				parent.getEngine());
+		parent.getValidationHandler().validateCurrentPage();
 		createDynamicColumns(tabName);
 		//reset datatable current page to 1 
 		setDataTablePage(0);
@@ -451,7 +448,7 @@ public class TieWebSheetLoader implements Serializable {
 	private FacesRow assembleFacesBodyRow(int rowIndex, Sheet sheet1, boolean repeatZone, int top, int left, int right, int initRows,SheetConfiguration sheetConfig, Map<String, CellRangeAddress> cellRangeMap, List<String> skippedRegionCells) {
 		
 		
-		FacesRow facesRow = new FacesRow(rowIndex, parent);
+		FacesRow facesRow = new FacesRow(rowIndex);
 		Row row = sheet1.getRow(rowIndex);
 		setupRowInfo(facesRow, sheet1, row, rowIndex, repeatZone);
 		List<FacesCell> bodycells = new ArrayList<FacesCell>();
@@ -465,13 +462,13 @@ public class TieWebSheetLoader implements Serializable {
 					cell = row.getCell(cindex, Row.CREATE_NULL_AS_BLANK);
 				}
 				if (cell != null) {
-					FacesCell fcell = new FacesCell(cell, parent);
-					parent.getCellHelper().convertCell(sheetConfig, fcell,
+					FacesCell fcell = new FacesCell();
+					parent.getCellHelper().convertCell(sheetConfig, fcell,cell,
 							(rowIndex - top), initRows, top, repeatZone,
 							cellRangeMap);
 					parent.getPicHelper().setupFacesCellPictures(sheet1, fcell, sheet1.getSheetName()+cellindex);
 					parent.getCellHelper().setupCellStyle(parent.getWb(),
-							sheet1, fcell, row.getHeightInPoints());
+							sheet1, fcell,cell, row.getHeightInPoints());
 					fcell.setColumnIndex(cindex) ;
 					bodycells.add(fcell);
 				} else {
@@ -557,24 +554,7 @@ public class TieWebSheetLoader implements Serializable {
 	// }
 	
 	// return current page facesCell according to row and colindex
-	public Cell getPoiCellFromRowColumnIndex(int rowIndex, int colIndex) {
-		if (parent.getWb()!=null) {
-			Sheet sheet1 = parent.getWb().getSheetAt(parent.getWb().getActiveSheetIndex());
-			if ((sheet1 != null) && (sheet1.getRow(rowIndex) != null) ) 
-				return sheet1.getRow(rowIndex).getCell(colIndex);
-		}
-		return null;
-	}
-	
-	
-	public FacesCell getFacesCellFromRowColumnIndex(int rowIndex, int colIndex) {
-		if (parent.getBodyRows()!=null) {
-			int top = parent.getCurrentTopRow();
-			int left = parent.getCurrentLeftColumn();
-			return parent.getBodyRows().get(rowIndex - top).getCells().get(colIndex - left);
-		}
-		return null;
-	}	
+
 
 	public void addRepeatRow(int rowIndex) {
 		

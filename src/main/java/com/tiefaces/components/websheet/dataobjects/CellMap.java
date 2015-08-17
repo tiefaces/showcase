@@ -1,9 +1,23 @@
+/*
+ * Copyright 2015 TieFaces.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
 package com.tiefaces.components.websheet.dataobjects;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+
+import javax.faces.context.FacesContext;
 
 import org.apache.poi.ss.usermodel.Cell;
 
@@ -92,6 +106,24 @@ public class CellMap implements Serializable, java.util.Map {
 			return null;
 		}
 		
+		private String loadPicture(int rowIndex, int colIndex) {
+			
+			FacesCell facesCell = parent.getCellHelper().getFacesCellWithRowColFromCurrentPage(rowIndex, colIndex);
+			if (facesCell != null && facesCell.isContainPic()) {
+				FacesContext context = FacesContext.getCurrentInstance();
+				String pictureId = facesCell.getPictureId();
+				String pictureViewId =  context.getViewRoot().getViewId() + pictureId;
+				Map<String, Object> sessionMap = context.getExternalContext().getSessionMap();
+				if (sessionMap.get(pictureViewId) == null) {
+					sessionMap.put(pictureViewId, parent.getPicturesMap().get(pictureId).getPictureData());
+	debug("load picture put session map id = "+pictureViewId );				
+				}	
+				return pictureViewId;
+			} else {
+				return null;
+			}
+		}
+		
 		@Override
 		public Object get(Object key) {
 			// TODO Auto-generated method stub
@@ -104,7 +136,10 @@ public class CellMap implements Serializable, java.util.Map {
 					int colIndex = Integer.parseInt(keyList[1]);
 					boolean formatted = false;
 					if ((keylength > 2) && (keyList[2].equalsIgnoreCase("format"))) formatted=true;
-					Cell poiCell = parent.getWebSheetLoader().getPoiCellFromRowColumnIndex(rowIndex, colIndex);	
+					if ((keylength > 2) && (keyList[2].equalsIgnoreCase("picture"))) {
+						return loadPicture(rowIndex,colIndex);
+					}
+					Cell poiCell = parent.getCellHelper().getPoiCellWithRowColFromCurrentPage(rowIndex, colIndex);	
 					if (poiCell != null) {
 						String result;
 						if (formatted)
@@ -130,11 +165,11 @@ public class CellMap implements Serializable, java.util.Map {
 				if (keylength>=2) {
 					int rowIndex = Integer.parseInt(keyList[0]);
 					int colIndex = Integer.parseInt(keyList[1]);
-					Cell poiCell = parent.getWebSheetLoader().getPoiCellFromRowColumnIndex(rowIndex, colIndex);	
+					Cell poiCell = parent.getCellHelper().getPoiCellWithRowColFromCurrentPage(rowIndex, colIndex);	
 					if (poiCell != null) {			
 						String oldValue = parent.getCellHelper().getCellValueWithoutFormat(poiCell);
 						String newValue = (String) value;
-						FacesCell facesCell = parent.getWebSheetLoader().getFacesCellFromRowColumnIndex(rowIndex, colIndex);
+						FacesCell facesCell = parent.getCellHelper().getFacesCellWithRowColFromCurrentPage(rowIndex, colIndex);
 						if (facesCell.getInputType().equalsIgnoreCase("textarea")
 								&& (newValue != null)) {
 							// remove "\r" because excel issue
