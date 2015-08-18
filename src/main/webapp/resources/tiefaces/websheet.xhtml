@@ -37,6 +37,9 @@
 	<cc:attribute name="tableWidthStyle" required="false"
 		default="#{cc.attrs.webSheetBean.tableWidthStyle}"
 		type="java.lang.String" />
+	<cc:attribute name="emptyMessage" required="false"
+		default=""
+		type="java.lang.String" />
 
 </cc:interface>
 
@@ -68,6 +71,7 @@
 				paginatorAlwaysVisible="cc.attrs.paginatorAlwaysVisible"
 				paginatorTemplate="#{cc.attrs.paginatorTemplate}"
 				rowsPerPageTemplate="#{cc.attrs.rowsPerPageTemplate}"
+				emptyMessage="#{cc.attrs.emptyMessage}" 
 				rowIndexVar="rowindex" widgetVar="webSheetTable"
 				tableStyle="table-layout: fixed; width:#{cc.attrs.tableWidthStyle} ">
 
