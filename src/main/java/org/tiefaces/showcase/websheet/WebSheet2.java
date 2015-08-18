@@ -16,16 +16,11 @@ public class WebSheet2 extends TieWebSheetBean {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Override
-	public InputStream loadWebSheetTemplate() {
-		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/CCAC1.xls");
-	//	((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream ("/WEB-INF/lib/tiefaces-"+version+".jar");
-		return stream;         
-	}
 
 	@Override
 	public void initialLoad() {
-		loadWebSheet();		
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/CCAC1.xls");
+		loadWebSheet(stream);		
 	}
 
 }

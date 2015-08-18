@@ -194,12 +194,11 @@ public class TieWebSheetLoader implements Serializable {
 	// return 0 -- No template
 	// return -1 -- error in open form
 	// return 1 -- success
-	public int loadWorkbook() {
+	public int loadWorkbook(InputStream fis) {
 
 		parent.setWb(null);
 		try {
 
-			InputStream fis = parent.loadWebSheetTemplate();
 			parent.setWb(WorkbookFactory.create(fis));
 			if (parent.getWb() instanceof XSSFWorkbook) {
 				parent.setExcelType(TieWebSheetConstants.EXCEL_2007_TYPE);
@@ -426,6 +425,7 @@ public class TieWebSheetLoader implements Serializable {
 		int left = sheetConfig.getBodyCellRange().getLeftCol();
 		int right = sheetConfig.getBodyCellRange().getRightCol();
 
+System.out.println(" *********** loadbodyrows sheetConfig = "+sheetConfig);		
 		String sheetName = sheetConfig.getSheetName();
 		Sheet sheet1 = parent.getWb().getSheet(sheetName);
 
@@ -460,6 +460,7 @@ public class TieWebSheetLoader implements Serializable {
 				// if (i < (top + initRows)) {
 				if (row != null) {
 					cell = row.getCell(cindex, Row.CREATE_NULL_AS_BLANK);
+					//cell = row.getCell(cindex);
 				}
 				if (cell != null) {
 					FacesCell fcell = new FacesCell();
@@ -474,6 +475,8 @@ public class TieWebSheetLoader implements Serializable {
 				} else {
 					bodycells.add(null);
 				}
+			} else {
+				bodycells.add(null);
 			}
 		}
 		facesRow.setCells(bodycells);

@@ -268,6 +268,19 @@ public class TieWebSheetConfigurationHandler {
 		return sheetConfigMap;
 	}
 
+	
+	private int verifyLastCell(Row row, int stoppoint) {
+		int lastCol = row.getLastCellNum() - 1;
+		int col ;
+		for ( col = lastCol; col>=stoppoint; col--) {
+			
+			Cell cell = row.getCell(col);
+			if ((cell!=null) && (cell.getCellType() != Cell.CELL_TYPE_BLANK) ) 
+				break;
+		}
+		System.out.println(" verifyLastCell row = "+row.getRowNum() +" lastcellnum before = "+ lastCol +" stoppoint = "+stoppoint+" after = "+col);
+		return col;
+	}
 	// build configuration without configuration tab
 	// use max rows and max columns (256) for body
 	// header/footer set to none
@@ -282,12 +295,21 @@ public class TieWebSheetConfigurationHandler {
 			sheetConfig.setTabName(tabName);
 			sheetConfig.setSheetName(tabName);
 			int leftCol = sheet.getLeftCol();
+System.out.println(" tab name = "+tabName +" leftCol = "+leftCol);			
 			int lastRow = sheet.getLastRowNum();
 			int firstRow = 0;
 			int rightCol = 0;
 			for (Row row : sheet) {
-				if (row.getLastCellNum() > rightCol)
-					rightCol = row.getLastCellNum();
+				int firstCellNum = row.getFirstCellNum();
+				if ( firstCellNum >=0 && firstCellNum < leftCol ) {
+					leftCol = firstCellNum;
+					System.out.println(" tab name = "+tabName +" leftCol adjust = "+leftCol);			
+				}
+				if ( (row.getLastCellNum() -1) > rightCol) {
+					System.out.println(" buildConfigurationWithoutTab tabname ="+tabName+" row = "+row.getRowNum() +" lastcellnum = "+row.getLastCellNum());
+					int verifiedcol = verifyLastCell(row,rightCol);
+					if (verifiedcol > rightCol)	rightCol = verifiedcol;
+				}	
 			}
 
 			// header range row set to 0 while column set to first column to max

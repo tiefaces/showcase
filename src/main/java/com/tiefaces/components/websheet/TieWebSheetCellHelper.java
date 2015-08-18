@@ -975,6 +975,8 @@ public class TieWebSheetCellHelper {
 		if (parent.getBodyRows()!=null) {
 			int top = parent.getCurrentTopRow();
 			int left = parent.getCurrentLeftColumn();
+			List<FacesCell> cellList = parent.getBodyRows().get(rowIndex - top).getCells();
+			System.out.println(" cellist size = "+cellList.size()+" colindex = "+colIndex +" left = "+left);			
 			return parent.getBodyRows().get(rowIndex - top).getCells().get(colIndex - left);
 		}
 		return null;

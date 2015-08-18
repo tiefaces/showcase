@@ -1,0 +1,59 @@
+<ui:composition template="/templates/showcase.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:tie="http://java.sun.com/jsf/composite/tiefaces">
+
+	<ui:define name="meta">
+		<f:metadata>
+			<f:attribute name="api.path" value="common/TableLookup" />
+			<f:attribute name="src.paths"
+				value="classes/org/tiefaces/showcase/websheet/WebSheetUpload.java" />
+
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="description-extra">
+		<ui:include src="/includes/common/desc-websheetoverview.xhtml" />
+	</ui:define>
+
+
+	<ui:define name="demo">
+
+
+		<h3>Try upload your Excel file</h3>
+		
+		<p>You can upload either normal excel file or with configured worksheet.</p>
+		<p>Note: only unlocked cell are editable.</p>
+		<h:form id="form1">
+			<p:commandButton partialSubmit="true" immediate="true"
+				onclick="PF('dlgAdd').show();"
+				value="Upload Your Excel File" id="cmdLoad"
+				styleClass="commandExButton" update="@this" />
+				
+			<tie:websheet id="sheet1" webSheetBean="#{webSheetUpload}"
+				maxRowsPerPage="40">
+			</tie:websheet>
+			<p:remoteCommand name="refreshafter"
+				actionListener="#{webSheetUpload.refreshAfter}"
+				update="@form"
+				oncomplete="PF('bui').hide();" />			
+			<p:dialog modal="true" appendTo="@(body)" widgetVar="dlgAdd"
+				header="Load Excel File" width="620" height="500">
+				<p:fileUpload
+					fileUploadListener="#{webSheetUpload.doLoadFileAction}"
+					multiple="false" mode="advanced" auto="true" uploadLabel="Load"
+					process="@this" allowTypes="/(\.|\/)(xls|xlsx!xlsm)$/"
+					onstart="PF('bui').show()"
+					oncomplete="PF('dlgAdd').hide();refreshafter();">
+				</p:fileUpload>
+			</p:dialog>		
+			<p:blockUI block="form1" widgetVar="bui"/>	
+			
+		</h:form>
+		
+	</ui:define>
+
+</ui:composition>

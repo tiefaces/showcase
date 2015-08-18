@@ -19,18 +19,12 @@ public class WebSheet1 extends TieWebSheetBean {
 	/**
 	 * 
 	 */
-	
 
-	@Override
-	public InputStream loadWebSheetTemplate() {
-		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/CCAC2.xls");
-	//	((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream ("/WEB-INF/lib/tiefaces-"+version+".jar");
-		return stream;         
-	}
 
 	@Override
 	public void initialLoad() {
-		loadWebSheet();		
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/CCAC2.xls");
+		loadWebSheet(stream);		
 	}
 
 }

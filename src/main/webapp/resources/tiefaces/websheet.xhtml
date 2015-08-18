@@ -128,7 +128,7 @@
 
 						</p:inputText>
 						<p:inputTextarea id="coarea#{loop.index}" rows="3"
-							value="#{dataRow.cells[loop.index].cellValue}"
+							value="#{cc.attrs.webSheetBean.cellsMap[''.concat(dataRow.rowIndex).concat(':').concat(dataRow.cells[loop.index].columnIndex)]}"
 							style="#{dataRow.cells[loop.index].style}"
 							styleClass="inputTextarea inputColumnWidth"
 							readonly="#{cc.attrs.readonly}" autocomplete="off"
