@@ -10,7 +10,7 @@
 		<f:metadata>
 			<f:attribute name="api.path" value="common/TableLookup" />
 			<f:attribute name="src.paths"
-				value="classes/org/tiefaces/showcase/websheet/WebSheet1.java,classes/org/tiefaces/showcase/websheet/WebSheet2.java" />
+				value="classes/org/tiefaces/showcase/websheet/WebSheetNormal.java,classes/org/tiefaces/showcase/websheet/WebSheetConfigured.java" />
 
 		</f:metadata>
 	</ui:define>
@@ -30,7 +30,7 @@
 		<p>Note: only unlocked cell are editable.</p>
 		<h:form id="form1">
 			<p:panel id="panel1" style="margin-bottom:10px;">
-				<tie:websheet id="sheet1" webSheetBean="#{webSheet1}"
+				<tie:websheet id="sheet1" webSheetBean="#{webSheetNormal}"
 					maxRowsPerPage="40">
 				</tie:websheet>
 			</p:panel>
@@ -43,7 +43,7 @@
 		
 		<h:form id="form2">
 			<p:panel id="panel2" style="margin-bottom:10px;">
-				<tie:websheet id="sheet2" webSheetBean="#{webSheet2}"
+				<tie:websheet id="sheet2" webSheetBean="#{webSheetConfigured}"
 					showLineNumber="false">
 				</tie:websheet>
 			</p:panel>

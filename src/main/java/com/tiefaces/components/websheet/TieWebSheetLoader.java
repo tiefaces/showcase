@@ -334,7 +334,9 @@ public class TieWebSheetLoader implements Serializable {
 	public void loadWorkSheet(String tabName) {
 
 		int tabIndex = findTabIndexWithName(tabName);
-		parent.getWebFormTabView().setActiveIndex(tabIndex);
+		if (parent.getWebFormTabView() != null) {
+			parent.getWebFormTabView().setActiveIndex(tabIndex);
+		}	
 		parent.setCurrentTabName(tabName);
 		String sheetName = parent.getSheetConfigMap().get(tabName)
 				.getSheetName();

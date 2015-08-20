@@ -9,21 +9,17 @@ import com.tiefaces.components.websheet.TieWebSheetBean;
 
 @ManagedBean
 @ViewScoped
-public class WebSheet1 extends TieWebSheetBean {
+public class WebSheetConfigured extends TieWebSheetBean {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -516253181041018373L;
-
-	/**
-	 * 
-	 */
+	private static final long serialVersionUID = 1L;
 
 
 	@Override
 	public void initialLoad() {
-		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/CCAC2.xls");
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELIST.xls");
 		loadWebSheet(stream);		
 	}
 
