@@ -20,19 +20,14 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
-import javax.script.ScriptEngine;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.primefaces.context.RequestContext;
 
 import com.tiefaces.common.FacesUtility;
 import com.tiefaces.components.websheet.dataobjects.CellFormAttributes;
 import com.tiefaces.components.websheet.dataobjects.FacesCell;
-import com.tiefaces.components.websheet.dataobjects.FacesRow;
 import com.tiefaces.components.websheet.dataobjects.SheetConfiguration;
 
 public class TieWebSheetValidationHandler {
@@ -44,7 +39,7 @@ public class TieWebSheetValidationHandler {
     {
         if (debug)
         {
-            System.out.println("SRISQL: " + msg);
+            System.out.println("debug: " + msg);
         }
     }
 	public TieWebSheetValidationHandler(TieWebSheetBean parent) {

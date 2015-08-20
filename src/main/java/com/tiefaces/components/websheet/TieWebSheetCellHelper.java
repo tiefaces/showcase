@@ -52,7 +52,7 @@ public class TieWebSheetCellHelper {
 
 	private TieWebSheetBean parent = null;
 
-	private static boolean debug =true;
+	private static boolean debug =false;
 
 	private static void debug(String msg) {
 		if (debug) {
@@ -169,7 +169,6 @@ public class TieWebSheetCellHelper {
 
 	public void reCalc() {
 
-		debug("************ into formulaevaluator recalc");
 		parent.getFormulaEvaluator().clearAllCachedResultValues();
 		try {
 			parent.getFormulaEvaluator().evaluateAll();
@@ -976,25 +975,10 @@ public class TieWebSheetCellHelper {
 			int top = parent.getCurrentTopRow();
 			int left = parent.getCurrentLeftColumn();
 			List<FacesCell> cellList = parent.getBodyRows().get(rowIndex - top).getCells();
-			System.out.println(" cellist size = "+cellList.size()+" colindex = "+colIndex +" left = "+left);			
 			return parent.getBodyRows().get(rowIndex - top).getCells().get(colIndex - left);
 		}
 		return null;
 	}		
 	
-	
-	public static void main(String args[]) {
-		System.out.println(Double.parseDouble("1330455.98"));
-		try { //C:\Users\Joe\Desktop\Projects\Rec
-			TieWebSheetCellHelper me = new TieWebSheetCellHelper(); 
-			String oldFormula = "SUM(D17:D18)";
-			String newFormula = me.formulaRowRefactor(oldFormula, 14, 15);
-System.out.println(" new Formula ="+newFormula);			
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 }

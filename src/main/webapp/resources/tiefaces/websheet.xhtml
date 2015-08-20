@@ -47,13 +47,13 @@
 <cc:implementation>
 	<h:outputStylesheet name="tiefaces/websheet.css" />
 	<div id="#{cc.clientId}">
-
+<p:outputPanel id="websheet">
 		<div id="websheettabview">
-			<p:tabView scrollable="true" style="height: 35px;"
+			<p:tabView id = "websheettab" scrollable="true" style="height: 35px;"
 				binding="#{cc.attrs.webSheetBean.webFormTabView}"
 				rendered="#{cc.attrs.rendered}">
-				<p:ajax event="tabChange"
-					listener="#{cc.attrs.webSheetBean.onTabChange}" update="@form" />
+				<p:ajax event="tabChange" 
+					listener="#{cc.attrs.webSheetBean.onTabChange}" update="@parent" />
 				<c:forEach items="#{cc.attrs.webSheetBean.tabs}" var="tab"
 					varStatus="status">
 					<p:tab title="#{tab.title}" rendered="#{cc.attrs.rendered}" />
@@ -173,6 +173,9 @@
 				</p:column>
 			</p:dataTable>
 
+			<p:blockUI block="#{cc.clientId}" widgetVar="tiefaces_websheet_bui" trigger="#{cc.clientId}:websheettable">
+				<p:graphicImage name="tiefaces/img/ajaxloadingbar.gif"/>
+		    </p:blockUI>
 			<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
 				<p:commandButton value="Yes" type="button"
 					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
@@ -181,7 +184,7 @@
 			</p:confirmDialog>
 		</div>
 
-
+</p:outputPanel>
 
 	</div>
 </cc:implementation>

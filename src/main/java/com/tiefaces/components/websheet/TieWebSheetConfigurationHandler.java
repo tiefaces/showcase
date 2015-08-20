@@ -181,8 +181,7 @@ public class TieWebSheetConfigurationHandler {
 					tempStr = rowCell(
 							row,
 							schemaMap
-									.get(TieWebSheetConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_ALLOW_ADD_ROW))
-							.trim();
+									.get(TieWebSheetConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_ALLOW_ADD_ROW));
 					if (tempStr.equalsIgnoreCase("TRUE"))
 						sheetConfig.setBodyAllowAddRows(true);
 					else
@@ -191,8 +190,7 @@ public class TieWebSheetConfigurationHandler {
 					tempStr = rowCell(
 							row,
 							schemaMap
-									.get(TieWebSheetConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_INIT_ROWS))
-							.trim();
+									.get(TieWebSheetConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_INIT_ROWS));
 					if (tempStr.startsWith("#{")) {
 						tempStr = FacesUtility.evaluateExpression(tempStr,
 								String.class);
@@ -211,41 +209,24 @@ public class TieWebSheetConfigurationHandler {
 					sheetConfig.setMaxRowPerPage(80);
 					sheetConfig.setSavedRowsBefore(0);
 					sheetConfig.setSavedRowsAfter(0);
-					if (version >= 1) {
-						sheetConfig
-								.setFormWidth(rowCell(
-										row,
-										schemaMap
-												.get(TieWebSheetConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_FORM_WIDTH)));
-						tempStr = rowCell(
-								row,
-								schemaMap
-										.get(TieWebSheetConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_MAX_ROWS_PER_PAGE))
-								.trim();
-						if ((tempStr != null) && (!tempStr.isEmpty()))
-							if (Integer.parseInt(tempStr) > 0)
-								sheetConfig.setMaxRowPerPage(Integer
-										.parseInt(tempStr));
-						tempStr = rowCell(
-								row,
-								schemaMap
-										.get(TieWebSheetConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_SAVED_ROWS_BEFORE))
-								.trim();
-						if (!tempStr.isEmpty())
-							if (Integer.parseInt(tempStr) > 0)
-								sheetConfig.setSavedRowsBefore(Integer
-										.parseInt(tempStr));
-						tempStr = rowCell(
-								row,
-								schemaMap
-										.get(TieWebSheetConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_SAVED_ROWS_AFTER))
-								.trim();
-						if (!tempStr.isEmpty())
-							if (Integer.parseInt(tempStr) > 0)
-								sheetConfig.setSavedRowsAfter(Integer
-										.parseInt(tempStr));
-					} else {
+
+					if (version < 1) // version 0
+					{
 						sheetConfig.setFormWidth("100%;");
+					} else {
+						sheetConfig.setFormWidth(rowCell(row,schemaMap.get(TieWebSheetConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_FORM_WIDTH)));
+						tempStr = rowCell(row,schemaMap.get(TieWebSheetConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_MAX_ROWS_PER_PAGE)).trim();
+						if (!tempStr.isEmpty())
+							if (Integer.parseInt(tempStr)>0) sheetConfig.setMaxRowPerPage(Integer.parseInt(tempStr));
+
+						if (version >=2) {
+							tempStr = rowCell(row,schemaMap.get(TieWebSheetConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_SAVED_ROWS_BEFORE)).trim();
+							if (!tempStr.isEmpty())
+								if (Integer.parseInt(tempStr)>0) sheetConfig.setSavedRowsBefore(Integer.parseInt(tempStr));
+							tempStr = rowCell(row,schemaMap.get(TieWebSheetConstants.TIE_WEBSHEET_CONFIGURATION_SCHEMA_SAVED_ROWS_AFTER)).trim();
+							if (!tempStr.isEmpty())
+								if (Integer.parseInt(tempStr)>0) sheetConfig.setSavedRowsAfter(Integer.parseInt(tempStr));
+						}
 					}
 
 					sheetConfig
@@ -278,7 +259,6 @@ public class TieWebSheetConfigurationHandler {
 			if ((cell!=null) && (cell.getCellType() != Cell.CELL_TYPE_BLANK) ) 
 				break;
 		}
-		System.out.println(" verifyLastCell row = "+row.getRowNum() +" lastcellnum before = "+ lastCol +" stoppoint = "+stoppoint+" after = "+col);
 		return col;
 	}
 	// build configuration without configuration tab
@@ -295,7 +275,6 @@ public class TieWebSheetConfigurationHandler {
 			sheetConfig.setTabName(tabName);
 			sheetConfig.setSheetName(tabName);
 			int leftCol = sheet.getLeftCol();
-System.out.println(" tab name = "+tabName +" leftCol = "+leftCol);			
 			int lastRow = sheet.getLastRowNum();
 			int firstRow = 0;
 			int rightCol = 0;
@@ -303,10 +282,8 @@ System.out.println(" tab name = "+tabName +" leftCol = "+leftCol);
 				int firstCellNum = row.getFirstCellNum();
 				if ( firstCellNum >=0 && firstCellNum < leftCol ) {
 					leftCol = firstCellNum;
-					System.out.println(" tab name = "+tabName +" leftCol adjust = "+leftCol);			
 				}
 				if ( (row.getLastCellNum() -1) > rightCol) {
-					System.out.println(" buildConfigurationWithoutTab tabname ="+tabName+" row = "+row.getRowNum() +" lastcellnum = "+row.getLastCellNum());
 					int verifiedcol = verifyLastCell(row,rightCol);
 					if (verifiedcol > rightCol)	rightCol = verifiedcol;
 				}	
@@ -339,9 +316,11 @@ System.out.println(" tab name = "+tabName +" leftCol = "+leftCol);
 		return sheetConfigMap;
 	}
 
-	private String rowCell(Row row, int cn) {
-		return parent.getCellHelper().getCellValueWithFormat(
-				row.getCell(cn, Row.CREATE_NULL_AS_BLANK));
+	private String rowCell(Row row, Integer cn) {
+		String value = null;
+		if (cn != null) value = parent.getCellHelper().getCellValueWithFormat(row.getCell(cn));
+		if (value == null) value="";
+		return value.trim();
 	}
 
 	private void addAttributesToMap(Map<String, List<CellFormAttributes>> map,

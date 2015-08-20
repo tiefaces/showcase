@@ -14,8 +14,6 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Workbook;
 
 public final class TieWebSheetUtility {
 	
@@ -145,12 +143,9 @@ public final class TieWebSheetUtility {
 	public static int heightUnits2Pixel(short heightUnits) {
 		int pixels = (heightUnits / EXCEL_ROW_HEIGHT_FACTOR);
 		int offsetHeightUnits = heightUnits % EXCEL_ROW_HEIGHT_FACTOR;
-		System.out.println(" heightunit2pixel heightunit = "+heightUnits+" pixels1 = "+pixels+" offsetHeightUnits="+offsetHeightUnits);		
 		pixels += Math.round((float) offsetHeightUnits
 				/ ((float) EXCEL_COLUMN_WIDTH_FACTOR / UNIT_OFFSET_LENGTH / 2));
-		System.out.println(" pixels2 = "+pixels);		
 		pixels += (Math.floor(pixels / 14 )+1) * 4;
-		System.out.println(" Math.round (pixels / 14 ) = "+Math.round (pixels / 14 )+" final pixels = "+pixels);		
 		
 		return pixels;
 	}	
@@ -619,17 +614,6 @@ public final class TieWebSheetUtility {
 	   		}
 	   		return parsedLine;
 	   	}
-	   	private static int prevIndex(String str, char c) {
-	   		return prevIndex(str,c,str.length()-1);
-	   	}
-	   	private static int prevIndex(String str, char c, int fromIndex) {
-	   		for (int i = fromIndex; i >= 0; i--) {
-	   			if (str.charAt(i) == c) {
-	   				return i;
-	   			}
-	   		}
-	   		return -1;
-	   	}
 	   	public static int max(int a, int b) {
 	   		if (a > b) {
 	   			return a;
@@ -666,81 +650,6 @@ public final class TieWebSheetUtility {
 	   		} catch (Exception e) {
 	   			return "";
 	   		}
-	   	}
-	   	private static ArrayList<ArrayList<String>> reconcileArrays(ArrayList<ArrayList<String>> existingList, ArrayList<ArrayList<String>> additionList) {
-	   		if (existingList.size() == 0 && additionList.size() == 0) {
-	   			return existingList;
-	   		} else if (existingList.size() == 0) {
-	   			return additionList;
-	   		} else if (additionList.size() == 0) {
-	   			return existingList;
-	   		}
-	   		pp(existingList);
-	   		pp(additionList);
-	   		while (existingList.size() < additionList.size()) {
-	   			existingList.add(new ArrayList<String>());
-	   		}
-	   		int i, padDepth = getMaxEntryLength(existingList);
-	   		ArrayList<String> itr = null;
-	   		for (i = 0; i < existingList.size(); i++) {
-	   			itr = existingList.get(i);
-	   			while (itr.size() < padDepth) {
-	   				itr.add("");
-	   			}
-	   			existingList.get(i).addAll(additionList.get(i));
-	   		}
-	   		return existingList;
-	   	}
-	   	private static int getMaxEntryLength(ArrayList<ArrayList<String>> dArr) {
-	   		int i, depth = 0;
-	   		ArrayList<String> itr = null;
-	   		for (i = 0; i < dArr.size(); i++) {
-	   			itr = dArr.get(i);
-	   			depth = max(itr.size(),depth);
-	   		}
-	   		return depth;
-	   	}
-	   	private static int getLongestEntry(ArrayList<ArrayList<String>> dArr) {
-	   		int max = 0;
-	   		for (ArrayList<String> arr : dArr) {
-	   			max = max(getLongestEntry1D(arr),max);
-	   		}
-	   		return max;
-	   	}
-	   	private static int getLongestEntry1D(ArrayList<String> arr) {
-	   		int max = 0;
-	   		for (String s : arr) {
-	   			max = max(max,s.length());
-	   		}
-	   		return max;
-	   	}
-	   	private static void pp(ArrayList<ArrayList<String>> dArr) {
-	   		int depth = getMaxEntryLength(dArr), padTo = getLongestEntry(dArr);
-	   		System.out.println("Double Array of size " + dArr.size() + " " + depth);
-	   		ArrayList<String> itr;
-	   		for (int i = 0; i < dArr.size(); i++) {
-	   			itr = dArr.get(i);
-	   			System.out.print("|");
-	   			for (int j = 0; j < depth; j++) {
-	   				if (j < itr.size()) {
-	   					System.out.print(padString(itr.get(j),padTo));
-	   				} else {
-	   					System.out.print(padString("",padTo));
-	   				}
-	   				System.out.print("|");
-	   			}
-	   			System.out.println();
-	   		}
-	   	}
-	   	private static String padString(String str, int padTo) {
-	   		return padString(str,padTo-str.length(),' ',true);
-	   	}
-	   	private static String padString(String str, int padBy, char padChar,boolean padLeft) {
-	   		String padding = "";
-	   		for (int i = 0; i < padBy; i++) {
-	   			padding += padChar;
-	   		}
-	   		return padLeft ? padding + str : str + padding;
 	   	}
 	   	public static boolean isNumeric(String str) {
 	   		String s = str;

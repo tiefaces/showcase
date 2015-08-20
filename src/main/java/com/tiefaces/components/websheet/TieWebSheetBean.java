@@ -75,6 +75,7 @@ public class TieWebSheetBean extends TieWebSheetView implements Serializable {
 	private TieWebSheetDataHandler dataHandler = null;
 	private TieWebSheetValidationHandler validationHandler = null;
 
+	private String clientId = null;
 	private String webFormClientId = null;
 	private String excelType = null;
 
@@ -110,6 +111,14 @@ public class TieWebSheetBean extends TieWebSheetView implements Serializable {
 
 	public String getWebFormClientId() {
 		return webFormClientId;
+	}
+
+	public String getClientId() {
+		return clientId;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
 
 	public List<FacesRow> getBodyRows() {
@@ -244,18 +253,13 @@ public class TieWebSheetBean extends TieWebSheetView implements Serializable {
 	// }
 
 	public int loadWebSheet(InputStream inputStream) {
-		int openFlag = webSheetLoader.loadWorkbook(inputStream);
-		if (openFlag == 1 ) {
-			Map<String, Object> viewMap = FacesContext.getCurrentInstance().getViewRoot().getViewMap();
-			viewMap.put("currentWorkBook", this.getWb());			
-		}
-		return openFlag;
+		return  webSheetLoader.loadWorkbook(inputStream);
 	}
 
 	public void onTabChange(TabChangeEvent event) {
 		String tabName = event.getTab().getTitle();
 
-		int sheetId = findTabIndexWithName(tabName);
+		int sheetId = webSheetLoader.findTabIndexWithName(tabName);
 
 		if ((getSheetConfigMap() != null)
 				&& (sheetId < getSheetConfigMap().size()))
@@ -309,26 +313,26 @@ public class TieWebSheetBean extends TieWebSheetView implements Serializable {
 	// log.info("Web Form Exported file finished filename = "+filename);
 	// }
 
-	private int findTabIndexWithName(String tabname) {
-
-		for (int i = 0; i < tabs.size(); i++) {
-			if (tabs.get(i).getTitle().equalsIgnoreCase(tabname))
-				return i;
-		}
-		return -1;
-
-	}
+//	private int findTabIndexWithName(String tabname) {
+//
+//		for (int i = 0; i < tabs.size(); i++) {
+//			if (tabs.get(i).getTitle().equalsIgnoreCase(tabname))
+//				return i;
+//		}
+//		return -1;
+//
+//	}
 
 	private boolean preValidation(boolean passEmptyCheck) {
 
 		String tabName = validationHandler
 				.findFirstInvalidSheet(passEmptyCheck);
 		if (tabName != null) {
-			if (!currentTabName.equalsIgnoreCase(tabName)) {
-				int tabIndex = findTabIndexWithName(tabName);
-				webFormTabView.setActiveIndex(tabIndex);
-				// RequestContext.getCurrentInstance().update("frmSubmissionWebform:tabview");
-			}
+//			if (!currentTabName.equalsIgnoreCase(tabName)) {
+//				int tabIndex = findTabIndexWithName(tabName);
+//				webFormTabView.setActiveIndex(tabIndex);
+//				// RequestContext.getCurrentInstance().update("frmSubmissionWebform:tabview");
+//			}
 			webSheetLoader.loadWorkSheet(tabName);
 			// RequestContext.getCurrentInstance().update(WebFormHelper.getWebFormClientId());
 			return false;

@@ -39,18 +39,21 @@
 			<p:remoteCommand name="refreshafter"
 				actionListener="#{webSheetUpload.refreshAfter}"
 				update="@form"
-				oncomplete="PF('bui').hide();" />			
+				oncomplete="PF('bui').hide()"
+				 />			
 			<p:dialog modal="true" appendTo="@(body)" widgetVar="dlgAdd"
-				header="Load Excel File" width="620" height="500">
+				header="Load Excel File" width="450" height="160">
 				<p:fileUpload
 					fileUploadListener="#{webSheetUpload.doLoadFileAction}"
 					multiple="false" mode="advanced" auto="true" uploadLabel="Load"
-					process="@this" allowTypes="/(\.|\/)(xls|xlsx!xlsm)$/"
-					onstart="PF('bui').show()"
-					oncomplete="PF('dlgAdd').hide();refreshafter();">
+					process="@this" allowTypes="/(\.|\/)(xls|xlsx|xlsm)$/"
+					oncomplete="PF('bui').show();PF('dlgAdd').hide();refreshafter();">
 				</p:fileUpload>
 			</p:dialog>		
-			<p:blockUI block="form1" widgetVar="bui"/>	
+			<p:blockUI block="form1" widgetVar="bui">
+			LOADING<br />
+			<p:graphicImage library="showcase" name="img/ajaxloadingbar.gif" />
+			</p:blockUI>	
 			
 		</h:form>
 		

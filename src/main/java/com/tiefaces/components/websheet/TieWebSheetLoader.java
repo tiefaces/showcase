@@ -194,11 +194,21 @@ public class TieWebSheetLoader implements Serializable {
 	// return 0 -- No template
 	// return -1 -- error in open form
 	// return 1 -- success
+	
+	private void clearWorkbook() {
+		parent.setWb(null);
+		parent.setFormulaEvaluator(null);
+		parent.setDataFormatter(null);
+		parent.setHeaderRows(null);
+		parent.setBodyRows(null);
+		parent.setSheetConfigMap(null);
+		parent.setTabs(null);		
+	}
+	
 	public int loadWorkbook(InputStream fis) {
 
-		parent.setWb(null);
+		clearWorkbook();
 		try {
-
 			parent.setWb(WorkbookFactory.create(fis));
 			if (parent.getWb() instanceof XSSFWorkbook) {
 				parent.setExcelType(TieWebSheetConstants.EXCEL_2007_TYPE);
@@ -310,7 +320,23 @@ public class TieWebSheetLoader implements Serializable {
 		}
 	}
 
+	public int findTabIndexWithName(String tabname) {
+
+		for (int i = 0; i < parent.getTabs().size(); i++) {
+			if (parent.getTabs().get(i).getTitle().equalsIgnoreCase(tabname))
+				return i;
+		}
+		return -1;
+
+	}
+	
+	
 	public void loadWorkSheet(String tabName) {
+
+		int tabIndex = findTabIndexWithName(tabName);
+System.out.println("loadworksheet tabindex = "+tabIndex+" before setactiveindex = "+parent.getWebFormTabView().getActiveIndex());		
+		parent.getWebFormTabView().setActiveIndex(tabIndex);
+System.out.println("loadworksheet after setactiveindex = "+parent.getWebFormTabView().getActiveIndex());		
 		parent.setCurrentTabName(tabName);
 		String sheetName = parent.getSheetConfigMap().get(tabName)
 				.getSheetName();
@@ -337,6 +363,8 @@ public class TieWebSheetLoader implements Serializable {
 		//reset datatable current page to 1 
 		setDataTablePage(0);
 		saveObjs();
+		RequestContext.getCurrentInstance().execute("PF('tiefaces_websheet_bui').hide()");		
+		RequestContext.getCurrentInstance().update(parent.getClientId()+ ":websheettab");
 	}
 	
 	private void setDataTablePage(int first) {
@@ -425,7 +453,6 @@ public class TieWebSheetLoader implements Serializable {
 		int left = sheetConfig.getBodyCellRange().getLeftCol();
 		int right = sheetConfig.getBodyCellRange().getRightCol();
 
-System.out.println(" *********** loadbodyrows sheetConfig = "+sheetConfig);		
 		String sheetName = sheetConfig.getSheetName();
 		Sheet sheet1 = parent.getWb().getSheet(sheetName);
 
