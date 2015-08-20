@@ -34,7 +34,7 @@
 				styleClass="commandExButton" update="@this" />
 				
 			<tie:websheet id="sheet1" webSheetBean="#{webSheetUpload}"
-				maxRowsPerPage="40">
+				maxRowsPerPage="30">
 			</tie:websheet>
 			<p:remoteCommand name="refreshafter"
 				actionListener="#{webSheetUpload.refreshAfter}"
@@ -42,7 +42,7 @@
 				oncomplete="PF('bui').hide()"
 				 />			
 			<p:dialog modal="true" appendTo="@(body)" widgetVar="dlgAdd"
-				header="Load Excel File" width="450" height="160">
+				header="Load Excel File" width="480" height="160">
 				<p:fileUpload
 					fileUploadListener="#{webSheetUpload.doLoadFileAction}"
 					multiple="false" mode="advanced" auto="true" uploadLabel="Load"

@@ -334,9 +334,7 @@ public class TieWebSheetLoader implements Serializable {
 	public void loadWorkSheet(String tabName) {
 
 		int tabIndex = findTabIndexWithName(tabName);
-System.out.println("loadworksheet tabindex = "+tabIndex+" before setactiveindex = "+parent.getWebFormTabView().getActiveIndex());		
 		parent.getWebFormTabView().setActiveIndex(tabIndex);
-System.out.println("loadworksheet after setactiveindex = "+parent.getWebFormTabView().getActiveIndex());		
 		parent.setCurrentTabName(tabName);
 		String sheetName = parent.getSheetConfigMap().get(tabName)
 				.getSheetName();
@@ -363,7 +361,6 @@ System.out.println("loadworksheet after setactiveindex = "+parent.getWebFormTabV
 		//reset datatable current page to 1 
 		setDataTablePage(0);
 		saveObjs();
-		RequestContext.getCurrentInstance().execute("PF('tiefaces_websheet_bui').hide()");		
 		RequestContext.getCurrentInstance().update(parent.getClientId()+ ":websheettab");
 	}
 	

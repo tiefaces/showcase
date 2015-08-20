@@ -50,7 +50,7 @@
 <p:outputPanel id="websheet">
 		<div id="websheettabview">
 			<p:tabView id = "websheettab" scrollable="true" style="height: 35px;"
-				binding="#{cc.attrs.webSheetBean.webFormTabView}"
+				binding="#{cc.attrs.webSheetBean.webFormTabView}" 
 				rendered="#{cc.attrs.rendered}">
 				<p:ajax event="tabChange" 
 					listener="#{cc.attrs.webSheetBean.onTabChange}" update="@parent" />
@@ -173,7 +173,7 @@
 				</p:column>
 			</p:dataTable>
 
-			<p:blockUI block="#{cc.clientId}" widgetVar="tiefaces_websheet_bui" trigger="#{cc.clientId}:websheettable">
+			<p:blockUI block="#{cc.clientId}:websheet" widgetVar="tiefaces_websheet_bui" trigger="#{cc.clientId}:websheettab #{cc.clientId}:websheettable">
 				<p:graphicImage name="tiefaces/img/ajaxloadingbar.gif"/>
 		    </p:blockUI>
 			<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
