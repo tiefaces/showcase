@@ -1,3 +1,8 @@
+.logoWrapper {
+	background: url(#{resource['layout/img/header_bg.png']}) ;
+	text-align: center; 
+}
+
 #contentTitle {
 	font-size: 1.3em;
 }

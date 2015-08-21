@@ -20,7 +20,7 @@ body .ui-widget {
 
 body .ui-widget-header {
 	color: #fff;
-	background: #333;
+	background: url(#{resource['layout/img/header_bg.png']});
 	text-shadow: none;
 }
 
@@ -36,7 +36,6 @@ body .ui-widget-content a code {
 }
 
 body .wrapped {
-	width: 1050px;
 	margin: 0 auto;
 	border: 0;
 	color: inherit;
@@ -46,7 +45,6 @@ body .wrapped {
 h1, h2, h3, h4, h5, h6 {
 	margin: 10px 0;
 	font-weight: 700;
-	color: #222;
 	font-family: 'Lucida Grande', 'Calibri', Helvetica, Arial, sans-serif;
 	letter-spacing: -1px;
 }
@@ -85,13 +83,18 @@ code,
 	background: #333;
 }
 
+#logo-wrapper {
+	background: url(#{resource['layout/img/header_bg.png']}) ;
+	text-align: center; 
+}
+
 #header {
-	padding: 50px 10px 30px;
+	padding: 5px 0;
 }
 
 #header a.logo {
 	float: left;
-	margin-right: 1em;
+	margin-left: 10px;
 }
 
 #header h1 {
@@ -112,7 +115,7 @@ code,
 }
 
 #content {
-	float: right;
+	float: left;
 	width: 750px;
 }
 

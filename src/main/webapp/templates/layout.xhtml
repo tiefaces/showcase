@@ -34,59 +34,43 @@
 	<h:body>
 		<h:outputStylesheet library="layout" name="css/layout.css" />
 
-		<div id="header-wrapper">
+		<div id="logo-wrapper">
 			<div id="header" class="wrapped">
 				<a href="#{request.contextPath}/" class="logo">
-					<h:graphicImage library="layout" name="img/tiefaces1.png" alt="logo" width="90" height="90" />
+					<h:graphicImage library="layout" name="img/tiefaces1.png" alt="logo" width="45" height="45" />
 				</a>
 				<h1>TieFaces Showcase <h:outputText value="SNAPSHOT" styleClass="snapshot" rendered="#{app.snapshot}" /></h1>
-				<h2> </h2>
 			</div>
 		</div>
 
 		<div id="content-wrapper">
 			<div class="wrapped ui-helper-clearfix">
+				<p:panel id="menu" styleClass="wrapped">
+				    <p:menu>
+				        <p:submenu label="About Tiefaces">
+				            <p:menuitem value="What is TieFaces?" outcome="/index"  />
+				            <p:menuitem value="Project home page" outcome="/projecthome" />
+				            <p:menuitem value="What's new in TieFaces #{_tieFacesVersion}?" outcome="/whatsnew" />
+				            <p:menuitem value="Download" outcome="/download" />
+				        </p:submenu>
+				        <p:submenu label="Web Sheet">
+				            <p:menuitem value="Over View" outcome="/showcase/sheet/WebSheetOverView"  />
+				            <p:menuitem value="Try it by yourself" outcome="/showcase/sheet/WebSheetUpload"  />
+				        </p:submenu>
+				        <p:submenu label="Others">
+				            <p:menuitem value="Locale Switcher" outcome="/showcase/common/LocaleSwitcher"  />
+				            <p:menuitem value="Table Lookup" outcome="/showcase/common/TableLookup"  />
+				            <p:menuitem value="Dialog Lookup" outcome="/showcase/common/DialogLookup"  />
+				        </p:submenu>
+				    </p:menu>				
+				</p:panel>
+				
 				<p:panel id="content" styleClass="wrapped">
 					<h2 id="contentTitle"><ui:insert name="contentTitle">#{page.current.title}</ui:insert></h2>
 					<ui:insert name="content" />
 				</p:panel>
-				<p:panel id="menu" styleClass="wrapped">
-					<p:panel header="Tiefaces">
-						<ul>
-							<li><a href="#{request.contextPath}/" class="#{view.viewId == '/index.xhtml' ? 'active' : ''}">What is TieFaces?</a></li>
-							<li><a href="#{request.contextPath}/projecthome.xhtml" class="#{view.viewId == '/projecthome.xhtml' ? 'active' : ''}">Project home page</a></li>
-							<li><a href="#{request.contextPath}/whatsnew.xhtml" class="#{view.viewId == '/whatsnew.xhtml' ? 'active' : ''}">What's new in TieFaces #{_tieFacesVersion}?</a></li>
-							<li><a href="#{request.contextPath}/download.xhtml" class="#{view.viewId == '/download.xhtml' ? 'active' : ''}">Download</a></li>
-						</ul>
-					</p:panel>
-					<p:panel  header="Web Sheet">
-						<ul>
-                            <li><a href="#{request.contextPath}/showcase/sheet/WebSheetOverView.xhtml">Over View</a></li>
-						</ul>
-						<ul>
-                            <li><a href="#{request.contextPath}/showcase/sheet/WebSheetUpload.xhtml">Try it by yourself</a></li>
-						</ul>
-					</p:panel>
-					<p:panel  header="Common">
-						<ul>
-                            <li><a href="#{request.contextPath}/showcase/common/LocaleSwitcher.xhtml">Locale Switcher</a></li>
-						</ul>
-						<ul>
-                            <li><a href="#{request.contextPath}/showcase/common/TableLookup.xhtml">Table Lookup</a></li>
-						</ul>
-						<ul>
-                            <li><a href="#{request.contextPath}/showcase/common/DialogLookup.xhtml">Dialog Lookup</a></li>
-						</ul>
-					</p:panel>
-				</p:panel>
+				
 			</div>
-		</div>
-
-		<div id="footer-wrapper">
-			<p:panel id="footer" styleClass="wrapped">
-				<h3>Powered by</h3>
-				<p>#{app.poweredBy}</p>
-			</p:panel>
 		</div>
 
 		<h:outputScript target="body">
