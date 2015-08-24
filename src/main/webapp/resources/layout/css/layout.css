@@ -30,7 +30,13 @@ body .ui-panelmenu-header a {
 	background-color: #1d4575 !important;
 	border: none;
 	text-shadow: none !important;
+	line-height: 1em !important;
 }	
+
+#menu a {
+    color: #222;
+    display: block;
+}
 
 body .ui-widget-header .ui-state-default,
 body .ui-widget-content .ui-state-default {
@@ -210,7 +216,6 @@ code,
 
 #menu a {
 	display: block;
-	line-height: 1.5em;
 	color: #222;
 }
 
