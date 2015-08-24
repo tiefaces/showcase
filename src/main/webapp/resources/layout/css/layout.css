@@ -20,9 +20,17 @@ body .ui-widget {
 
 body .ui-widget-header {
 	color: #fff;
-	background: url(#{resource['layout/img/header_bg.png']});
+	background-color: #1d4575;
+	border: none;
 	text-shadow: none;
 }
+
+body .ui-panelmenu-header a {
+	color: #fff  !important;
+	background-color: #1d4575 !important;
+	border: none;
+	text-shadow: none !important;
+}	
 
 body .ui-widget-header .ui-state-default,
 body .ui-widget-content .ui-state-default {
@@ -84,7 +92,7 @@ code,
 }
 
 #logo-wrapper {
-	background: url(#{resource['layout/img/header_bg.png']}) ;
+	background-color: #1d4575;
 	text-align: center; 
 }
 
@@ -167,7 +175,6 @@ code,
 
 #menu {
 	float: left;
-	width: 275px;
 	margin: 0;
 }
 

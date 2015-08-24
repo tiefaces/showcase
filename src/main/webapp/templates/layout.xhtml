@@ -45,24 +45,31 @@
 
 		<div id="content-wrapper">
 			<div class="wrapped ui-helper-clearfix">
-				<p:panel id="menu" styleClass="wrapped">
-				    <p:menu>
-				        <p:submenu label="About Tiefaces">
-				            <p:menuitem value="Welcome to TieFaces" outcome="/index"  />
-				            <p:menuitem value="What's new in TieFaces #{_tieFacesVersion}?" outcome="/whatsnew" />
-				            <p:menuitem value="Download" outcome="/download" />
+			<p:panel id="menu"  styleClass="wrapped"> 
+				    <p:panelMenu style="width:275px" >
+				        <p:submenu label="About Tiefaces" expanded="True">
+				            <p:menuitem value="Welcome to TieFaces" icon="ui-icon-heart" outcome="/index"  />
+				            <p:menuitem value="What's new" icon="ui-icon-help" outcome="/whatsnew" />
+				            <p:menuitem value="Download" icon="ui-icon-arrowthick-1-s" outcome="/download" />
 				        </p:submenu>
-				        <p:submenu label="Web Sheet">
-				            <p:menuitem value="Over View" outcome="/showcase/sheet/WebSheetOverView"  />
-				            <p:menuitem value="Try it by yourself" outcome="/showcase/sheet/WebSheetUpload"  />
+				        <p:submenu label="Web Sheet"  expanded="True">
+				            <p:menuitem value="Over View" icon="ui-icon-info" outcome="/showcase/sheet/WebSheetOverView"  />
+				            <p:submenu label="Things you can do" >
+					            <p:menuitem value="1. Viewer" style="margin-left:24px" outcome="/projecthome.xhtml"  />
+					            <p:menuitem value="2. Reports" style="margin-left:24px" outcome="/projecthome.xhtml"  />
+					            <p:menuitem value="3. Data Input" style="margin-left:24px" outcome="/projecthome.xhtml"  />
+					            <p:menuitem value="4. Dynamic Rows" style="margin-left:24px" outcome="/projecthome.xhtml"  />
+					            <p:menuitem value="5. Validation" style="margin-left:24px" outcome="/projecthome.xhtml"  />
+				            </p:submenu>
+				            <p:menuitem value="Try it by yourself" icon="ui-icon-person" outcome="/showcase/sheet/WebSheetUpload"  />
 				        </p:submenu>
-				        <p:submenu label="Others">
-				            <p:menuitem value="Locale Switcher" outcome="/showcase/common/LocaleSwitcher"  />
-				            <p:menuitem value="Table Lookup" outcome="/showcase/common/TableLookup"  />
-				            <p:menuitem value="Dialog Lookup" outcome="/showcase/common/DialogLookup"  />
+				        <p:submenu label="Others"   expanded="True">
+				            <p:menuitem value="Locale Switcher" icon="ui-icon-transfer-e-w" outcome="/showcase/common/LocaleSwitcher"  />
+				            <p:menuitem value="Table Lookup" icon="ui-icon-search" outcome="/showcase/common/TableLookup"  />
+				            <p:menuitem value="Dialog Lookup" icon="ui-icon-newwin" outcome="/showcase/common/DialogLookup"  />
 				        </p:submenu>
-				    </p:menu>				
-				</p:panel>
+				    </p:panelMenu>				
+		  		</p:panel> 
 				
 				<p:panel id="content" styleClass="wrapped">
 					<h2 id="contentTitle"><ui:insert name="contentTitle">#{page.current.title}</ui:insert></h2>
