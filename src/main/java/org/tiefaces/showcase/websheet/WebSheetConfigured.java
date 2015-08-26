@@ -11,11 +11,7 @@ import com.tiefaces.components.websheet.TieWebSheetBean;
 @ViewScoped
 public class WebSheetConfigured extends TieWebSheetBean {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
 
 	@Override
 	public void initialLoad() {

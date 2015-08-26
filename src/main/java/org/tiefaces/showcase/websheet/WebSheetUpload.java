@@ -24,7 +24,7 @@ import com.tiefaces.components.websheet.TieWebSheetBean;
 @ViewScoped
 public class WebSheetUpload extends TieWebSheetBean {
 
-	private static final long serialVersionUID = -8713619711393448747L;
+	private static final long serialVersionUID = 1L;
 
 	public void doLoadFileAction(FileUploadEvent event)    {
 		

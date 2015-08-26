@@ -1,0 +1,39 @@
+<ui:composition template="/templates/showcase.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:tie="http://java.sun.com/jsf/composite/tiefaces">
+
+	<ui:define name="meta">
+		<f:metadata>
+			<f:attribute name="api.path" value="common/TableLookup" />
+			<f:attribute name="src.paths"
+				value="classes/org/tiefaces/showcase/websheet/WebSheetViewer.java" />
+
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="description-extra">
+		<ui:include src="/includes/common/desc-websheetviewer.xhtml" />
+	</ui:define>
+
+
+	<ui:define name="demo">
+
+
+		<h3>How to use web sheet component as Excel viewer</h3>
+		
+		<p>Set attribute readOnly="true".</p>
+		<h:form id="form1">
+				
+			<tie:websheet id="sheet1" webSheetBean="#{webSheetViewer}"
+				maxRowsPerPage="30" readOnly="true">
+			</tie:websheet>
+			
+		</h:form>
+		
+	</ui:define>
+
+</ui:composition>

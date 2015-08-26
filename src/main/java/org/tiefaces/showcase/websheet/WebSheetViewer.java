@@ -9,13 +9,13 @@ import com.tiefaces.components.websheet.TieWebSheetBean;
 
 @ManagedBean
 @ViewScoped
-public class WebSheetNormal extends TieWebSheetBean {
+public class WebSheetViewer extends TieWebSheetBean {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void initialLoad() {
-		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELISTWITHOUT.xls");
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/Simple Budget Planner.xlsx");
 		loadWebSheet(stream);		
 	}
 

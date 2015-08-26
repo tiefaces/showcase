@@ -7,6 +7,11 @@ Place tasks for each release as planned, once completed, remove tasks and place 
 
 ## 0.1 (29-06-2015) ## {#todo_0.1}
 ### Fixes ###
+- use readonly attribute for viewer
+- Setup 100% style as default for old version template
+- Input data with actual value instead of formatted string
+- For null cell do not create blank cell instead use null as poicell in facescell and show blank on web
+- Determind user input data type before set as cell value
 - Fixed bug for load heading. Now support Row/Col span nicely
 - Change the way for loading body. For repeat type, populate the body row first, then assamble the datatable.
 - Now body also support Row/Col span 
@@ -29,18 +34,14 @@ Place tasks for each release as planned, once completed, remove tasks and place 
 
 # Others # {#todo_others}
 
-- use scanner to determind user input data type before set as cell value
-- for null cell do not create blank cell instead use null as poicell in facescell and show blank on web
+
+- allow only specify row number for header and body range. therefor when template expand columns, do not need to change configuration
+
+
 - create style array for web for saving memory
-- input data with actual value instead of formatted string
 
 - implement insert/delete row for repeat type form
 
-- think about change to cdi for memory issue
-
-- setup 100% style as default for old version template
-
- 
 - User px or percentage for column width depend on user's preference as current percentage doesn't work well in some cases.
 
 - form width not handled well
