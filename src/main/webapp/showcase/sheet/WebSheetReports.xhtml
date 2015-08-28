@@ -25,8 +25,8 @@
 
 		<h3>How to use web sheet component as web reporting tool</h3>
 
-		<p>Configure data source: use JSF EL (Expression Language) to
-			define data source in the configuration tab. e.g. .</p>
+		<p>Configure data source:</p>
+		<p>use JSF EL (Expression Language) to define data source in the configuration tab.</p>
 		<p>Set attribute readOnly="true".</p>
 		<h:form id="form1">
 			<p>Excel Template. Please check the data source configuration in
@@ -57,7 +57,12 @@
 				</p:column>
 			</p:dataTable>
 
-			<p>Results</p>
+			<p>Results
+			<p:commandButton id="cmdExportResult" value="Export the result to Excel"
+				ajax="false" actionListener="#{webSheetReports.doExport()}">
+				<p:fileDownload value="#{webSheetReports.exportFile}" />
+			</p:commandButton>
+			</p>
 			<tie:websheet id="sheet2" webSheetBean="#{webSheetReports}"
 				maxRowsPerPage="30" readOnly="true" showLineNumber="false">
 			</tie:websheet>
