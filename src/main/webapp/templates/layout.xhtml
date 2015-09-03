@@ -34,6 +34,9 @@
 	<h:body>
 		<h:outputStylesheet library="layout" name="css/layout.css" />
 
+<p:layout fullPage="true">
+ 
+    <p:layoutUnit position="north" size="55" style="border-width: 0px; margin: 0 0; padding: 0%;background-color: #1d4575;overflow:hidden;" gutter="0">
 		<div id="logo-wrapper">
 			<div id="header" class="wrapped">
 				<a href="#{request.contextPath}/" class="logo">
@@ -42,9 +45,18 @@
 				<h1>TieFaces Showcase <h:outputText value="SNAPSHOT" styleClass="snapshot" rendered="#{app.snapshot}" /></h1>
 			</div>
 		</div>
+    </p:layoutUnit>
+ 
+    <p:layoutUnit position="south" size="50" style="border-width: 0px; margin: 0 0; padding: 0%" gutter="0">
 
-		<div id="content-wrapper">
-			<div class="wrapped ui-helper-clearfix">
+	<div id="footer-wrapper">
+			<p:panel id="footer" styleClass="wrapped">
+				<p>Running on #{app.poweredBy}</p>
+			</p:panel>
+		</div>
+    </p:layoutUnit>
+ 
+    <p:layoutUnit position="west" size="250" style="border-width: 0px; margin: 0 0; padding: 0%" gutter="0">
 			<p:panel id="menu"  styleClass="wrapped"> 
 				    <p:panelMenu style="width:275px" >
 				        <p:submenu label="About Tiefaces" expanded="True">
@@ -58,7 +70,7 @@
 					            <p:menuitem value="1. Viewer" style="margin-left:24px" outcome="/showcase/sheet/WebSheetViewer"  />
 					            <p:menuitem value="2. Reports" style="margin-left:24px" outcome="/showcase/sheet/WebSheetReports"  />
 					            <p:menuitem value="3. Data Input" style="margin-left:24px" outcome="/showcase/sheet/WebSheetDataInput"  />
-					            <p:menuitem value="4. Dynamic Rows" style="margin-left:24px" outcome="/projecthome.xhtml"  />
+					            <p:menuitem value="4. Dynamic Rows" style="margin-left:24px" outcome="/showcase/sheet/WebSheetDynamicRows"  />
 					            <p:menuitem value="5. Validation" style="margin-left:24px" outcome="/projecthome.xhtml"  />
 				            </p:submenu>
 				            <p:menuitem value="Try it by yourself" icon="ui-icon-person" outcome="/showcase/sheet/WebSheetUpload"  />
@@ -70,6 +82,11 @@
 				        </p:submenu>
 				    </p:panelMenu>				
 		  		</p:panel> 
+    </p:layoutUnit>
+ 
+    <p:layoutUnit position="center" style="border-width: 0px; margin: 0 0; padding: 0%" gutter="0">
+		<div id="content-wrapper">
+			<div class="wrapped ui-helper-clearfix">
 				
 				<p:panel id="content" styleClass="wrapped">
 					<h2 id="contentTitle"><ui:insert name="contentTitle">#{page.current.title}</ui:insert></h2>
@@ -78,13 +95,23 @@
 				
 			</div>
 		</div>
+    </p:layoutUnit>
+ 
+</p:layout>
+
+
+
+
+
+
+
 
 		<h:outputScript target="body">
 			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-			ga('create', 'UA-29559297-3', 'auto');ga('send', 'pageview');
+			ga('create', 'UA-67145374-1', 'auto');ga('send', 'pageview');
 		</h:outputScript>
 	</h:body>
 </html>

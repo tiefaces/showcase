@@ -1,0 +1,48 @@
+<ui:composition template="/templates/showcase.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:tie="http://java.sun.com/jsf/composite/tiefaces">
+
+	<ui:define name="meta">
+		<f:metadata>
+			<f:attribute name="api.path" value="common/TableLookup" />
+			<f:attribute name="src.paths"
+				value="classes/org/tiefaces/showcase/websheet/WebSheetDynamicRows.java,classes/org/tiefaces/showcase/websheet/WebSheetDynamicRows_Config.java" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="description-extra">
+		<ui:include src="/includes/common/desc-websheetdynamicrows.xhtml" />
+	</ui:define>
+
+
+	<ui:define name="demo">
+
+		<h3>Dynamic Rows Input</h3>
+
+		<p>Configuration</p>
+		<p>Define "Form Body Type" as "Repeat".</p>
+		<p>Define "Allow ADD/DELETE ROW Type" as "TRUE".</p>
+		
+		<h:form id="form1">	
+			<p>Demo
+			<p:commandButton id="cmdExportResult" value="Export result to Excel"
+				ajax="false" actionListener="#{webSheetDynamicRows.doExport()}">
+				<p:fileDownload value="#{webSheetDynamicRows.exportFile}" />
+			</p:commandButton>
+			<p:commandButton id="cmdExportTemplate" value="Export template to Excel"
+				ajax="false" actionListener="#{webSheetDynamicRows_Config.doExport()}">
+				<p:fileDownload value="#{webSheetDynamicRows_Config.exportFile}" />
+			</p:commandButton>
+			</p>
+			<tie:websheet id="sheet2" webSheetBean="#{webSheetDynamicRows}"
+				maxRowsPerPage="30">
+			</tie:websheet>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

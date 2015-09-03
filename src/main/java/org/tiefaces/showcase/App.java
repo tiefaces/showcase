@@ -120,7 +120,7 @@ public class App {
 	}
 
 	private String initVersion() {
-		String version = "0.2.1";
+		String version = "0.2.3";
 		return version.replaceAll("-\\d+$", "");
 	}
 
@@ -133,10 +133,10 @@ public class App {
 	}
 
 	private String initPoweredBy() {
-		return String.format("%s%nTieFaces %s%nPrimeFaces %s%n",
+		return String.format("%s   TieFaces %s   PrimeFaces %s",
 			"Mojarra-2.2.8",
 			getVersion(),
-			"5.1");
+			"5.2");
 	}
 
 	public boolean isSnapshot() {
