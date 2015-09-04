@@ -10,7 +10,7 @@
 		<f:metadata>
 			<f:attribute name="api.path" value="common/TableLookup" />
 			<f:attribute name="src.paths"
-				value="classes/org/tiefaces/showcase/websheet/WebSheetDataInput.java" />
+				value="classes/org/tiefaces/showcase/websheet/WebSheetDataInput.java,classes/org/tiefaces/showcase/websheet/WebSheetDataInput_Config.java" />
 
 		</f:metadata>
 	</ui:define>
@@ -29,9 +29,21 @@
 		<p>Lock all other cells which only for display.</p>
 		<h:form id="form1">
 
+
 			<tie:websheet id="sheet1" webSheetBean="#{webSheetDataInput}"
 				maxRowsPerPage="30" >
 			</tie:websheet>
+			
+			<p>
+			<p:commandButton id="cmdExportResult" value="Export result to Excel"
+				ajax="false" actionListener="#{webSheetDataInput.doExport()}">
+				<p:fileDownload value="#{webSheetDataInput.exportFile}" />
+			</p:commandButton>
+			<p:commandButton id="cmdExportTemplate" value="Export template to Excel"
+				ajax="false" actionListener="#{webSheetDataInput_Config.doExport()}">
+				<p:fileDownload value="#{webSheetDataInput_Config.exportFile}" />
+			</p:commandButton>
+			</p>			
 
 		</h:form>
 

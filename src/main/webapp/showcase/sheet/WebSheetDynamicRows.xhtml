@@ -28,7 +28,11 @@
 		<p>Define "Allow ADD/DELETE ROW Type" as "TRUE".</p>
 		
 		<h:form id="form1">	
-			<p>Demo
+
+			<tie:websheet id="sheet2" webSheetBean="#{webSheetDynamicRows}"
+				maxRowsPerPage="30">
+			</tie:websheet>
+			<p>
 			<p:commandButton id="cmdExportResult" value="Export result to Excel"
 				ajax="false" actionListener="#{webSheetDynamicRows.doExport()}">
 				<p:fileDownload value="#{webSheetDynamicRows.exportFile}" />
@@ -37,10 +41,7 @@
 				ajax="false" actionListener="#{webSheetDynamicRows_Config.doExport()}">
 				<p:fileDownload value="#{webSheetDynamicRows_Config.exportFile}" />
 			</p:commandButton>
-			</p>
-			<tie:websheet id="sheet2" webSheetBean="#{webSheetDynamicRows}"
-				maxRowsPerPage="30">
-			</tie:websheet>
+			</p>			
 		</h:form>
 
 	</ui:define>
