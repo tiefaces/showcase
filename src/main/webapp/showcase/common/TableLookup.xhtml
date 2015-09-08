@@ -26,8 +26,8 @@
 
 		<h:form>
 			<tie:tablelookup lookupBean="#{itemSearchBean}"
-				searchButtonText="Search" searchButtonStyle="font-size: 12px;">
-			</tie:tablelookup>
+				searchButtonText="Search" searchButtonStyle="font-size: 12px;"
+				style="width:750px;"/>
 		</h:form>
 
 		<h3>Include paginator and export functions</h3>
@@ -36,7 +36,7 @@
 			<tie:tablelookup lookupBean="#{itemSearchBean}"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
 				paginator="true" rows="10" searchButtonText="Search"
-				searchButtonStyle="font-size: 12px;">
+				searchButtonStyle="font-size: 12px;" style="width:750px;">
 
 				<f:facet name="{Exporters}">
 					<h:commandLink>
@@ -62,39 +62,7 @@
 
 			</tie:tablelookup>
 		</h:form>
-		
-		<h3>Pop up window with Lookup</h3>
 
-		<h:form id="form">
-			<p:panel id="panel" header="Item" style="margin-bottom:10px;">
-				<h:panelGrid columns="2" cellpadding="5">
-					<p:outputLabel value="Code:" />
-					<p:outputLabel
-						value="#{itemSearchBean.selectedItem.code}" />
-					<p:outputLabel value="Name:" />
-					<p:outputLabel
-						value="#{itemSearchBean.selectedItem.name}" />
-					<p:outputLabel value="Description:" />
-					<p:outputLabel
-						value="#{itemSearchBean.selectedItem.description}" />
-					<p:outputLabel value="Price:" />
-					<p:outputLabel
-						value="#{itemSearchBean.selectedItem.price}" />
-				</h:panelGrid>
-			</p:panel>
-
-			<p:commandButton value="Search"
-				onclick="PF('tielookupDialog').show();" />
-
-			<p:dialog header="Search/Choose Item" showEffect="fade"
-				widgetVar="tielookupDialog" modal="true" width="780" height="400">
-				<tie:tablelookup lookupBean="#{itemSearchBean}"
-					searchButtonText="Search" searchButtonStyle="font-size: 12px;"
-					showSelectButton="true" selectButtonText="Select"
-					selectButtonStyle="font-size: 12px;">
-				</tie:tablelookup>
-			</p:dialog>
-		</h:form>
 	</ui:define>
 
 </ui:composition>

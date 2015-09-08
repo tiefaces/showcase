@@ -43,9 +43,9 @@ public class ItemSearchHelper {
 		Item item = (Item) searchItem;
 		//create sql where clause
 		String whereclause="";
-		whereclause = assembleWhereClause(whereclause, " code like ''%{0}%''", item.getCode());
-		whereclause = assembleWhereClause(whereclause, " name like ''%{0}%''", item.getName());
-		whereclause = assembleWhereClause(whereclause, " description like ''%{0}%''", item.getDescription());
+		whereclause = assembleWhereClause(whereclause, " upper(code) like upper(''%{0}%'')", item.getCode());
+		whereclause = assembleWhereClause(whereclause, " upper(name) like upper(''%{0}%'')", item.getName());
+		whereclause = assembleWhereClause(whereclause, " upper(description) like upper(''%{0}%'')", item.getDescription());
 		if (item.getPrice() != null) {
 		whereclause = assembleWhereClause(whereclause, " price = {0}", item.getPrice().toString());
 		}

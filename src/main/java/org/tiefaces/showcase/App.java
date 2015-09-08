@@ -26,18 +26,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
-import com.tiefaces.common.FacesUtility;
 
+import com.tiefaces.common.FacesUtility;
 import com.tiefaces.components.common.sql.SQLRunner;
 
 
@@ -63,43 +67,12 @@ public class App {
 		snapshot = version.contains("-SNAPSHOT") || version.contains("-RC");
 		poweredBy = initPoweredBy();
 		initPage();
-		testds();
+		initScheduler();
 	}
 	
 	//For file: new FileReader (inputfile)
 	//FOR Inputstream:  new InputStreamReader( inputfile, "UTF8")
-	private String readFile( Reader  input ) throws IOException {
-	    BufferedReader reader = new BufferedReader( input);
-	    String         line = null;
-	    StringBuilder  stringBuilder = new StringBuilder();
-	    String         ls = System.getProperty("line.separator");
-
-	    while( ( line = reader.readLine() ) != null ) {
-	        stringBuilder.append( line );
-	        stringBuilder.append( ls );
-	    }
-	    return stringBuilder.toString();
-	}
 	
-	private void testds() {
-		
-		Connection conn = null;
-		try {
-
-		    Context initialContext = new InitialContext();
-		    DataSource datasource = (DataSource)initialContext.lookup("java:jboss/datasources/ExampleDS");
-		    conn = datasource.getConnection();
-
-			String sql = readFile( new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("sql/pricestable.sql"), "UTF8"));
-			SQLRunner runner = new SQLRunner(conn, false);
-			String results = runner.runSQLs(sql);
-	        System.out.println("sql runner results = "+results);
-		} catch (Exception ex) {
-		    System.out.println("Exception: " + ex + ex.getMessage());
-		} finally {
-			try { conn.close(); } catch (Exception e) { /* ignored */ }
-		}
-	}
 	
 	
 	private void initPage() {
@@ -118,7 +91,32 @@ public class App {
 			}
 		}
 	}
+	
+	private ScheduledExecutorService scheduler;	
+	private void initScheduler() {
+        scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(new DbJobs(getJNDIDataSource()), 0, 5, TimeUnit.MINUTES);    	
+	}
 
+	   private   DataSource getJNDIDataSource(){
+	        String DATASOURCE_CONTEXT = "java:jboss/datasources/ExampleDS";
+	        
+	        DataSource datasource = null;
+	        try {
+	System.out.println(" start look up datasources");        	
+	          Context initialContext = new InitialContext();
+	          datasource = (DataSource)initialContext.lookup(DATASOURCE_CONTEXT);
+	System.out.println("datasources = "+datasource);        	
+
+	          if (datasource == null) {
+	            System.out.println("Failed to lookup datasource.");
+	          }
+	        }
+	        catch ( NamingException ex ) {
+	          System.out.println("Cannot get connection: " + ex);
+	        }
+	        return datasource;
+	      }	
 	private String initVersion() {
 		String version = "0.2.3";
 		return version.replaceAll("-\\d+$", "");
