@@ -95,7 +95,7 @@ public class App {
 	private ScheduledExecutorService scheduler;	
 	private void initScheduler() {
         scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(new DbJobs(getJNDIDataSource()), 0, 5, TimeUnit.MINUTES);    	
+        scheduler.scheduleAtFixedRate(new DbJobs(getJNDIDataSource()), 0, 20, TimeUnit.MINUTES);    	
 	}
 
 	   private   DataSource getJNDIDataSource(){
@@ -103,10 +103,8 @@ public class App {
 	        
 	        DataSource datasource = null;
 	        try {
-	System.out.println(" start look up datasources");        	
 	          Context initialContext = new InitialContext();
 	          datasource = (DataSource)initialContext.lookup(DATASOURCE_CONTEXT);
-	System.out.println("datasources = "+datasource);        	
 
 	          if (datasource == null) {
 	            System.out.println("Failed to lookup datasource.");

@@ -49,7 +49,6 @@ public class DbJobs implements Runnable {
 			String sql = readFile( new InputStreamReader(this.getClass().getClassLoader().getResourceAsStream("sql/pricestable.sql"), "UTF8"));
 			SQLRunner runner = new SQLRunner(connection, false);
 			String results = runner.runSQLs(sql);
-	        System.out.println("sql runner results = "+results);
         } catch (Exception ex) {
 			// TODO Auto-generated catch block
 			ex.printStackTrace();
