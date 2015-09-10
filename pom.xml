@@ -112,7 +112,7 @@
 	    <dependency>
 	         <groupId>tiefaces</groupId>
 	         <artifactId>tiefaces</artifactId>
-	         <version>0.2.4</version>
+	         <version>0.2.5</version>
 	      </dependency>		
 	</dependencies>
 	

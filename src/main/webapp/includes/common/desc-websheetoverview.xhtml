@@ -1,5 +1,6 @@
 <ui:composition
 	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 >
 	<h3>What is TieFaces WebSheet</h3>
@@ -8,6 +9,17 @@
 	
 	Web sheet is not intend to become online document tools like Google Docs, instead it want to become a gateway or transformer of Excel sheets to Web forms. Basically the Excel sheets are treated as templates, with some restrictions (e.g. only unlocked cell become editable), it's transformed to web sheet with same look and feels and behaviors in Excel. With some configuration, we can even go further, e.g. populate from database, generate reports based on data etc. 
 	</p>
+	<h3>The Advantage</h3>
+	<p>
+	One headache in application development is clients may require to change presentation tier from time to time (this include forms and reports). Normally this will involve code changes even the middle tire remain the same.
+	</p>
+	<p>
+	Web Sheet separate the presentation tier's modification from the application changes. Basically you can design/change any format of forms and reports in Excel then save it to your repository (e.g. databases). Web Sheet will pick up your changes from there without application code changes. 	
+	</p>
+	<p>
+	<h:graphicImage library="showcase" name="img/websheet.jpg" alt="web sheet advantage" width="640" height="299" />
+	</p>
+	
 	<h3>High Lights</h3>
 	<ul>
 		<li>Bring Excel Spread Sheets online as web forms.</li>

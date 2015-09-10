@@ -1,0 +1,50 @@
+<ui:composition template="/templates/showcase.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:tie="http://java.sun.com/jsf/composite/tiefaces">
+
+	<ui:define name="meta">
+		<f:metadata>
+			<f:attribute name="api.path" value="common/TableLookup" />
+			<f:attribute name="src.paths"
+				value="classes/org/tiefaces/showcase/websheet/WebSheetValidation.java,classes/org/tiefaces/showcase/websheet/WebSheetValidation_Config.java" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="description-extra">
+		<ui:include src="/includes/common/desc-websheetvalidation.xhtml" />
+	</ui:define>
+
+
+	<ui:define name="demo">
+
+		<h3>Validation</h3>
+
+		<p>Configuration</p>
+		<p>Define "Attributes Type" as "Check".</p>
+		<p>Define "Attributes Value" as validation rule.</p>
+		<p>Define "Attributes Error Messages" as error messages.</p>
+		
+		<h:form id="form1">	
+
+			<tie:websheet id="sheet2" webSheetBean="#{webSheetValidation}"
+				maxRowsPerPage="30">
+			</tie:websheet>
+			<p>
+			<p:commandButton id="cmdExportResult" value="Export result to Excel"
+				ajax="false" actionListener="#{webSheetValidation.doExport()}">
+				<p:fileDownload value="#{webSheetValidation.exportFile}" />
+			</p:commandButton>
+			<p:commandButton id="cmdExportTemplate" value="Export template to Excel"
+				ajax="false" actionListener="#{webSheetValidation_Config.doExport()}">
+				<p:fileDownload value="#{webSheetValidation_Config.exportFile}" />
+			</p:commandButton>
+			</p>			
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>
