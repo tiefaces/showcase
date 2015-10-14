@@ -99,7 +99,7 @@ public class App {
 	}
 
 	   private   DataSource getJNDIDataSource(){
-	        String DATASOURCE_CONTEXT = "java:jboss/datasources/ExampleDS";
+	        String DATASOURCE_CONTEXT = "java:jboss/datasources/MySQLDS";
 	        
 	        DataSource datasource = null;
 	        try {

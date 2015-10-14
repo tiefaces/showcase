@@ -53,7 +53,7 @@ public class ItemSearchHelper {
 		Connection conn = null;
 		try {
 		    Context initialContext = new InitialContext();
-		    DataSource datasource = (DataSource)initialContext.lookup("java:jboss/datasources/ExampleDS");
+		    DataSource datasource = (DataSource)initialContext.lookup("java:jboss/datasources/MySQLDS");
 		    conn = datasource.getConnection();
 		    Statement stmt = conn.createStatement() ;
 		    String query = "select * from pricestable "+whereclause ;
