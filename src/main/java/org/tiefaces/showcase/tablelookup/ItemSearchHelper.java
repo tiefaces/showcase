@@ -66,8 +66,12 @@ public class ItemSearchHelper {
 				 dbitem.setPrice(rs.getDouble(4));
 				 result.add(dbitem);
 		    }
+			rs.close();
+			stmt.close();
 		} catch (Exception ex) {
 		    System.out.println("Exception: " + ex + ex.getMessage());
+		} finally {
+			try { conn.close(); } catch (Exception e) { /* ignored */ }
 		}		
 		return result;
 	}	
