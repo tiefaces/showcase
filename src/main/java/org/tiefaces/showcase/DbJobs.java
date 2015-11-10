@@ -12,7 +12,9 @@ import javax.sql.DataSource;
 
 import com.tiefaces.components.common.sql.SQLRunner;
 
-public class DbJobs implements Runnable {
+public class DbJobs 
+//implements Runnable 
+{
 	
 	private DataSource datasource=null;
 
@@ -35,7 +37,7 @@ public class DbJobs implements Runnable {
 	}
 	
 
-	@Override
+	//@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		System.out.println(" i am running ......");

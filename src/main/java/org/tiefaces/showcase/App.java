@@ -67,7 +67,7 @@ public class App {
 		snapshot = version.contains("-SNAPSHOT") || version.contains("-RC");
 		poweredBy = initPoweredBy();
 		initPage();
-		initScheduler();
+		initData();
 	}
 	
 	//For file: new FileReader (inputfile)
@@ -92,10 +92,16 @@ public class App {
 		}
 	}
 	
-	private ScheduledExecutorService scheduler;	
-	private void initScheduler() {
-        scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(new DbJobs(getJNDIDataSource()), 0, 20, TimeUnit.MINUTES);    	
+//	private ScheduledExecutorService scheduler;	
+//	private void initScheduler() {
+//        scheduler = Executors.newSingleThreadScheduledExecutor();
+//        scheduler.scheduleAtFixedRate(new DbJobs(getJNDIDataSource()), 0, 20, TimeUnit.MINUTES);    	
+//	}
+
+	// looks like don't need refresh data source any more. 
+	// So use this to run the job one at start 
+	private void initData() {
+		new DbJobs(getJNDIDataSource()).run();
 	}
 
 	   private   DataSource getJNDIDataSource(){
