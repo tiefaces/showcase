@@ -12,12 +12,6 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
-
-
-
-
-
-
 import com.tiefaces.components.websheet.TieWebSheetBean;
 
 @ManagedBean
@@ -26,22 +20,23 @@ public class WebSheetUpload extends TieWebSheetBean {
 
 	private static final long serialVersionUID = 1L;
 
-	public void doLoadFileAction(FileUploadEvent event)    {
-		
+	public void doLoadFileAction(FileUploadEvent event) {
+
 		UploadedFile uploadedFile = event.getFile();
-		if(uploadedFile != null) {		
+		if (uploadedFile != null) {
 			try {
 				InputStream stream = uploadedFile.getInputstream();
 				loadWebSheet(stream);
 			} catch (Exception e) {
-				System.out.println("Load File failed. Exception = "+e.getLocalizedMessage());
+				System.out.println("Load File failed. Exception = "
+						+ e.getLocalizedMessage());
 			}
-		}		
-		return ;
-	}		
-	
-	public void refreshAfter()   {
+		}
+		return;
+	}
+
+	public void refreshAfter() {
 		// do nothing
-	}	
-	
+	}
+
 }

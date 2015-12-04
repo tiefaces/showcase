@@ -12,7 +12,6 @@
  */
 package org.tiefaces.showcase;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,23 +43,17 @@ import org.jsoup.select.Elements;
 import com.tiefaces.common.FacesUtility;
 import com.tiefaces.components.common.sql.SQLRunner;
 
-
-
-
-
-@ManagedBean(eager=true)
+@ManagedBean(eager = true)
 @ApplicationScoped
 public class App {
 
 	private static final String SHOWCASE_PATH = "/showcase/";
-	
+
 	private String poweredBy;
 	private String version;
 	private boolean snapshot;
 	private Map<String, Page> pages;
-	
 
-	
 	@PostConstruct
 	public void init() {
 		version = initVersion();
@@ -69,60 +62,62 @@ public class App {
 		initPage();
 		initData();
 	}
-	
-	//For file: new FileReader (inputfile)
-	//FOR Inputstream:  new InputStreamReader( inputfile, "UTF8")
-	
-	
-	
+
+	// For file: new FileReader (inputfile)
+	// FOR Inputstream: new InputStreamReader( inputfile, "UTF8")
+
 	private void initPage() {
 		pages = new HashMap<>();
-		Set<String> resourcePaths = FacesUtility.getResourcePaths(SHOWCASE_PATH);
+		Set<String> resourcePaths = FacesUtility
+				.getResourcePaths(SHOWCASE_PATH);
 		Set<String> groupPaths = new TreeSet<>(resourcePaths);
 
 		for (String groupPath : groupPaths) {
 			String groupName = groupPath.split("/")[2];
-			Set<String> pagePaths = new TreeSet<>(FacesUtility.getResourcePaths(groupPath));
+			Set<String> pagePaths = new TreeSet<>(
+					FacesUtility.getResourcePaths(groupPath));
 
 			for (String pagePath : pagePaths) {
-				String viewId = FacesUtility.removePrefixPath(SHOWCASE_PATH, pagePath.split("\\.")[0]);
+				String viewId = FacesUtility.removePrefixPath(SHOWCASE_PATH,
+						pagePath.split("\\.")[0]);
 				String title = viewId.split("/")[2];
 				pages.put(pagePath, new Page(pagePath, viewId, title));
 			}
 		}
 	}
-	
-//	private ScheduledExecutorService scheduler;	
-//	private void initScheduler() {
-//        scheduler = Executors.newSingleThreadScheduledExecutor();
-//        scheduler.scheduleAtFixedRate(new DbJobs(getJNDIDataSource()), 0, 20, TimeUnit.MINUTES);    	
-//	}
 
-	// looks like don't need refresh data source any more. 
-	// So use this to run the job one at start 
+	// private ScheduledExecutorService scheduler;
+	// private void initScheduler() {
+	// scheduler = Executors.newSingleThreadScheduledExecutor();
+	// scheduler.scheduleAtFixedRate(new DbJobs(getJNDIDataSource()), 0, 20,
+	// TimeUnit.MINUTES);
+	// }
+
+	// looks like don't need refresh data source any more.
+	// So use this to run the job one at start
 	private void initData() {
 		new DbJobs(getJNDIDataSource()).run();
 	}
 
-	   private   DataSource getJNDIDataSource(){
-	        String DATASOURCE_CONTEXT = "java:jboss/datasources/ExampleDS";
-	        
-	        DataSource datasource = null;
-	        try {
-	          Context initialContext = new InitialContext();
-	          datasource = (DataSource)initialContext.lookup(DATASOURCE_CONTEXT);
+	private DataSource getJNDIDataSource() {
+		String DATASOURCE_CONTEXT = "java:jboss/datasources/ExampleDS";
 
-	          if (datasource == null) {
-	            System.out.println("Failed to lookup datasource.");
-	          }
-	        }
-	        catch ( NamingException ex ) {
-	          System.out.println("Cannot get connection: " + ex);
-	        }
-	        return datasource;
-	      }	
+		DataSource datasource = null;
+		try {
+			Context initialContext = new InitialContext();
+			datasource = (DataSource) initialContext.lookup(DATASOURCE_CONTEXT);
+
+			if (datasource == null) {
+				System.out.println("Failed to lookup datasource.");
+			}
+		} catch (NamingException ex) {
+			System.out.println("Cannot get connection: " + ex);
+		}
+		return datasource;
+	}
+
 	private String initVersion() {
-		String version = "0.2.5";
+		String version = "0.2.7";
 		return version.replaceAll("-\\d+$", "");
 	}
 
@@ -136,26 +131,25 @@ public class App {
 
 	private String initPoweredBy() {
 		return String.format("%s   TieFaces %s   PrimeFaces %s",
-			"Mojarra-2.2.8",
-			getVersion(),
-			"5.2");
+				"Mojarra-2.2.8", getVersion(), "5.3");
 	}
 
 	public boolean isSnapshot() {
 		return snapshot;
-	}	
-	
+	}
+
 	static Elements scrape(String url, String selector) throws IOException {
 		System.setProperty("http.proxyHost", "206.177.43.90");
-		System.setProperty("http.proxyPort", "3128");		
+		System.setProperty("http.proxyPort", "3128");
 		System.setProperty("https.proxyHost", "206.177.43.90");
-		System.setProperty("https.proxyPort", "3128");		
-		return Jsoup.connect(url).userAgent("OmniBot 0.1 (+http://showcase.omnifaces.org)").get().select(selector);
-	}	
-	
+		System.setProperty("https.proxyPort", "3128");
+		return Jsoup.connect(url)
+				.userAgent("OmniBot 0.1 (+http://showcase-tiefaces.rhcloud.com)")
+				.get().select(selector);
+	}
+
 	public Map<String, Page> getPages() {
 		return pages;
 	}
-	
-	
+
 }

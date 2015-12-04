@@ -64,9 +64,9 @@
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>5.2</version>
+			<version>5.3</version>
 		</dependency>
-		
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -119,7 +119,7 @@
 	    <dependency>
 	         <groupId>tiefaces</groupId>
 	         <artifactId>tiefaces</artifactId>
-	         <version>0.2.6</version>
+	         <version>0.2.7</version>
 	      </dependency>		
 	</dependencies>
 	

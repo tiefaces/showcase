@@ -328,7 +328,7 @@ code,
 }
 
 .ui-layout-west .ui-layout-unit-content {
-  overflow:hidden !important;
+  overflow-x:hidden !important;
 }   
 
 .ui-layout-south {                    

@@ -24,15 +24,20 @@ import org.primefaces.model.StreamedContent;
 @ManagedBean
 public class Download {
 
-    private StreamedContent file;
-	
-	public Download() {     
-		String version = (String) com.tiefaces.common.FacesUtility.evaluateExpressionGet("#{_tieFacesVersion}");
-        InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream ("/WEB-INF/lib/tiefaces-"+version+".jar");
-		file = new DefaultStreamedContent(stream, "application/zip", "tiefaces-"+version+".jar");
+	private StreamedContent file;
+
+	public Download() {
+		String version = (String) com.tiefaces.common.FacesUtility
+				.evaluateExpressionGet("#{_tieFacesVersion}");
+		InputStream stream = ((ServletContext) FacesContext
+				.getCurrentInstance().getExternalContext().getContext())
+				.getResourceAsStream("/WEB-INF/lib/tiefaces-" + version
+						+ ".jar");
+		file = new DefaultStreamedContent(stream, "application/zip",
+				"tiefaces-" + version + ".jar");
 	}
 
-    public StreamedContent getFile() {
-        return file;
-    }
+	public StreamedContent getFile() {
+		return file;
+	}
 }
