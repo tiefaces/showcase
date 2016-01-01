@@ -83,7 +83,13 @@
 		    <groupId>org.apache.poi</groupId>
 		    <artifactId>poi-ooxml</artifactId>
 		    <version>3.12</version>
-		</dependency>        
+		</dependency>  
+         <dependency>
+                 <groupId>org.apache.poi</groupId>
+                 <artifactId>ooxml-schemas</artifactId>
+                 <version>1.1</version>
+          </dependency>		
+		      
         <dependency>
             <groupId>com.lowagie</groupId>
             <artifactId>itext</artifactId>
@@ -119,7 +125,7 @@
 	    <dependency>
 	         <groupId>tiefaces</groupId>
 	         <artifactId>tiefaces</artifactId>
-	         <version>0.2.7</version>
+	         <version>0.3.0</version>
 	      </dependency>		
 	</dependencies>
 	
