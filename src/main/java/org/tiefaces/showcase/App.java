@@ -117,7 +117,7 @@ public class App {
 	}
 
 	private String initVersion() {
-		String version = "0.3.1";
+		String version = "0.3.2";
 		return version.replaceAll("-\\d+$", "");
 	}
 

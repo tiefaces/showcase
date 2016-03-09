@@ -10,13 +10,13 @@
 		<f:metadata>
 			<f:attribute name="api.path" value="common/TableLookup" />
 			<f:attribute name="src.paths"
-				value="classes/org/tiefaces/showcase/websheet/WebSheetLineCharts.java" />
+				value="classes/org/tiefaces/showcase/websheet/WebSheetBarCharts2D.java" />
 
 		</f:metadata>
 	</ui:define>
 
 	<ui:define name="description-extra">
-		<ui:include src="/includes/common/desc-websheetlinecharts.xhtml" />
+		<ui:include src="/includes/common/desc-websheetbarcharts2D.xhtml" />
 	</ui:define>
 
 
@@ -25,13 +25,13 @@
 
 		<h:form id="form1">
 				
-			<tie:websheet id="sheet1" webSheetBean="#{webSheetLineCharts}"
+			<tie:websheet id="sheet1" webSheetBean="#{webSheetBarCharts2D}"
 				maxRowsPerPage="100" readOnly="true">
 			</tie:websheet>
 			
 			<p:commandButton id="cmdExport" value="Download the Excel Sheet"
-				ajax="false" actionListener="#{webSheetLineCharts.doExport()}">
-				<p:fileDownload value="#{webSheetLineCharts.exportFile}" />
+				ajax="false" actionListener="#{webSheetBarCharts2D.doExport()}">
+				<p:fileDownload value="#{webSheetBarCharts2D.exportFile}" />
 			</p:commandButton>
 			
 			

@@ -18,6 +18,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.tiefaces.components.websheet.service.CellHelper;
+
 public class CellHelperTest {
 
 	@BeforeClass
@@ -66,7 +68,7 @@ public class CellHelperTest {
 
 		// sheet.shiftRows(1, 2, 1);
 
-		TieWebSheetCellHelper cellHelper = new TieWebSheetCellHelper();
+		CellHelper cellHelper = new CellHelper();
 		cellHelper.copyRow(wb, sheet, 0, 1);
 
 		String formula = sheet.getRow(3).getCell(0).getCellFormula();
