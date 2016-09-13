@@ -15,7 +15,7 @@ public class WebSheetValidation_Config extends TieWebSheetBean {
 
 	@Override
 	public void initialLoad() {
-		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELISTINPUTVALIDATION.xls");
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELISTINPUTVALIDATION.xlsx");
 		this.setConfigurationTab("None");
 		loadWebSheet(stream);		
 	}

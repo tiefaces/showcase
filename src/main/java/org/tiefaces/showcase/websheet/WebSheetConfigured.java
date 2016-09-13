@@ -15,7 +15,7 @@ public class WebSheetConfigured extends TieWebSheetBean {
 
 	@Override
 	public void initialLoad() {
-		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELIST.xls");
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELIST.xlsx");
 		loadWebSheet(stream);		
 	}
 

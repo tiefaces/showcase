@@ -15,7 +15,7 @@ public class WebSheetDynamicRows extends TieWebSheetBean {
 
 	@Override
 	public void initialLoad() {
-		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELISTINPUT.xls");
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELISTINPUT.xlsx");
 		loadWebSheet(stream);		
 	}
 

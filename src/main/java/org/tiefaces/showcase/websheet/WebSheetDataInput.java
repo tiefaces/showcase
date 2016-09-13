@@ -15,7 +15,7 @@ public class WebSheetDataInput extends TieWebSheetBean {
 
 	@Override
 	public void initialLoad() {
-		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/WebSheetDataInput.xls");
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/WebSheetDataInput.xlsx");
 		loadWebSheet(stream);		
 	}
 

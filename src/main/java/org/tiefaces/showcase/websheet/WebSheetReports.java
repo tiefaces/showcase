@@ -41,7 +41,7 @@ public class WebSheetReports extends TieWebSheetBean {
 	@Override
 	public void initialLoad() {
 		InputStream stream = this.getClass().getClassLoader()
-				.getResourceAsStream("websheet/PRICELIST.xls");
+				.getResourceAsStream("websheet/PRICELIST.xlsx");
 		loadWebSheet(stream);
 	}
 
