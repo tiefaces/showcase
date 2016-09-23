@@ -34,7 +34,7 @@
 				styleClass="commandExButton" update="@this" />
 				
 			<tie:websheet id="sheet1" webSheetBean="#{webSheetUpload}"
-				maxRowsPerPage="30" >
+				maxRowsPerPage="100" >
 			</tie:websheet>
 			<p:remoteCommand name="refreshafter"
 				actionListener="#{webSheetUpload.refreshAfter}"

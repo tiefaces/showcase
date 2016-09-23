@@ -9,7 +9,7 @@ public class Department {
     private Employee chief = new Employee();
     private List<Employee> staff = new ArrayList<Employee>();
     private String link;
-    private byte[] image;
+    private int headAccount;
 
 
     public Department() {
@@ -30,9 +30,6 @@ public class Department {
         staff.add(employee);
     }
 
-    public int getHeadcount() {
-        return staff.size();
-    }
 
     public String getName() {
         return name;
@@ -66,16 +63,17 @@ public class Department {
         this.staff = staff;
     }
 
-    public byte[] getImage() {
-        return image;
-    }
+  
 
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
+    public int getHeadAccount() {
+		return headAccount;
+	}
 
+	public void setHeadAccount(int headAccount) {
+		this.headAccount = headAccount;
+	}
 
-    @Override
+	@Override
     public String toString() {
         return "Department{" +
                 "name='" + name + '\'' +

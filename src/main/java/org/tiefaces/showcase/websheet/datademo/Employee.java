@@ -16,6 +16,7 @@ public class Employee {
     private Double bonus;
     private Date birthDate;
     private Employee superior;
+    private Double total;
 
     static Random random = new Random(System.currentTimeMillis());
     static long current = System.currentTimeMillis();
@@ -113,7 +114,17 @@ public class Employee {
         this.superior = superior;
     }
 
-    @Override
+    
+    
+    public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
+	}
+
+	@Override
     public String toString() {
         return "Employee{" +
                 "name='" + name + '\'' +
