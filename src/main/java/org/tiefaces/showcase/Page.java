@@ -29,10 +29,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import com.tiefaces.common.FacesUtility;
-import static org.tiefaces.showcase.App.scrape;
 
 @ManagedBean
 @RequestScoped
@@ -130,60 +127,7 @@ public class Page {
 		return asList(attribute.trim().split("\\s*,\\s*"));
 	}
 
-	private static String loadDescription(List<String> apiPaths) {
-		if (apiPaths.size() == 1) {
-			apiPaths.set(0, API_PATH + apiPaths.get(0));
-			String url = String.format("%s%s.html",
-					FacesUtility.evaluateExpressionGet("#{_apiURL}"),
-					apiPaths.get(0));
 
-			try {
-				// TODO: build javadoc.jar into webapp somehow and scrape from
-				// it instead.
-				Elements description = scrape(url, ".description>ul>li");
-				Elements descriptionBlock = description.select(".block");
-
-				for (Element link : description.select("a")) { // Turn relative
-																// links into
-																// absolute
-																// links.
-					link.attr("href", link.absUrl("href"));
-				}
-
-				for (Element pre : descriptionBlock.select("pre")) { // Enable
-																		// prettify
-																		// on
-																		// code
-																		// blocks.
-					String content = pre.addClass("prettyprint").html().trim();
-
-					if (content.startsWith("&lt;")) {
-						pre.html("<code class='lang-xhtml'> " + content
-								+ "</code>");
-					} else {
-						pre.html("<code class='lang-java'> " + content
-								+ "</code>");
-					}
-				}
-
-				Elements seeAlso = description
-						.select("dt:has(.seeLabel)+dd a:has(code)");
-
-				for (Element link : seeAlso) {
-					String href = link.absUrl("href");
-					apiPaths.add(href.substring(href.indexOf(API_PATH),
-							href.lastIndexOf('.')));
-				}
-
-				return descriptionBlock.outerHtml();
-			} catch (IOException e) {
-				throw new FacesException(String.format(
-						ERROR_LOADING_PAGE_DESCRIPTION, url), e);
-			}
-		}
-
-		return null;
-	}
 
 	private static List<Source> loadSources(String pagePath,
 			List<String> srcPaths) {

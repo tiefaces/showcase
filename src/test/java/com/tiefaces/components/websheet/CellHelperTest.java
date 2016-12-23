@@ -3,9 +3,15 @@ package com.tiefaces.components.websheet;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.Assert;
 
+import org.apache.commons.jexl2.Expression;
+import org.apache.commons.jexl2.JexlContext;
+import org.apache.commons.jexl2.JexlEngine;
+import org.apache.commons.jexl2.MapContext;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -37,6 +43,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.tiefaces.components.websheet.configuration.CellControlsHelper;
+import com.tiefaces.components.websheet.configuration.ConfigurationHelper;
+import com.tiefaces.components.websheet.dataobjects.CellFormAttributes;
 import com.tiefaces.components.websheet.service.CellHelper;
 
 public class CellHelperTest {
@@ -53,7 +62,7 @@ public class CellHelperTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
+
 	public void testRowShiftWithFormulaChange() throws IOException {
 
 		//HSSFWorkbook wb = new HSSFWorkbook();
@@ -149,4 +158,66 @@ System.out.println("newformula = "+newformula);
 		sb.append("]");
 		return sb.toString();
 	}
+	
+	
+
+	public void testParseInputAttributes() throws IOException {
+		
+        String controlAttrs = " symbol=\" years\" symbolPosition=\"s\" minValue=\"0\" maxValue=\"999\" decimalPlaces=\"0\"  ";
+        List<CellFormAttributes> clist = new ArrayList<CellFormAttributes>();
+        
+        CellControlsHelper.parseInputAttributes(clist, controlAttrs);        
+        
+        CellFormAttributes cattr = clist.get(0);
+        
+        assertEquals("symbol", cattr.getType());
+        assertEquals(" years", cattr.getValue());
+        
+    }		
+		
+	
+	public void testJexlEngine() throws IOException {
+	
+	JexlEngine jexl = new JexlEngine();
+	List<String> list = new ArrayList<String>();
+	list.add("ab");
+	list.add("cd");
+	// Create an expression object
+	String jexlExp = "list";
+	Expression e = jexl.createExpression( jexlExp );
+	 
+	// Create a context and add data
+	JexlContext jctx = new MapContext();
+	jctx.set("list", list );
+	 
+	// Now evaluate the expression, getting the result
+	Object o = e.evaluate(jctx);
+	
+System.out.println("out o = "+o);
+
+	((List<String>) o).set(1, "ef");
+
+System.out.println("change o = "+o);
+System.out.println("after change list[1] = "+list.get(1));
+	}
+	
+	public void testparseSaveAttrString() throws IOException {
+
+		assertEquals(ConfigurationHelper.parseSaveAttrString("${employee.name}"),"employee.name");
+		assertEquals(ConfigurationHelper.parseSaveAttrString("${employee.name} "),"employee.name");
+		assertEquals(ConfigurationHelper.parseSaveAttrString("${employee.name} ${employee.birthday}"),"");
+		assertEquals(ConfigurationHelper.parseSaveAttrString("${employee.name"),"");
+
+	}
+	@Test
+	public void testgetSaveAttrFromList() throws IOException {
+		
+	String attrs = "$0=employee.name,$1=employee.birthDate,$2=employee.age,$3=employee.payment,$4=employee.bonus,";
+		assertEquals(ConfigurationHelper.getSaveAttrFromList(0, attrs),"employee.name");
+		assertEquals(ConfigurationHelper.getSaveAttrFromList(1, attrs),"employee.birthDate");
+		assertEquals(ConfigurationHelper.getSaveAttrFromList(2, attrs),"employee.age");
+		assertEquals(ConfigurationHelper.getSaveAttrFromList(3, attrs),"employee.payment");
+		assertEquals(ConfigurationHelper.getSaveAttrFromList(4, attrs),"employee.bonus");
+	}	
+	
 }

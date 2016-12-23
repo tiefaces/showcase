@@ -117,7 +117,7 @@ public class App {
 	}
 
 	private String initVersion() {
-		String version = "0.3.2";
+		String version = "1.0.0";
 		return version.replaceAll("-\\d+$", "");
 	}
 
@@ -131,22 +131,14 @@ public class App {
 
 	private String initPoweredBy() {
 		return String.format("%s   TieFaces %s   PrimeFaces %s",
-				"Mojarra-2.2.8", getVersion(), "5.3");
+				"Mojarra-2.2.8", getVersion(), "6.0");
 	}
 
 	public boolean isSnapshot() {
 		return snapshot;
 	}
 
-	static Elements scrape(String url, String selector) throws IOException {
-		System.setProperty("http.proxyHost", "206.177.43.90");
-		System.setProperty("http.proxyPort", "3128");
-		System.setProperty("https.proxyHost", "206.177.43.90");
-		System.setProperty("https.proxyPort", "3128");
-		return Jsoup.connect(url)
-				.userAgent("OmniBot 0.1 (+http://showcase-tiefaces.rhcloud.com)")
-				.get().select(selector);
-	}
+
 
 	public Map<String, Page> getPages() {
 		return pages;

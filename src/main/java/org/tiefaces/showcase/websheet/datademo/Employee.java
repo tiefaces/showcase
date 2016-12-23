@@ -1,5 +1,6 @@
 package org.tiefaces.showcase.websheet.datademo;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,12 +12,13 @@ import java.util.Random;
  */
 public class Employee {
     private String name;
-    private int age;
+    private Double worktime;
     private Double payment;
     private Double bonus;
-    private Date birthDate;
+    private String birthDate;
     private Employee superior;
     private Double total;
+    private String sex;
 
     static Random random = new Random(System.currentTimeMillis());
     static long current = System.currentTimeMillis();
@@ -24,34 +26,16 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String name, int age, Double payment, Double bonus) {
-        this.name = name;
-        this.age = age;
-        this.payment = payment;
-        this.bonus = bonus;
-    }
 
-    public Employee(String name, int age, double payment, double bonus, Date birthDate) {
+    public Employee(String name, Double worktime, Double payment, Double bonus, String birthDate, String sex) {
         this.name = name;
-        this.age = age;
+        this.worktime = worktime;
         this.payment = payment;
         this.bonus = bonus;
         this.birthDate = birthDate;
+        this.sex = sex;
     }
 
-    public Employee(String name, int age, double payment, double bonus) {
-        this.name = name;
-        this.age = age;
-        this.payment = payment;
-        this.bonus = bonus;
-    }
-
-    public Employee(String name, Date birthDate, Double payment, Double bonus) {
-        this.name = name;
-        this.birthDate = birthDate;
-        this.payment = payment;
-        this.bonus = bonus;
-    }
 
 
     public static List<Employee> generate(int num){
@@ -61,9 +45,12 @@ public class Employee {
         }
         return result;
     }
+    
+    private static SimpleDateFormat dateformat = new SimpleDateFormat("yyyy/MM/dd");
+
 
     public static Employee generateOne(String nameSuffix){
-        return new Employee("Employee " + nameSuffix, random.nextInt(100), 1000 + random.nextDouble()*5000, random.nextInt(100)/100.0d, new Date(current - (1000000 + random.nextInt(1000000))));
+        return new Employee("Employee " + nameSuffix, (double) random.nextInt(100), 1000 + random.nextDouble()*5000, random.nextInt(100)/100.0d, dateformat.format(new Date(current - (1000000 + random.nextInt(1000000)))),"M");
     }
 
     public String getName() {
@@ -74,15 +61,28 @@ public class Employee {
         this.name = name;
     }
 
-    public int getAge() {
-        return age;
-    }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+    public Double getWorktime() {
+		return worktime;
+	}
 
-    public Double getPayment() {
+
+	public void setWorktime(Double worktime) {
+		this.worktime = worktime;
+	}
+
+
+	public String getSex() {
+		return sex;
+	}
+
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+
+	public Double getPayment() {
         return payment;
     }
 
@@ -98,11 +98,11 @@ public class Employee {
         this.bonus = bonus;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -128,7 +128,9 @@ public class Employee {
     public String toString() {
         return "Employee{" +
                 "name='" + name + '\'' +
-                ", age=" + age +
+                ", sex='" + sex + '\'' +
+                ", birth date='" + birthDate + '\'' +
+                ", worktime=" + worktime +
                 ", payment=" + payment +
                 '}';
     }

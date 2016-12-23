@@ -20,7 +20,7 @@ public class WebSheetDataAnnotation extends TieWebSheetBean {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public void initialLoad() {
+	public void initialLoad()  {
 		Map<String, Object> context = new HashMap<String, Object>();
 		List<Department> departments = WebSheetDataDemo.createDepartments();
 		context.put("departments", departments);
