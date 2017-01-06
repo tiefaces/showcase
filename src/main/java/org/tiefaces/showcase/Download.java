@@ -27,17 +27,33 @@ public class Download {
 	private StreamedContent file;
 
 	public Download() {
-		String version = (String) com.tiefaces.common.FacesUtility
-				.evaluateExpressionGet("#{_tieFacesVersion}");
+		String tieVersion = org.tiefaces.common.AppUtils.getBuildVersion(); 
+				
 		InputStream stream = ((ServletContext) FacesContext
 				.getCurrentInstance().getExternalContext().getContext())
-				.getResourceAsStream("/WEB-INF/lib/tiefaces-" + version
-						+ ".jar");
+				.getResourceAsStream("https://search.maven.org/remotecontent?filepath=org/tiefaces/tiefaces/"+ tieVersion
+						+ "/tiefaces-"+tieVersion+".jar");
 		file = new DefaultStreamedContent(stream, "application/zip",
-				"tiefaces-" + version + ".jar");
+				"tiefaces-" + tieVersion + ".jar");
 	}
 
 	public StreamedContent getFile() {
 		return file;
 	}
+	
+	private String downloadLink = null;
+
+	public String getDownloadLink() {
+		if (downloadLink == null) {
+			String tieVersion = org.tiefaces.common.AppUtils.getBuildVersion(); 
+			downloadLink = "http://central.maven.org/maven2/org/tiefaces/tiefaces/"+ tieVersion
+					+ "/tiefaces-"+tieVersion;
+		}
+		return downloadLink;
+	}
+
+	public void setDownloadLink(String downloadLink) {
+		this.downloadLink = downloadLink;
+	}
+	
 }

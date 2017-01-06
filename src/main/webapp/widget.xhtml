@@ -1,0 +1,44 @@
+<ui:composition template="/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+>
+	<ui:define name="contentTitle">$Widget Tag</ui:define>
+
+	<ui:define name="content">
+
+<p>Tiefaces support multiple Primeface input widget for cell input method (i.e. calandar, dropdown, inputNumber, inputArea..).<br/>
+Use widget command to define the widget name and attributes:</p>
+	<h2>How to define?</h2>
+	<p>Use the special syntax below defined in the comment for the staring cell of the command.</p>
+
+<div class="source">
+<div class="source"><pre class="prettyprint">...
+$widget.calendar{showOn="button" pattern="yyyy/MM/dd" readonlyInput="true"}
+$widget.dropdown{itemLabels="Male;Female" itemValues="M;F" }
+$widget.inputnumber{symbol=" years" symbolPosition="s" minValue="0" maxValue="999" decimalPlaces="2"}
+...
+</pre>
+</div>
+</div>
+
+	<p>Note:<br/> 
+	1. One cell only can contain one widget tag.<br/>
+	2. Each command in the comment must remain in the same line, don't use enter key to divide it.
+	</p>
+	
+	<h2>The Attributes of $widget.calendar</h2>
+	<p> Can use any attribute from p:calendar. See Primeface p:calendar for detail.</p>
+	<h2>The Attributes of $widget.inputnumber</h2>
+	<p> Can use any attribute from p:inputNumber. See Primeface p:calendar for detail.</p>
+	<h2>The Attributes of $widget.dropdown</h2>
+	<ul>
+		<li>itemLabels: list of item's labels. use ";" to seperate.</li>
+		<li>itemValues: list of item's values. use ";" to seperate.</li>
+		<li>defaultItemLabel: default item's labels.</li>
+		<li>defaultItemValue: default item's value.</li>
+	</ul>
+	<p> Can also use any attribute applied to p:selectOneMenu (not for f:selectItem). See Primeface p:calendar for detail.</p>
+	
+	</ui:define>
+</ui:composition>

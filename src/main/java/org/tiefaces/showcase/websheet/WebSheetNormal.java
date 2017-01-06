@@ -5,7 +5,7 @@ import java.io.InputStream;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import com.tiefaces.components.websheet.TieWebSheetBean;
+import org.tiefaces.components.websheet.TieWebSheetBean;
 
 @ManagedBean
 @ViewScoped

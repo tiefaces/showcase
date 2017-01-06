@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.Executors;
@@ -32,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -39,9 +41,9 @@ import javax.sql.DataSource;
 
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
-
-import com.tiefaces.common.FacesUtility;
-import com.tiefaces.components.common.sql.SQLRunner;
+import org.primefaces.config.PrimeConfiguration;
+import org.primefaces.context.RequestContext;
+import org.tiefaces.common.FacesUtility;
 
 @ManagedBean(eager = true)
 @ApplicationScoped
@@ -96,7 +98,7 @@ public class App {
 	// looks like don't need refresh data source any more.
 	// So use this to run the job one at start
 	private void initData() {
-		new DbJobs(getJNDIDataSource()).run();
+
 	}
 
 	private DataSource getJNDIDataSource() {
@@ -105,7 +107,8 @@ public class App {
 		DataSource datasource = null;
 		try {
 			Context initialContext = new InitialContext();
-			datasource = (DataSource) initialContext.lookup(DATASOURCE_CONTEXT);
+			datasource = (DataSource) initialContext
+					.lookup(DATASOURCE_CONTEXT);
 
 			if (datasource == null) {
 				System.out.println("Failed to lookup datasource.");
@@ -117,7 +120,7 @@ public class App {
 	}
 
 	private String initVersion() {
-		String version = "1.0.1";
+		String version = org.tiefaces.common.AppUtils.getBuildVersion();
 		return version.replaceAll("-\\d+$", "");
 	}
 
@@ -130,15 +133,23 @@ public class App {
 	}
 
 	private String initPoweredBy() {
-		return String.format("%s   TieFaces %s   PrimeFaces %s",
-				"Mojarra-2.2.8", getVersion(), "6.0");
+	    try{
+				String primeVersion = new PrimeConfiguration(FacesContext.getCurrentInstance()).getBuildVersion();
+				String tieVersion = org.tiefaces.common.AppUtils.getBuildVersion();
+				String jsfVersion = FacesContext.class.getPackage()
+						.getImplementationVersion();				
+				return String.format("%s   TieFaces %s   PrimeFaces %s",
+						"Mojarra-" + jsfVersion, tieVersion, primeVersion);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return "";
 	}
 
 	public boolean isSnapshot() {
 		return snapshot;
 	}
-
-
 
 	public Map<String, Page> getPages() {
 		return pages;

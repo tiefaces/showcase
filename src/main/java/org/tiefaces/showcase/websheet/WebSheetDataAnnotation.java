@@ -8,10 +8,9 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import org.tiefaces.components.websheet.TieWebSheetBean;
 import org.tiefaces.showcase.websheet.datademo.Department;
 import org.tiefaces.showcase.websheet.datademo.WebSheetDataDemo;
-
-import com.tiefaces.components.websheet.TieWebSheetBean;
 
 @ManagedBean
 @ViewScoped

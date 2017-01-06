@@ -9,13 +9,13 @@ import org.tiefaces.components.websheet.TieWebSheetBean;
 
 @ManagedBean
 @ViewScoped
-public class WebSheetLineCharts extends TieWebSheetBean {
+public class WebSheetDataAnnotation_Config extends TieWebSheetBean {
 
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void initialLoad() {
-		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/linecharts1.xlsx");
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/datacommentdemo.xlsx");
 		loadWebSheet(stream);		
 	}
 

@@ -1,0 +1,81 @@
+<ui:composition template="/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+>
+	<ui:define name="contentTitle">How to define an Excel templdate</ui:define>
+
+	<ui:define name="content">
+
+	<p>First, Tiefaces only support xlsx format now, so be sure the format is correct.</p>
+	
+	<p>Tiefaces use several special commands in the cell comment to define form features.</p>
+	
+	<h2>Define Form Layout</h2>
+	<p>By default Tiefaces render the template as excel liked web sheet as below (e.g. with excel columns and rows): </p>
+	<h:graphicImage library="showcase" name="img/sheetdefault.png" alt="web sheet default rendering" width="600" height="299"/>
+	<p>In case you want normal form header instead of letters, you can use form command to define it in the cell's comment:</p>
+	<p>(Note: 1. The cell's position become the form's start position. 2. <mark>Each command in the comment must remain in the same line, don't use enter key to divide it.</mark>)</p>
+	
+	<div class="source">
+	<div class="source"><pre class="prettyprint">...
+	tie:form(name="sale report" length="9" headerLength="4" footerLength="1")
+	...
+	</pre>
+	</div>
+	</div>
+	<p>In this example, the top 4 rows become the header of the web form, while the last row become footer</p>
+	<h:graphicImage library="showcase" name="img/sheetwithformheader.png" alt="web sheet render with form defined"  width="600" height="299"/>
+	
+
+<p>See the form command page for detail.</p>	
+
+	<h2>Define Editable Cells.</h2>
+	<p>Editable cells are unlocked cells in the template. By default, excel create cells as locked. You can unlock it via "Format Cells" menu.</p>
+	<h:graphicImage library="showcase" name="img/unlockcell.png" alt="web sheet render with form defined" width="600" height="299"/>
+
+
+
+
+	<p>For example, if you want to input/output employee name in a cell, you can put \${employee.name} in the cell (assuming the employee object is avaliable in the context).
+	As you can see, the definition is JEXL expression warpped with \${ and }.</p> 
+
+	<h2>Define Data.</h2>
+	<p>Tiefaces supports <a class="externalLink" href="http://commons.apache.org/proper/commons-jexl/reference/syntax.html">Apache JEXL</a> as an expression language in the excel template.</p>
+	<p>For example, if you want to input/output employee name in a cell, you can put \${employee.name} in the cell (assuming the employee object is avaliable in the context).
+	As you can see, the definition is JEXL expression warpped with \${ and }.</p>
+	 
+	<h:graphicImage library="showcase" name="img/definecelldata.png" alt="define data in cell" width="600" height="200"/>
+	
+	<h2>Define Data Collections.</h2>
+<p>To support nested data collections, use each command to define the structure:</p>
+	<h:graphicImage library="showcase" name="img/defineeach.png" alt="define each command" width="600" height="299"/>
+<p>In this example, we defined 2 each command: "deparment" and "employee". "deparment" contain 8 rows while "employee" contain 1 row. Each command allow add/delete rows.</p>  
+<div class="source">
+<div class="source"><pre class="prettyprint">...
+tie:each(items="departments", var="department", length="8" allowAdd="true")
+
+tie:each(items="department.staff", var="employee", length="1" allowAdd="True")
+...
+</pre>
+</div>
+</div>
+<p>See the each command page for detail.</p>	
+	<h2>Define Edit Widget.</h2>
+<p>Tiefaces support multiple Primeface input widget for cell input method (i.e. calandar, dropdown, inputNumber, inputArea..).<br/>
+Use widget command to define the widget name and attributes:</p>
+
+<div class="source">
+<div class="source"><pre class="prettyprint">...
+$widget.calendar{showOn="button" pattern="yyyy/MM/dd" readonlyInput="true"}
+$widget.dropdown{itemLabels="Male;Female" itemValues="M;F" }
+$widget.inputnumber{symbol=" years" symbolPosition="s" minValue="0" maxValue="999" decimalPlaces="2"}
+...
+</pre>
+</div>
+</div>
+
+<p>See the widget command page for detail.</p>	
+
+	</ui:define>
+</ui:composition>

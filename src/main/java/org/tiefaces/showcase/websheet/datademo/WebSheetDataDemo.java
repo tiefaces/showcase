@@ -22,7 +22,7 @@ public class WebSheetDataDemo {
 		Employee chief;
 		chief = new Employee("Derek", 15.0, 3000.0, 0.30, "1980/02/01","M");
 		department.setChief(chief);
-		department.setLink("http://showcase-tiefaces.rhcloud.com");
+		department.setLink("http://tiefaces.org");
 		department.addEmployee(new Employee("Elsa", 10.25, 1500.0, 0.15, "1974/03/02","F"));
 		department.addEmployee(new Employee("Oleg", 20.0, 2300.0, 0.25, "1972/04/18","M"));
 		department.addEmployee(new Employee("Neil", 18.0, 2500.0, 0.00, "1981/05/12","M"));
@@ -32,7 +32,7 @@ public class WebSheetDataDemo {
 		department = new Department("HR");
 		chief = new Employee("Betsy", 22.0, 2200.0, 0.30, "1980/02/01","M");
 		department.setChief(chief);
-		department.setLink("http://showcase-tiefaces.rhcloud.com");
+		department.setLink("http://tiefaces.org");
 		department.addEmployee(new Employee("Olga", 21.0, 1400.0, 0.20, "1965/05/18","F"));
 		department.addEmployee(new Employee("Helen", 20.0, 2100.0, 0.10, "1973/06/18","F"));
 		department.addEmployee(new Employee("Keith", 20.25, 1800.0, 0.15, "1968/09/12","M"));
@@ -41,7 +41,7 @@ public class WebSheetDataDemo {
 		department = new Department("BA");
 		chief = new Employee("Wendy", 20.0, 2900.0, 0.35, "1982/06/01","M");
 		department.setChief(chief);
-		department.setLink("http://showcase-tiefaces.rhcloud.com");
+		department.setLink("http://tiefaces.org");
 		department.addEmployee(new Employee("Denise", 20.1, 2400.0, 0.20, "1975/06/23","M"));
 		department.addEmployee(new Employee("LeAnn", 18.0, 2200.0, 0.15, "1978/07/21","F"));
 		department.addEmployee(new Employee("Natali", 18.25, 2600.0, 0.10, "1969/12/15","M"));

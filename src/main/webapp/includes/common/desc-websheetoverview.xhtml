@@ -3,29 +3,29 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 >
-	<h3>What is TieFaces WebSheet</h3>
+	<h2>What is TieFaces WebSheet</h2>
 	<p>
-	WebSheet component bring your Excel Spread Sheets to web as web forms. You can easily open a Excel Sheet online and edit/populate data to it.   
-	
-	Web sheet is not intend to become online document tools like Google Docs, instead it want to become a gateway or transformer of Excel sheets to Web forms. Basically the Excel sheets are treated as templates, with some restrictions (e.g. only unlocked cell become editable), it's transformed to web sheet with same look and feels and behaviors in Excel. With some configuration, we can even go further, e.g. populate from database, generate reports based on data etc. 
+	Tiefaces webSheet is a JSF component which can render a excel template as a web form while keeping same formats and styles.	It is not intend to become online document tools like Google Docs, instead it want to become a gateway or transformer of Excel sheets to Web forms.  
 	</p>
-	<h3>The Advantage</h3>
+	<h2>Features</h2>
 	<p>
-	One headache in application development is clients may require to change presentation tier from time to time (this include forms and reports). Normally this will involve code changes even the middle tire remain the same.
+	<h3>Render excel templates as web forms</h3>
 	</p>
-	<p>
-	Web Sheet separate the presentation tier's modification from the application changes. Basically you can design/change any format of forms and reports in Excel then save it to your repository (e.g. databases). Web Sheet will pick up your changes from there without application code changes. 	
-	</p>
-	<p>
-	<h:graphicImage library="showcase" name="img/websheet.jpg" alt="web sheet advantage" width="640" height="299" />
-	</p>
-	
-	<h3>High Lights</h3>
 	<ul>
-		<li>Bring Excel Spread Sheets online as web forms.</li>
-		<li>Build as JSF components</li>
-		<li>Keep existing Excel functions and features</li>
-		<li>Enhanced features through easy configuration</li>
-		<li>Populate data through external sources e.g. database</li>
-	</ul>	
+		<li>Support multiple sheets</li>
+		<li>Keep Excel formats and styles</li>
+		<li>Keep Excel formulas</li>
+		<li>Support charts and images</li>
+	</ul>
+	<h:graphicImage library="showcase" name="img/websheet1.png" alt="web sheet feature 1" width="1024" height="499" />
+	<p>
+	<h3>Dynamic Web Form Solution</h3>
+	</p>
+	<ul>
+		<li>Input/Output data through context object.</li>
+		<li>Support multiple input/output widget. i.e. calendar, dropdown, inputNumber, inputArea etc.</li>
+		<li>Support recursive data structure. i.e. each command.</li>
+	</ul>
+	<h:graphicImage library="showcase" name="img/websheet2.png" alt="web sheet feature 2" width="1024" height="399" />
+
 </ui:composition>

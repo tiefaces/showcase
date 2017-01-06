@@ -1,35 +1,33 @@
 package org.tiefaces.showcase.websheet;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import org.tiefaces.showcase.tablelookup.Item;
-import org.tiefaces.showcase.tablelookup.ItemSearchHelper;
-
-import com.tiefaces.components.websheet.TieWebSheetBean;
+import org.tiefaces.components.websheet.TieWebSheetBean;
+import org.tiefaces.showcase.tablelookup.ItemList;
+import org.tiefaces.showcase.websheet.datademo.Department;
+import org.tiefaces.showcase.websheet.datademo.WebSheetDataDemo;
 
 @ManagedBean
 @ViewScoped
 public class WebSheetReports extends TieWebSheetBean {
 
 	private static final long serialVersionUID = 1L;
+	
+	
+	private List<Object> itemList = new ItemList().getItemList();
 
-	private List<Object> itemList = null;
-
-	public List<Object> getItemList() {
-		if (itemList == null) {
-			this.setItemList(ItemSearchHelper.dosearch(new Item()));
-		}
-		return itemList;
-	}
-
+	
 	public int getRowCount() {
-		this.getItemList();
-		if (itemList == null)
+		
+		if (itemList == null) {
 			return 0;
+		}
 		else
 			return itemList.size();
 	}
@@ -38,11 +36,17 @@ public class WebSheetReports extends TieWebSheetBean {
 		this.itemList = itemList;
 	}
 
+	public List<Object> getItemList() {
+		return itemList;
+	}
+	
+
 	@Override
 	public void initialLoad() {
-		InputStream stream = this.getClass().getClassLoader()
-				.getResourceAsStream("websheet/PRICELIST.xlsx");
-		loadWebSheet(stream);
+		Map<String, Object> context = new HashMap<String, Object>();
+		context.put("items", itemList);
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELIST.xlsx");
+		loadWebSheet(stream, context);		
 	}
 
 }

@@ -8,39 +8,40 @@
 
 	<ui:define name="content">
 
-		<h3>Click the button below to download Tiefaces #{_tieFacesVersion}</h3>
+	<p>The easiest way to add Tiefaces libraries to your project is to use Maven and specify the required libraries in pom.xml.
+	</p>
+	<div class="source">
+	<div class="source"><pre class="prettyprint">&lt;dependency&gt;
+	    &lt;groupId&gt;org.tiefaces&lt;/groupId&gt;
+	    &lt;artifactId&gt;tiefaces&lt;/artifactId&gt;
+	    &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+	</pre>
+	</div>
+	</div>
+	<p>Alternatively you can download Tiefaces distribution from the link below:</p>
 
-<h:form>
-    <p:commandButton value="Download" ajax="false" icon="ui-icon-arrowthick-1-s">
-        <p:fileDownload value="#{download.file}" />
-    </p:commandButton>
-</h:form>
-<br/>
-		<h3>How to use it in maven project?</h3>
-<p>The TieFaces haven't been uploaded into maven center repository, so now you only could use it as your local library. 
-</p>
-<p>For example:</p>
-<p><b>1. Save the jar file into your project:</b></p>
-<p>
-<h:graphicImage library="showcase" name="img/localtiefaces.jpg" alt="local library" width="260" height="260" />
-</p>
-<p><b>2. pom.xml:</b></p>
-<pre>
-&lt;repositories&gt;
-    &lt;repository&gt;
-        &lt;id&gt;ProjectRepo&lt;/id&gt;
-        &lt;name&gt;ProjectRepo&lt;/name&gt;
-        &lt;url&gt;file://${project.basedir}/src/lib&lt;/url&gt;
-    &lt;/repository&gt;
-&lt;/repositories&gt;
+	<ul>
+		<li><h:outputLink value="#{download.downloadLink}.jar">Tiefaces #{_tieFacesVersion} library</h:outputLink></li>
+		<li><h:outputLink value="#{download.downloadLink}-sources.jar">Tiefaces #{_tieFacesVersion} source</h:outputLink></li>
+		<li><h:outputLink value="#{download.downloadLink}-javadoc.jar">Tiefaces #{_tieFacesVersion} javadoc</h:outputLink></li>
+	</ul>
 
-&lt;dependencies&gt;
-	&lt;dependency&gt;
-         &lt;groupId&gt;tiefaces&lt;/groupId&gt;
-         &lt;artifactId&gt;tiefaces&lt;/artifactId&gt;
-         &lt;version&gt;0.2.4&lt;/version&gt;
-      &lt;/dependency&gt;		
-&lt;/dependencies&gt;
-</pre>
+ 
+ 
+ 
+
+<p>Also you need manage the following dependences manually:</p>
+	<ul>
+		<li>Primefaces 6.0 or up</li>
+		<li>Poi 3.15 or up (i.e.  poi-3.15.jar poi-ooxml-3.15.jar poi-ooxml-schemas-3.15.jar xmlbeans-2.6.0.jar commons-collections4-4.1.jar)</li>
+		<li>Jfreechart 1.0.19 (i.e. jfreechart-1.0.19.jar jcommon-1.0.23.jar)</li>
+		<li>Jexl 2.11 (i.e. commons-jexl-2.1.1.jar)</li>
+	</ul>
+
+<p>Here's the final libraries screen shot:</p>
+	<h:graphicImage library="showcase" name="img/librarylist.png" alt="library list" />
+
+
 	</ui:define>
 </ui:composition>

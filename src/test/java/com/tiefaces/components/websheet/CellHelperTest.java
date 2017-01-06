@@ -42,11 +42,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.tiefaces.components.websheet.configuration.CellControlsHelper;
-import com.tiefaces.components.websheet.configuration.ConfigurationHelper;
-import com.tiefaces.components.websheet.dataobjects.CellFormAttributes;
-import com.tiefaces.components.websheet.service.CellHelper;
+import org.tiefaces.components.websheet.configuration.CellControlsHelper;
+import org.tiefaces.components.websheet.configuration.ConfigurationHelper;
+import org.tiefaces.components.websheet.dataobjects.CellFormAttributes;
+import org.tiefaces.components.websheet.service.CellHelper;
+import org.tiefaces.components.websheet.service.CellUtility;
 
 public class CellHelperTest {
 
@@ -108,7 +108,7 @@ public class CellHelperTest {
 		CellHelper cellHelper = new CellHelper();
 System.out.println("row 3 index = "+row3.getRowNum());		
 System.out.println("row 3  object = "+sheet.getRow(2));		
-		cellHelper.copyRow(wb, wbWrapper, sheet,sheet, 0, 1);
+		CellUtility.copyRow(wb, wbWrapper, sheet,sheet, 0, 1);
 		
 		System.out.println("after row 3 index = "+row3.getRowNum());		
 		System.out.println("after row 3  object = "+sheet.getRow(2));		

@@ -29,7 +29,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
-import com.tiefaces.common.FacesUtility;
+import org.tiefaces.common.FacesUtility;
 
 @ManagedBean
 @RequestScoped
@@ -170,7 +170,7 @@ public class Page {
 
 			String type = srcPath.substring(srcPath.lastIndexOf('.') + 1);
 			String code = loadSourceCode((srcPath.startsWith("/") ? ""
-					: "/WEB-INF/") + srcPath);
+					: "/sources/") + srcPath);
 			sources.add(new Source(title, type, code));
 		}
 

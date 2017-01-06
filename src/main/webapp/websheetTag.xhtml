@@ -1,0 +1,43 @@
+<ui:composition template="/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+>
+	<ui:define name="contentTitle">Web Sheet Tag</ui:define>
+
+	<ui:define name="content">
+
+<p>Tiefaces use tie:websheet tag in the JSF web page to define the component.</p>
+	<h2>How to define?</h2>
+	<p>Use the special syntax below defined in the comment for the staring cell of the command.</p>
+
+<div class="source">
+<div class="source"><pre class="prettyprint">...
+&lt;tie:websheet id="sheet1"
+....
+&gt;
+&lt;/tie:websheet &gt;
+...
+</pre>
+</div>
+</div>
+	<h2>The Attributes of tie:websheet</h2>
+	<ul>
+	<li><b>webSheetBean</b>: The bean object which passed in. required="true"</li>
+	<li><b>rendered</b>: Show or Hide. required="false"</li>
+	<li><b>readOnly</b>: True then not editable. required="false"</li>
+	<li><b>showLineNumber</b>: True then show line number. required="false"</li>
+	<li><b>paginator</b>: Same as p:datatable. required="false"</li>
+	<li><b>paginatorTemplate</b>: Same as p:datatable. required="false"</li>
+	<li><b>paginatorPosition</b>: Same as p:datatable. required="false"</li>
+	<li><b>paginatorAlwaysVisible</b>: Same as p:datatable. required="false"</li>
+	<li><b>maxRowsPerPage</b>: Same as p:datatable. required="false"</li>
+	<li><b>rowsPerPageTemplate</b>: Same as p:datatable. required="false"</li>
+	<li><b>tableWidthStyle</b>: Same as p:datatable. required="false"</li>
+	<li><b>emptyMessage</b>: Same as p:datatable.</li>
+	<li><b>deleteRowConfirmMessage</b>: confirmation message when prompt delete row. required="false"</li>
+	
+	</ul>
+	
+	</ui:define>
+</ui:composition>

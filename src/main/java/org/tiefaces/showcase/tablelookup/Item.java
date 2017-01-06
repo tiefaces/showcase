@@ -31,7 +31,16 @@ public class Item {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+	public Item(String code, String name, String description,
+			String priceStr) {
+		super();
+		this.code = code;
+		this.name = name;
+		this.description = description;
+		this.price = Double.valueOf(priceStr)
+				;
+	}
 	
 	
-	
+
 }

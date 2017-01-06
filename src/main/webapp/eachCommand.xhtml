@@ -1,0 +1,33 @@
+<ui:composition template="/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+>
+	<ui:define name="contentTitle">Each Command</ui:define>
+
+	<ui:define name="content">
+
+	<p>
+	Each-Command is used to iterate through collections data.
+	</p>
+	<h2>How to define?</h2>
+	<p>Use the special syntax below defined in the comment for the staring cell of the command.</p>
+	<div class="source">
+	<div class="source"><pre class="prettyprint">tie:each(items="departments", var="department", length="8" allowAdd="true")</pre>
+	</div>
+	</div>
+	<p>Note:<br/> 
+	1. Explain the command area: the command area's top and left are the cell's position. Right column position is automatic calculated based on the content. Bottom is top plus form length.<br/>
+	2. Each command in the comment must remain in the same line, don't use enter key to divide it.
+	</p>
+	
+	<h2>Command Attributes</h2>
+	<ul>
+	
+		<li>items : name of the context variable which contain the collection data.</li>
+		<li>var: name of the variable in the context to put each collection item.</li>
+		<li>length: command area's length which based on the number of covered rows.</li>
+		<li>allowAdd: default is false. If set to true, then allow add/delete item from the collection.</li>
+	</ul>
+	</ui:define>
+</ui:composition>

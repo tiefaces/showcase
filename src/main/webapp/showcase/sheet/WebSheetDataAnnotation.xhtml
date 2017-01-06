@@ -10,7 +10,7 @@
 		<f:metadata>
 			<f:attribute name="api.path" value="common/TableLookup" />
 			<f:attribute name="src.paths"
-				value="classes/org/tiefaces/showcase/websheet/WebSheetDataAnnotation.java" />
+				value="classes/org/tiefaces/showcase/websheet/WebSheetDataAnnotation.java,classes/org/tiefaces/showcase/websheet/WebSheetDataAnnotation_Config.java,classes/org/tiefaces/showcase/websheet/datademo/WebSheetDataDemo.java" />
 
 		</f:metadata>
 	</ui:define>
@@ -28,11 +28,22 @@
 		<p>This is a very important change. I will explain it later in detail.</p>
 		<h:form id="form1">
 				
-			<tie:websheet id="sheet1" webSheetBean="#{webSheetDataAnnotation}"
+			<p>Excel Template.</p>
+
+			<tie:websheet id="sheet1" webSheetBean="#{webSheetDataAnnotation_Config}"
+				maxRowsPerPage="30" readOnly="true">
+			</tie:websheet>				
+				
+			<p:commandButton id="cmdExport1" value="Download the Template"
+				ajax="false" actionListener="#{webSheetDataAnnotation_Config.doExport()}">
+				<p:fileDownload value="#{webSheetDataAnnotation_Config.exportFile}" />
+			</p:commandButton>
+				
+			<tie:websheet id="sheet2" webSheetBean="#{webSheetDataAnnotation}"
 				maxRowsPerPage="100" >
 			</tie:websheet>
 			
-			<p:commandButton id="cmdExport" value="Download the Excel Sheet"
+			<p:commandButton id="cmdExport2" value="Download the Excel Sheet"
 				ajax="false" actionListener="#{webSheetDataAnnotation.doExport()}">
 				<p:fileDownload value="#{webSheetDataAnnotation.exportFile}" />
 			</p:commandButton>

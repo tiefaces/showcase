@@ -1,0 +1,120 @@
+<ui:composition template="/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+>
+	<ui:define name="contentTitle">Getting Started</ui:define>
+
+	<ui:define name="content">
+
+	<p>
+	To use Tiefaces web sheet, please follow the steps below:
+	</p>
+	<ol style="list-style-type: decimal">
+		<li>Add Tiefaces dependency.</li>
+		<li>Define an Excel template.</li>
+		<li>Define namespaces and use the websheet tag in a JSF web page.</li>
+		<li>Create a WebSheet bean and process the template.</li>
+	</ol>	
+	<h2>Adding Tiefaces dependency</h2>
+	<p>The easiest way to add Tiefaces libraries to your project is to use Maven and specify the required libraries in pom.xml.
+	</p>
+	<div class="source">
+	<div class="source"><pre class="prettyprint">&lt;dependency&gt;
+	    &lt;groupId&gt;org.tiefaces&lt;/groupId&gt;
+	    &lt;artifactId&gt;tiefaces&lt;/artifactId&gt;
+	    &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+	</pre>
+	</div>
+	</div>
+	<p>Alternatively you can download Tiefaces distribution from the download page and use the jars from the distribution. See the download page for deail.</p>
+		
+	<h2>Define an Excel template.</h2>
+	<p>A template is an excel file which uses a special markup to specify how Tiefaces should build the component.</p>
+	<p>Tiefaces supports <a class="externalLink" href="http://commons.apache.org/proper/commons-jexl/reference/syntax.html">Apache JEXL</a> as an expression language in the excel template.</p>
+	<p>For example, if you want to input/output employee name in a cell, you can put \${employee.name} in the cell (assuming the employee object is avaliable in the context).
+	As you can see, the definition is JEXL expression warpped with \${ and }.</p> 
+	<p>Tiefaces also use special commands in the cell comment to support enhanced features:</p>
+	<ul>
+		<li>Form command (tie:form): define form format</li>
+		<li>Fach command (tie:each): populate recusive data</li>
+		<li>Widget: difine widget name and attributes</li>
+	</ul>
+	
+	<p>The example template screenshot:</p>
+	<h:graphicImage library="showcase" name="img/gettingstart1.png" alt="getting start feature 1" width="1024" height="499" />
+	<p>For more details, please see the reference pages.</p>
+
+
+	<h2>Define namespace and use the websheet tag in a JSF web page.</h2>
+	
+<p>Tiefaces is built upon Primefaces as a composite component, so define both primefaces and tiefaces as below:</p>
+
+<div class="source">
+<div class="source"><pre class="prettyprint">...
+xmlns:p="http://primefaces.org/ui"
+xmlns:tie="http://java.sun.com/jsf/composite/tiefaces"
+...
+</pre>
+</div>
+</div>
+
+<p>Use tie:websheet tag in the JSF web page to define the component:</p>
+<div class="source">
+<div class="source"><pre class="prettyprint">...
+&lt;tie:websheet id="sheet1"
+....
+&gt;
+&lt;/tie:websheet &gt;
+...
+</pre>
+</div>
+</div>
+
+
+	
+	<h2>Create WebSheet bean and process the template.</h2>
+<p>As you can see the snip code below, it needs the following steps:</p>
+	<ol style="list-style-type: decimal">
+		<li>Create the bean by extend the TieWebSheetBean</li>
+		<li>Populdate data into context (if no data needed, then skip this step).</li>
+		<li>Retrieve Excel template.</li>
+		<li>load the web sheet with the template and context.</li>
+	</ol>	
+
+<div class="source">
+<div class="source"><pre class="prettyprint">...
+@ManagedBean
+@ViewScoped
+public class WebSheetDataAnnotation extends TieWebSheetBean {
+
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public void initialLoad()  {
+        Map&lt;String, Object&gt; context = new HashMap&lt;String, Object&gt;();
+        List&lt;Department&gt; departments = WebSheetDataDemo.createDepartments();
+        context.put("departments", departments);
+        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/datacommentdemo.xlsx");
+        loadWebSheet(stream, context);        
+    }
+}
+...
+</pre>
+</div>
+</div>
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+
+
+	</ui:define>
+</ui:composition>

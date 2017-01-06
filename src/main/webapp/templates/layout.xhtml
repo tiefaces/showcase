@@ -42,7 +42,7 @@
 				<a href="#{request.contextPath}/" class="logo">
 					<h:graphicImage library="layout" name="img/tiefaces1.png" alt="logo" width="45" height="45" />
 				</a>
-				<h1>TieFaces Showcase <h:outputText value="SNAPSHOT" styleClass="snapshot" rendered="#{app.snapshot}" /></h1>
+				<h1>TieFaces Web Sheet<h:outputText value="SNAPSHOT" styleClass="snapshot" rendered="#{app.snapshot}" /></h1>
 			</div>
 		</div>
     </p:layoutUnit>
@@ -59,38 +59,37 @@
     <p:layoutUnit position="west" size="250" style="border-width: 0px; margin: 0 0; padding: 0%" gutter="0">
 			<p:panel id="menu"  styleClass="wrapped"> 
 				    <p:panelMenu style="width:275px" >
-				        <p:submenu label="About Tiefaces" expanded="True">
-				            <p:menuitem value="Welcome to TieFaces" icon="ui-icon-heart" outcome="/index"  />
-				            <p:menuitem value="What's new" icon="ui-icon-help" outcome="/whatsnew" />
-				            <p:menuitem value="Download" icon="ui-icon-arrowthick-1-s" outcome="/download" />
-				        </p:submenu>
-				        <p:submenu label="Web Sheet"  expanded="True">
-				            <p:menuitem value="Over View" icon="ui-icon-info" outcome="/showcase/sheet/WebSheetOverView"  />
-				            <p:submenu label="Things you can do" expanded="True">
-					            <p:menuitem value="1. Viewer" style="margin-left:24px" outcome="/showcase/sheet/WebSheetViewer"  />
-					            <p:menuitem value="2. Reports" style="margin-left:24px" outcome="/showcase/sheet/WebSheetReports"  />
-					            <p:menuitem value="3. Data Input" style="margin-left:24px" outcome="/showcase/sheet/WebSheetDataInput"  />
-					            <p:menuitem value="4. Dynamic Rows" style="margin-left:24px" outcome="/showcase/sheet/WebSheetDynamicRows"  />
-					            <p:menuitem value="5. Validation" style="margin-left:24px" outcome="/showcase/sheet/WebSheetValidation"  />
-					            <p:menuitem value="6. Data Annotation" style="margin-left:24px" outcome="/showcase/sheet/WebSheetDataAnnotation"  />
-					            <p:submenu  label="7. Charts" style="margin-left:24px" expanded="True">
-					            <p:menuitem value="Line Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetLineCharts"  />
-					            <p:menuitem value="Column Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetColumnCharts2D"  />
-					            <p:menuitem value="3-D Column Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetColumnCharts3D"  />
-					            <p:menuitem value="Bar Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetBarCharts2D"  />
-					            <p:menuitem value="3-D Bar Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetBarCharts3D"  />
-					            <p:menuitem value="Pie Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetPieCharts2D"  />
-					            <p:menuitem value="3-D Pie Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetPieCharts3D"  />
-					            <p:menuitem value="Area Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetAreaCharts"  />
+				        	<p:submenu label="Web Sheet"  expanded="True">
+					            <p:menuitem value="Over View" icon="ui-icon-info" outcome="/OverView"  />
+					            <p:menuitem value="Getting Started" icon="ui-icon-help" outcome="/gettingstarted" />
+					            <p:menuitem value="What's New" icon="ui-icon-help" outcome="/whatsnew" />
+					            <p:menuitem value="Download" icon="ui-icon-arrowthick-1-s" outcome="/download" />
+					            <p:submenu label="Reference" expanded="True">
+						            <p:menuitem value="How to define template" style="margin-left:24px" outcome="/defineTemplate"  />
+						            <p:menuitem value="Form Command" style="margin-left:24px" outcome="/formCommand"  />
+						            <p:menuitem value="Each Command" style="margin-left:24px" outcome="/eachCommand"  />
+						            <p:menuitem value="Widget" style="margin-left:24px" outcome="/widget"  />
+						            <p:menuitem value="tie:websheet tag" style="margin-left:24px" outcome="/websheetTag"  />
+						        </p:submenu>    
+					            <p:submenu label="Demo" expanded="True">
+						            <p:menuitem value="1. Viewer" style="margin-left:24px" outcome="/showcase/sheet/WebSheetViewer"  />
+						            <p:menuitem value="2. Reports" style="margin-left:24px" outcome="/showcase/sheet/WebSheetReports"  />
+						            <p:menuitem value="3. Data Input" style="margin-left:24px" outcome="/showcase/sheet/WebSheetDataInput"  />
+						            <p:menuitem value="4. Nested Data Collections" style="margin-left:24px" outcome="/showcase/sheet/WebSheetDataAnnotation"  />
+						            <p:submenu  label="5. Charts" style="margin-left:24px" expanded="True">
+						            <p:menuitem value="Line Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetLineCharts"  />
+						            <p:menuitem value="Column Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetColumnCharts2D"  />
+						            <p:menuitem value="3-D Column Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetColumnCharts3D"  />
+						            <p:menuitem value="Bar Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetBarCharts2D"  />
+						            <p:menuitem value="3-D Bar Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetBarCharts3D"  />
+						            <p:menuitem value="Pie Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetPieCharts2D"  />
+						            <p:menuitem value="3-D Pie Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetPieCharts3D"  />
+						            <p:menuitem value="Area Charts" style="margin-left:16px" outcome="/showcase/sheet/WebSheetAreaCharts"  />
+						            </p:submenu>
 					            </p:submenu>
-				            </p:submenu>
 				            <p:menuitem value="Try it by yourself" icon="ui-icon-person" outcome="/showcase/sheet/WebSheetUpload"  />
 				        </p:submenu>
-				        <p:submenu label="Others"   expanded="True">
-				            <p:menuitem value="Locale Switcher" icon="ui-icon-transfer-e-w" outcome="/showcase/common/LocaleSwitcher"  />
-				            <p:menuitem value="Table Lookup" icon="ui-icon-search" outcome="/showcase/common/TableLookup"  />
-				            <p:menuitem value="Dialog Lookup" icon="ui-icon-newwin" outcome="/showcase/common/DialogLookup"  />
-				        </p:submenu>
+				        
 				    </p:panelMenu>				
 		  		</p:panel> 
     </p:layoutUnit>

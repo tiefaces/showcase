@@ -1,0 +1,38 @@
+<ui:composition template="/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+>
+	<ui:define name="contentTitle">Form Command</ui:define>
+
+	<ui:define name="content">
+
+	<p>
+	Form-Command is to define the form's layout include header, footer etc.
+	</p>
+	<p>
+	Note: If there's no form-command defined, then the whole sheet will be treated as one form.
+	</p>
+	<h2>How to define?</h2>
+	<p>Use the special syntax below defined in the comment for the staring cell of the form.</p>
+	<div class="source">
+	<div class="source"><pre class="prettyprint">tie:form(name="departments" length="10" headerLength="2" footerLength="1")</pre>
+	</div>
+	</div>
+	<p>Note:<br/> 
+	1. If set headerLength to 0, then web sheet will still use excel letters as column header. <br/>
+	2. Explain the form's area: the form's top and left are the cell's position. Right column position is automatic calculated based on the content. Bottom is top plus form length.<br/>
+	3. Each command in the comment must remain in the same line, don't use enter key to divide it.
+	</p>
+	
+	<h2>Command Attributes</h2>
+	<ul>
+	
+		<li>name : form's name and will be displayed as a tab's title </li>
+		<li>length: form's length which based on rows (i.e if a form start at row 2 and end at row 9, then set length to 9).</li>
+		<li>headerLength: header's length which also based on rows.</li>
+		<li>footerLength: footer's length which also based on rows.</li>
+	</ul>
+	
+	</ui:define>
+</ui:composition>

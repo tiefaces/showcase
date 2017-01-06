@@ -11,8 +11,7 @@ import javax.faces.event.ActionEvent;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
-
-import com.tiefaces.components.websheet.TieWebSheetBean;
+import org.tiefaces.components.websheet.TieWebSheetBean;
 
 @ManagedBean
 @ViewScoped

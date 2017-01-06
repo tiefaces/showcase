@@ -10,7 +10,7 @@
 		<f:metadata>
 			<f:attribute name="api.path" value="common/TableLookup" />
 			<f:attribute name="src.paths"
-				value="classes/org/tiefaces/showcase/websheet/WebSheetReports.java,classes/org/tiefaces/showcase/websheet/WebSheetReports_Config.java,classes/org/tiefaces/showcase/websheet/WebSheetReports_Data.java,classes/org/tiefaces/showcase/websheet/WebSheetUpload.java,classes/org/tiefaces/showcase/tablelookup/Item.java,classes/org/tiefaces/showcase/tablelookup/ItemSearchHelper.java" />
+				value="classes/org/tiefaces/showcase/websheet/WebSheetReports.java,classes/org/tiefaces/showcase/websheet/WebSheetReports_Config.java,classes/org/tiefaces/showcase/tablelookup/Item.java,classes/org/tiefaces/showcase/tablelookup/ItemList.java" />
 
 		</f:metadata>
 	</ui:define>
@@ -22,15 +22,9 @@
 
 	<ui:define name="demo">
 
-
-		<h3>How to use web sheet component as web reporting tool</h3>
-
-		<p>Configure data source:</p>
-		<p>use JSF EL (Expression Language) to define data source in the configuration tab.</p>
 		<p>Set attribute readOnly="true".</p>
 		<h:form id="form1">
-			<p>Excel Template. Please check the data source configuration in
-				Configuration Tab.</p>
+			<p>Excel Template.</p>
 
 			<tie:websheet id="sheet1" webSheetBean="#{webSheetReports_Config}"
 				maxRowsPerPage="30" readOnly="true">
@@ -38,7 +32,7 @@
 			<p>Data</p>
 
 
-			<p:dataTable var="item" value="#{webSheetReports_Data.itemList}"
+			<p:dataTable var="item" value="#{webSheetReports.itemList}"
 				rows="5" paginator="true" paginatorPosition="bottom" style="width:800px;">
 				<p:column headerText="Code">
 					<h:outputText value="#{item.code}" />
@@ -67,38 +61,6 @@
 				maxRowsPerPage="30" readOnly="true" showLineNumber="false">
 			</tie:websheet>
 
-			<p>Exercise</p>
-			<p>If you are interested, you can download the template, modify
-				it and then upload again to see the changes:</p>
-
-			<p:commandButton id="cmdExport" value="Download the template"
-				ajax="false" actionListener="#{webSheetReports_Config.doExport()}">
-				<p:fileDownload value="#{webSheetReports_Config.exportFile}" />
-			</p:commandButton>
-
-			<p:commandButton partialSubmit="true" immediate="true"
-				onclick="PF('dlgAdd').show();" value="Upload the template"
-				id="cmdLoad" styleClass="commandExButton" update="@this" />
-
-			<tie:websheet id="sheet3" webSheetBean="#{webSheetUpload}"
-				maxRowsPerPage="30" readOnly="true" showLineNumber="false">
-			</tie:websheet>
-			<p:remoteCommand name="refreshafter"
-				actionListener="#{webSheetUpload.refreshAfter}" update="sheet3"
-				oncomplete="PF('bui').hide()" />
-			<p:dialog modal="true" appendTo="@(body)" widgetVar="dlgAdd"
-				header="Load Excel File" width="480" height="160">
-				<p:fileUpload
-					fileUploadListener="#{webSheetUpload.doLoadFileAction}"
-					multiple="false" mode="advanced" auto="true" uploadLabel="Load"
-					process="@this" allowTypes="/(\.|\/)(xls|xlsx|xlsm)$/"
-					oncomplete="PF('bui').show();PF('dlgAdd').hide();refreshafter();">
-				</p:fileUpload>
-			</p:dialog>
-			<p:blockUI block="form1" widgetVar="bui">
-			LOADING<br />
-				<p:graphicImage library="showcase" name="img/ajaxloadingbar.gif" />
-			</p:blockUI>
 
 		</h:form>
 
