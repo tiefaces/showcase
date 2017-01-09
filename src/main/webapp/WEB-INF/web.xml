@@ -32,7 +32,7 @@
 
 	<!-- Session config, welcome files, error pages and mime types. -->
 	<welcome-file-list>
-		<welcome-file>index.xhtml</welcome-file>
+		<welcome-file>OverView.xhtml</welcome-file>
 	</welcome-file-list>
 
 </web-app>

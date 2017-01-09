@@ -3,10 +3,15 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 >
 	<h3>Use Case : Nested Collections</h3>
-	<p>
-	In this example, one company contain multiple departments while each department contain multiple employee.    
-	</p>
-	<p>
-	Note: the "Sub total" and "Total" are excel formula. After collection data populated, they are calculated correctly.. 
-	</p>
+	
+	<p>Tiefaces supports <a class="externalLink" href="http://commons.apache.org/proper/commons-jexl/reference/syntax.html">Apache JEXL</a> as an expression language in the excel template.</p>
+	<p>For example, if you want to input/output employee name in a cell, you can put \${employee.name} in the cell (assuming the employee object is avaliable in the context).
+	As you can see, the definition is JEXL expression warpped with \${ and }.</p> 
+	<p>Tiefaces also use special commands in the cell comment to support enhanced features:</p>
+	<ul>
+		<li>Form command (tie:form): define form format</li>
+		<li>Fach command (tie:each): populate recusive data</li>
+		<li>Widget: difine widget name and attributes</li>
+	</ul>	
+	
 </ui:composition>

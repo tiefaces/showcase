@@ -23,21 +23,24 @@
 	<ui:define name="demo">
 
 
-		<h3>Define data objects with annotation for web sheet</h3>
-		
-		<p>This is a very important change. I will explain it later in detail.</p>
+	<p>
+	In this example, one company contain multiple departments while each department contain multiple employee.    
+	</p>
+	<p>
+	Note: the "Sub total" and "Total" are excel formula. After collection data populated, they have been changed. 
+	</p>
 		<h:form id="form1">
-				
-			<p>Excel Template.</p>
-
+		<h3>Excel Template</h3>		
 			<tie:websheet id="sheet1" webSheetBean="#{webSheetDataAnnotation_Config}"
 				maxRowsPerPage="30" readOnly="true">
 			</tie:websheet>				
 				
-			<p:commandButton id="cmdExport1" value="Download the Template"
+			<p:commandButton id="cmdExport1" value="Download the Excel Template"
 				ajax="false" actionListener="#{webSheetDataAnnotation_Config.doExport()}">
 				<p:fileDownload value="#{webSheetDataAnnotation_Config.exportFile}" />
 			</p:commandButton>
+
+		<h3>Populated Web Sheet (Editable)</h3>		
 				
 			<tie:websheet id="sheet2" webSheetBean="#{webSheetDataAnnotation}"
 				maxRowsPerPage="100" >
