@@ -6,6 +6,7 @@ public class Item {
 	private String name;
 	private String description;
 	private Double price;
+	private Double quantity;
 	
 	public String getCode() {
 		return code;
@@ -31,6 +32,21 @@ public class Item {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+	
+	
+	
+	/**
+	 * @return the quantity
+	 */
+	public final Double getQuantity() {
+		return quantity;
+	}
+	/**
+	 * @param quantity the quantity to set
+	 */
+	public final void setQuantity(Double quantity) {
+		this.quantity = quantity;
+	}
 	public Item(String code, String name, String description,
 			String priceStr) {
 		super();
@@ -39,6 +55,10 @@ public class Item {
 		this.description = description;
 		this.price = Double.valueOf(priceStr)
 				;
+	}
+	public Item() {
+		super();
+		
 	}
 	
 	

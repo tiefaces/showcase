@@ -161,20 +161,20 @@ System.out.println("newformula = "+newformula);
 	
 	
 
-	public void testParseInputAttributes() throws IOException {
-		
-        String controlAttrs = " symbol=\" years\" symbolPosition=\"s\" minValue=\"0\" maxValue=\"999\" decimalPlaces=\"0\"  ";
-        List<CellFormAttributes> clist = new ArrayList<CellFormAttributes>();
-        
-        CellControlsHelper.parseInputAttributes(clist, controlAttrs);        
-        
-        CellFormAttributes cattr = clist.get(0);
-        
-        assertEquals("symbol", cattr.getType());
-        assertEquals(" years", cattr.getValue());
-        
-    }		
-		
+//	public void testParseInputAttributes() throws IOException {
+//		
+//        String controlAttrs = " symbol=\" years\" symbolPosition=\"s\" minValue=\"0\" maxValue=\"999\" decimalPlaces=\"0\"  ";
+//        List<CellFormAttributes> clist = new ArrayList<CellFormAttributes>();
+//        
+//        CellControlsHelper.parseInputAttributes(clist, controlAttrs);        
+//        
+//        CellFormAttributes cattr = clist.get(0);
+//        
+//        assertEquals("symbol", cattr.getType());
+//        assertEquals(" years", cattr.getValue());
+//        
+//    }		
+//		
 	
 	public void testJexlEngine() throws IOException {
 	

@@ -15,6 +15,7 @@ public class WebSheetDataAnnotation_Config extends TieWebSheetBean {
 
 	@Override
 	public void initialLoad() {
+		this.setSkipConfiguration(true);
 		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/datacommentdemo.xlsx");
 		loadWebSheet(stream);		
 	}
