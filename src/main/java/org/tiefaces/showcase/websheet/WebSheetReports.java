@@ -10,8 +10,6 @@ import javax.faces.bean.ViewScoped;
 
 import org.tiefaces.components.websheet.TieWebSheetBean;
 import org.tiefaces.showcase.tablelookup.ItemList;
-import org.tiefaces.showcase.websheet.datademo.Department;
-import org.tiefaces.showcase.websheet.datademo.WebSheetDataDemo;
 
 @ManagedBean
 @ViewScoped

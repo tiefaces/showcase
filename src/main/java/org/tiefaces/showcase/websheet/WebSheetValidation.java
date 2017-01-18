@@ -11,7 +11,6 @@ import javax.faces.bean.ViewScoped;
 
 import org.tiefaces.components.websheet.TieWebSheetBean;
 import org.tiefaces.showcase.tablelookup.Item;
-import org.tiefaces.showcase.tablelookup.ItemList;
 
 @ManagedBean
 @ViewScoped

@@ -1,7 +1,7 @@
 <ui:composition template="/templates/layout.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 >
 	<ui:define name="contentTitle">Getting Started</ui:define>
 
@@ -23,7 +23,7 @@
 	<div class="source"><pre class="prettyprint">&lt;dependency&gt;
 	    &lt;groupId&gt;org.tiefaces&lt;/groupId&gt;
 	    &lt;artifactId&gt;tiefaces&lt;/artifactId&gt;
-	    &lt;version&gt;1.0.0&lt;/version&gt;
+	    &lt;version&gt;1.0.2&lt;/version&gt;
 &lt;/dependency&gt;
 	</pre>
 	</div>
@@ -49,12 +49,11 @@
 
 	<h2>Define namespace and use the websheet tag in a JSF web page.</h2>
 	
-<p>Tiefaces is built upon Primefaces as a composite component, so define both primefaces and tiefaces as below:</p>
+<p>Use the namespace below to define tiefaces:</p>
 
 <div class="source">
 <div class="source"><pre class="prettyprint">...
-xmlns:p="http://primefaces.org/ui"
-xmlns:tie="http://java.sun.com/jsf/composite/tiefaces"
+xmlns:tie="http://tiefaces.org/tiefaces"
 ...
 </pre>
 </div>

@@ -1,14 +1,9 @@
 package org.tiefaces.showcase.websheet;
 
 import java.io.InputStream;
-import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.tiefaces.components.websheet.TieWebSheetBean;

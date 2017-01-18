@@ -36,7 +36,7 @@
 		<javase.version>1.7</javase.version>
 		<javaee.version>7.0</javaee.version>
 		<primefacesVersion>6.0</primefacesVersion>
-		<tiefacesVersion>1.0.1</tiefacesVersion>
+		<tiefacesVersion>1.0.2</tiefacesVersion>
 	</properties>
 
 	<developers>

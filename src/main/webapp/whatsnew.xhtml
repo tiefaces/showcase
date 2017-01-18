@@ -1,11 +1,17 @@
 <ui:composition template="/templates/layout.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 >
 	<ui:define name="contentTitle">What's new?</ui:define>
 
 	<ui:define name="content">
+		<h3>Version 1.0.2</h3>
+		<h4>Web Sheet</h4>
+		<ul>
+			<li>Fix bug: Add/Delete row button not shown if no form command<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/5" target="_blank">[issues5]</h:outputLink>.</li>
+			<li>Fix bug: Namespace not found error in NetBean IDE<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/6" target="_blank">[issues6]</h:outputLink>.</li>
+		</ul>
 		<h3>Version 1.0.1</h3>
 		<h4>Web Sheet</h4>
 		<ul>

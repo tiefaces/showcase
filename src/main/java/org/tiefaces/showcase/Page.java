@@ -38,9 +38,6 @@ public class Page {
 	// Constants
 	// ------------------------------------------------------------------------------------------------------
 
-	private static final long serialVersionUID = 1L;
-	private static final String API_PATH = "org/tiefaces/";
-	private static final String ERROR_LOADING_PAGE_DESCRIPTION = "Unable to load description of %s";
 	private static final String ERROR_LOADING_PAGE_SOURCE = "Unable to load source code of %s";
 
 	// Properties
@@ -87,7 +84,7 @@ public class Page {
 
 	private void checkCurrent() {
 		if (current == null) {
-			String viewId = FacesUtility.getContext().getViewRoot().getViewId();
+			//String viewId = FacesUtility.getContext().getViewRoot().getViewId();
 		}
 
 	}

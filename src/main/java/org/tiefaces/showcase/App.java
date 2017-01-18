@@ -12,37 +12,17 @@
  */
 package org.tiefaces.showcase;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 
-import org.jsoup.Jsoup;
-import org.jsoup.select.Elements;
 import org.primefaces.config.PrimeConfiguration;
-import org.primefaces.context.RequestContext;
 import org.tiefaces.common.FacesUtility;
 
 @ManagedBean(eager = true)
@@ -75,7 +55,7 @@ public class App {
 		Set<String> groupPaths = new TreeSet<>(resourcePaths);
 
 		for (String groupPath : groupPaths) {
-			String groupName = groupPath.split("/")[2];
+			//String groupName = groupPath.split("/")[2];
 			Set<String> pagePaths = new TreeSet<>(
 					FacesUtility.getResourcePaths(groupPath));
 
@@ -101,6 +81,7 @@ public class App {
 
 	}
 
+	/*
 	private DataSource getJNDIDataSource() {
 		String DATASOURCE_CONTEXT = "java:jboss/datasources/ExampleDS";
 
@@ -118,7 +99,7 @@ public class App {
 		}
 		return datasource;
 	}
-
+*/
 	private String initVersion() {
 		String version = org.tiefaces.common.AppUtils.getBuildVersion();
 		return version.replaceAll("-\\d+$", "");
