@@ -1,0 +1,131 @@
+<ui:composition template="/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+	<ui:define name="contentTitle">How to load the form</ui:define>
+
+	<ui:define name="content">
+
+	<p>Unlike most JSF components which only deal with presentation layer, web sheet also need inlcude business logic layer. We use a special way to deal with it: extend the base backed bean which include the logical controls and data for the compoent.</p>
+
+
+<h3>Create the bean by extend the TieWebSheetBean</h3>
+
+<div class="source"><pre class="prettyprint">...
+import org.tiefaces.components.websheet.TieWebSheetBean;
+@Named
+@ViewScoped
+public class WebSheetDataAnnotation extends TieWebSheetBean {
+...
+</pre>
+</div>
+
+<h3>Override initialLoad method.</h3>
+
+<p>InitialLoad is executed after bean constructed. This give us the opportunity to prepare the form.</p>
+
+<div class="source"><pre class="prettyprint">...
+    @Override
+    public void initialLoad()  {
+    ...
+    }
+...
+</pre>
+</div>
+	
+<h3>Prepare data (if no data needed, then skip this step).</h3>
+
+<p>Context is a hash map which contain data or business objects. Just put the object paired name into the map. See <a class="externalLink" href="http://commons.apache.org/proper/commons-jexl/index.html">Apache JEXL</a> for detail.</p>
+
+<div class="source"><pre class="prettyprint">...
+        Map&lt;String, Object&gt; context = new HashMap&lt;String, Object&gt;();
+        List&lt;Department&gt; departments = WebSheetDataDemo.createDepartments();
+        context.put("departments", departments);
+...
+</pre>
+</div>
+
+<h3>Special treatments (if no needed, then skip this step).</h3>
+
+<p>We can set some special attributes here before load the form:</p>
+<p>1.Skip configuration: default is false. If set to true, then skip the data loading. This used for show up the original template without data loading.</p>
+<div>
+<div class="source"><pre class="prettyprint">...
+ this.setSkipConfiguration(true);
+...
+</pre>
+</div>		
+</div>
+
+
+<h3>Load the web sheet</h3>
+<p>First we need load the template from repository (files or database). Then load it with context or without.</p>
+<div class="source"><pre class="prettyprint">...
+        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/datacommentdemo.xlsx");
+        loadWebSheet(stream, context);
+        // or use loadWebSheet(stream) if no context needed.        
+...
+</pre>
+</div>
+
+<h3>Whole example with data loading process.</h3>
+
+<div class="source"><pre class="prettyprint">
+package org.tiefaces.showcase.websheet;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.tiefaces.components.websheet.TieWebSheetBean;
+import org.tiefaces.showcase.websheet.datademo.Department;
+import org.tiefaces.showcase.websheet.datademo.WebSheetDataDemo;
+
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+
+@Named
+@ViewScoped
+public class WebSheetDataAnnotation extends TieWebSheetBean {
+    private static final long serialVersionUID = 1L;
+    @Override
+    public void initialLoad()  {
+        Map&lt;String, Object&gt; context = new HashMap&lt;String, Object&gt;();
+        List&lt;Department&gt; departments = WebSheetDataDemo.createDepartments();
+        context.put("departments", departments);
+        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/datacommentdemo.xlsx");
+        loadWebSheet(stream, context);        
+    }
+
+}
+</pre>
+</div>
+
+<h3>Whole example without data loading process.</h3>
+
+<div class="source"><pre class="prettyprint">
+package org.tiefaces.showcase.websheet;
+import java.io.InputStream;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+import org.tiefaces.components.websheet.TieWebSheetBean;
+
+@Named
+@ViewScoped
+public class WebSheetDataAnnotation_Config extends TieWebSheetBean {
+    private static final long serialVersionUID = 1L;
+    @Override
+    public void initialLoad() {
+        this.setSkipConfiguration(true);
+        InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/datacommentdemo.xlsx");
+        loadWebSheet(stream);        
+    }
+
+}
+</pre>
+</div>
+
+
+	</ui:define>
+</ui:composition>

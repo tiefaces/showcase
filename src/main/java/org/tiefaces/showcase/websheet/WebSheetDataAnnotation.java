@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-
 import org.tiefaces.components.websheet.TieWebSheetBean;
 import org.tiefaces.showcase.websheet.datademo.Department;
 import org.tiefaces.showcase.websheet.datademo.WebSheetDataDemo;
 
-@ManagedBean
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+
+@Named
 @ViewScoped
 public class WebSheetDataAnnotation extends TieWebSheetBean {
 

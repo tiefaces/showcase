@@ -32,7 +32,7 @@
 		
 	<h2>Define an Excel template.</h2>
 	<p>A template is an excel file which uses a special markup to specify how Tiefaces should build the component.</p>
-	<p>Tiefaces supports <a class="externalLink" href="http://commons.apache.org/proper/commons-jexl/reference/syntax.html">Apache JEXL</a> as an expression language in the excel template.</p>
+	<p>Tiefaces supports <a class="externalLink" href="http://commons.apache.org/proper/commons-jexl/index.html" target="_blank">Apache JEXL</a> as an expression language in the excel template.</p>
 	<p>For example, if you want to input/output employee name in a cell, you can put \${employee.name} in the cell (assuming the employee object is avaliable in the context).
 	As you can see, the definition is JEXL expression warpped with \${ and }.</p> 
 	<p>Tiefaces also use special commands in the cell comment to support enhanced features:</p>
@@ -77,14 +77,14 @@ xmlns:tie="http://tiefaces.org/tiefaces"
 <p>As you can see the snip code below, it needs the following steps:</p>
 	<ol style="list-style-type: decimal">
 		<li>Create the bean by extend the TieWebSheetBean</li>
-		<li>Populdate data into context (if no data needed, then skip this step).</li>
+		<li>Populate data into context (if no data needed, then skip this step).</li>
 		<li>Retrieve Excel template.</li>
 		<li>load the web sheet with the template and context.</li>
 	</ol>	
 
 <div class="source">
 <div class="source"><pre class="prettyprint">...
-@ManagedBean
+@Named
 @ViewScoped
 public class WebSheetDataAnnotation extends TieWebSheetBean {
 

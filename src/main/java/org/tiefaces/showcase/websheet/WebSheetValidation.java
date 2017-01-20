@@ -6,13 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 import org.tiefaces.components.websheet.TieWebSheetBean;
 import org.tiefaces.showcase.tablelookup.Item;
 
-@ManagedBean
+@Named
 @ViewScoped
 public class WebSheetValidation extends TieWebSheetBean {
 

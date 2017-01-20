@@ -2,13 +2,16 @@ package org.tiefaces.showcase.websheet;
 
 import java.io.InputStream;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import org.tiefaces.components.websheet.TieWebSheetBean;
 
-@ManagedBean
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+
+
+@Named
 @ViewScoped
 public class WebSheetUpload extends TieWebSheetBean {
 
