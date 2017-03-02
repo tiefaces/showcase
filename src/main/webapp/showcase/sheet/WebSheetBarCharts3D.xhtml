@@ -1,9 +1,10 @@
-<ui:composition template="/templates/showcase.xhtml"
+<ui:composition template="/WEB-INF/templates/showcase.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
+    xmlns:adm="http://github.com/adminfaces"
 	xmlns:tie="http://tiefaces.org/tiefaces">
 
 	<ui:define name="meta">
@@ -14,6 +15,10 @@
 
 		</f:metadata>
 	</ui:define>
+
+    <ui:define name="breadcrumb">
+        <adm:breadcrumb title="3-D Bar Charts"/>
+    </ui:define>
 
 	<ui:define name="description-extra">
 		<ui:include src="/includes/common/desc-websheetbarcharts3D.xhtml" />

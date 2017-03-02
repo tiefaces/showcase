@@ -1,12 +1,22 @@
-<ui:composition template="/templates/layout.xhtml"
+<ui:composition template="WEB-INF/templates/template.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"	
 >
-	<ui:define name="contentTitle">Download</ui:define>
 
-	<ui:define name="content">
+    <ui:define name="head-end">
+        <ui:param name="renderBreadCrumb" value="false"/>
+    </ui:define>
+
+    <ui:define name="title">
+        <h2 class="align-left">
+            Download
+        </h2>
+
+    </ui:define>
+    
+  <ui:define name="body">    
 
 	<p>The easiest way to add Tiefaces libraries to your project is to use Maven and specify the required libraries in pom.xml.
 	</p>

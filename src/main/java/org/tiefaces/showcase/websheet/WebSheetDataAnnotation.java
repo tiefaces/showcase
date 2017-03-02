@@ -3,8 +3,6 @@ package org.tiefaces.showcase.websheet;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.tiefaces.components.websheet.TieWebSheetBean;
 import org.tiefaces.showcase.websheet.datademo.Department;
 import org.tiefaces.showcase.websheet.datademo.WebSheetDataDemo;
@@ -20,7 +18,7 @@ public class WebSheetDataAnnotation extends TieWebSheetBean {
 
 	@Override
 	public void initialLoad()  {
-		Map<String, Object> context = new HashMap<String, Object>();
+		HashMap<String, Object> context = new HashMap<String, Object>();
 		List<Department> departments = WebSheetDataDemo.createDepartments();
 		context.put("departments", departments);
 		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/datacommentdemo.xlsx");

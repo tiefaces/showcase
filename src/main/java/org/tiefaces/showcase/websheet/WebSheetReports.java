@@ -3,8 +3,6 @@ package org.tiefaces.showcase.websheet;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
@@ -41,7 +39,7 @@ public class WebSheetReports extends TieWebSheetBean {
 
 	@Override
 	public void initialLoad() {
-		Map<String, Object> context = new HashMap<String, Object>();
+		HashMap<String, Object> context = new HashMap<String, Object>();
 		context.put("items", itemList);
 		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELIST.xlsx");
 		loadWebSheet(stream, context);		

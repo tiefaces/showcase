@@ -182,7 +182,7 @@ public class Page {
 		}
 
 		try {
-			return new String(FacesUtility.toByteArray(input), "UTF-8")
+			return new String(SourceUtility.toByteArray(input), "UTF-8")
 					.replace("\t", "    "); // Tabs are in HTML <pre> presented
 											// as 8 spaces, which is too much.
 		} catch (IOException e) {

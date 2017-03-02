@@ -4,8 +4,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
@@ -25,7 +23,7 @@ public class WebSheetValidation extends TieWebSheetBean {
 		
 		itemList = 	new ArrayList<Item>();
 		itemList.add(new Item());
-		Map<String, Object> context = new HashMap<String, Object>();
+		HashMap<String, Object> context = new HashMap<String, Object>();
 		context.put("items", itemList);
 		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELISTINPUTVALIDATION.xlsx");
 		loadWebSheet(stream, context);				

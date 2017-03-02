@@ -59,7 +59,7 @@ public class Department {
         return staff;
     }
 
-    public void setStaff(List staff) {
+    public void setStaff(List<Employee> staff) {
         this.staff = staff;
     }
 

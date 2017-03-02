@@ -1,12 +1,22 @@
-<ui:composition template="/templates/layout.xhtml"
+<ui:composition template="WEB-INF/templates/template.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 >
-	<ui:define name="contentTitle">Over View</ui:define>
 
-	<ui:define name="content">
+    <ui:define name="head-end">
+        <ui:param name="renderBreadCrumb" value="false"/>
+    </ui:define>
 
+    <ui:define name="title">
+        <h2 class="align-center">
+            Welcome to the TieFaces WebSheet Showcase!
+        </h2>
+
+    </ui:define>
+    
+  <ui:define name="body">    
+    <h2>Over View</h2>
 	<p>Tiefaces webSheet is a JSF component which can render a excel template as a web form while keeping the same formats and styles.	It is not intend to become online document tools like Google Docs, instead it want to become a gateway or transformer of Excel sheets to Web forms.  
 	</p>
 	<h2>Features</h2>
@@ -31,6 +41,5 @@
 	<h3>Source Code in GitHub</h3>
 <p>Tiefaces licensed under MIT license (totally free to use). Source code is available from the public repositories at <h:outputLink value="https://github.com/tiefaces/TieFaces" target="_blank">Github</h:outputLink>.</p>
 <p>Any feedback is appreciated (Jason.Jiang.ca@gmail.com).</p>
-	
 	</ui:define>
 </ui:composition>

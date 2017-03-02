@@ -122,7 +122,6 @@ public class App {
 				return String.format("%s   TieFaces %s   PrimeFaces %s",
 						"Mojarra-" + jsfVersion, tieVersion, primeVersion);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		return "";

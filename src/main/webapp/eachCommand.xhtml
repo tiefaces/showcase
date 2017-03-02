@@ -1,12 +1,21 @@
-<ui:composition template="/templates/layout.xhtml"
+<ui:composition template="WEB-INF/templates/template.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 >
-	<ui:define name="contentTitle">Each Command</ui:define>
 
-	<ui:define name="content">
+   <ui:define name="head-end">
+        <ui:param name="renderBreadCrumb" value="false"/>
+    </ui:define>
 
+    <ui:define name="title">
+        <h2 class="align-left">
+            Each Command
+        </h2>
+
+    </ui:define>
+    
+  <ui:define name="body">    
 	<p>
 	Each-Command is used to iterate through collections data.
 	</p>

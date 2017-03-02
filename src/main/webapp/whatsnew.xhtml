@@ -1,11 +1,29 @@
-<ui:composition template="/templates/layout.xhtml"
+<ui:composition template="WEB-INF/templates/template.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 >
-	<ui:define name="contentTitle">What's new?</ui:define>
 
-	<ui:define name="content">
+    <ui:define name="head-end">
+        <ui:param name="renderBreadCrumb" value="false"/>
+    </ui:define>
+
+    <ui:define name="title">
+        <h2 class="align-left">
+            What's new?
+        </h2>
+
+    </ui:define>
+    
+  <ui:define name="body">   
+  		<h3>Version 1.0.4</h3>
+		<h4>Web Sheet</h4>
+		<ul>
+			<li>Prompt message box if user leave the page without saving data<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/8" target="_blank">[issues8]</h:outputLink>.</li>
+			<li>Fix bug: Picture height not rendered properly<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/9" target="_blank">[issues9]</h:outputLink>.</li>
+			<li>Hide tab if there's only one form<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/10" target="_blank">[issues10]</h:outputLink>.</li>
+			<li>Add attribute: fixedWidthStyle (default is false)<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/11" target="_blank">[issues11]</h:outputLink>.</li>
+		</ul> 
 		<h3>Version 1.0.3</h3>
 		<h4>Web Sheet</h4>
 		<ul>
@@ -84,8 +102,5 @@
 		<ul>
 			<li>Pop up a search window and return result to the parent page.</li>
 		</ul>
-
-		<hr />
-
 	</ui:define>
 </ui:composition>

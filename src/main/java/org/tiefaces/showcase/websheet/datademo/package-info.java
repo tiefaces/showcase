@@ -2,7 +2,7 @@
  * 
  */
 /**
- * @author ihsb_developer
+ * @author Jason Jiang
  *
  */
 package org.tiefaces.showcase.websheet.datademo;

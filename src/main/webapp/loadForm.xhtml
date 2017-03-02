@@ -1,12 +1,21 @@
-<ui:composition template="/templates/layout.xhtml"
+<ui:composition template="WEB-INF/templates/template.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 >
-	<ui:define name="contentTitle">How to load the form</ui:define>
 
-	<ui:define name="content">
+    <ui:define name="head-end">
+        <ui:param name="renderBreadCrumb" value="false"/>
+    </ui:define>
 
+    <ui:define name="title">
+        <h2 class="align-left">
+            How to load the form
+        </h2>
+
+    </ui:define>
+    
+  <ui:define name="body">    
 	<p>Unlike most JSF components which only deal with presentation layer, web sheet also need inlcude business logic layer. We use a special way to deal with it: extend the base backed bean which include the logical controls and data for the compoent.</p>
 
 

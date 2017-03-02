@@ -1,12 +1,21 @@
-<ui:composition template="/templates/layout.xhtml"
+<ui:composition template="WEB-INF/templates/template.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 >
-	<ui:define name="contentTitle">Web Sheet Tag</ui:define>
 
-	<ui:define name="content">
+    <ui:define name="head-end">
+        <ui:param name="renderBreadCrumb" value="false"/>
+    </ui:define>
 
+    <ui:define name="title">
+        <h2 class="align-left">
+            Web Sheet Tag
+        </h2>
+
+    </ui:define>
+    
+  <ui:define name="body">    
 <p>Tiefaces use tie:websheet tag in the JSF web page to define the component.</p>
 	<h2>How to define?</h2>
 	<p>Use the special syntax below defined in the comment for the staring cell of the command.</p>
@@ -36,6 +45,8 @@
 	<li><b>tableWidthStyle</b>: Same as p:datatable. required="false"</li>
 	<li><b>emptyMessage</b>: Same as p:datatable.</li>
 	<li><b>deleteRowConfirmMessage</b>: confirmation message when prompt delete row. required="false"</li>
+	<li><b>fixedWidthStyle</b>: default is false. When set to true, form will be displayed using fixed style. required="false"</li>
+	
 	
 	</ul>
 	
