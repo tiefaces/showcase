@@ -45,8 +45,11 @@
 				ajax="false" actionListener="#{webSheetDataAnnotation_Config.doExport()}">
 				<p:fileDownload value="#{webSheetDataAnnotation_Config.exportFile}" />
 			</p:commandButton>
-
-		<h3>Populated Web Sheet (Editable)</h3>		
+        </h:form>
+        
+        <h:form id="form2">
+    		<h3>Populated Web Sheet (Editable)</h3>		
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 				
 			<tie:websheet id="sheet2" webSheetBean="#{webSheetDataAnnotation}"
 				maxRowsPerPage="100" >
@@ -56,7 +59,6 @@
 				ajax="false" actionListener="#{webSheetDataAnnotation.doExport()}">
 				<p:fileDownload value="#{webSheetDataAnnotation.exportFile}" />
 			</p:commandButton>
-			
 			
 		</h:form>
 		
