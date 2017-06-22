@@ -36,7 +36,7 @@
 		<javase.version>1.7</javase.version>
 		<javaee.version>7.0</javaee.version>
 		<primefacesVersion>6.0</primefacesVersion>
-		<tiefacesVersion>1.0.5</tiefacesVersion>
+		<tiefacesVersion>1.0.6</tiefacesVersion>
         <adminfacesVersion>0.1-SNAPSHOT</adminfacesVersion>
 	</properties>
 
@@ -62,7 +62,7 @@
 		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>[6.0,)</version>
+			<version>6.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -136,7 +136,7 @@
         <dependency>
             <groupId>com.github.adminfaces</groupId>
             <artifactId>admin-template</artifactId>
-            <version>0.1-20170220.000804-44</version>
+            <version>0.1-20170315.202028-60</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.github.adminfaces</groupId>
@@ -148,7 +148,7 @@
 <dependency>
     <groupId>com.github.adminfaces</groupId>
     <artifactId>admin-theme</artifactId>
-    <version>0.1-20170220.000753-138</version>
+    <version>0.1-20170317.211807-172</version>
     <!--<classifier>dev</classifier> uncompressed theme.css -->
 </dependency>
 <!-- end::dep-admin-theme[] -->
