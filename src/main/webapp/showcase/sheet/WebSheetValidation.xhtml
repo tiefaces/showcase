@@ -4,7 +4,7 @@
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
-    xmlns:adm="http://github.com/adminfaces"
+	xmlns:adm="http://github.com/adminfaces"
 	xmlns:tie="http://tiefaces.org/tiefaces">
 
 	<ui:define name="meta">
@@ -15,9 +15,9 @@
 		</f:metadata>
 	</ui:define>
 
-    <ui:define name="breadcrumb">
-        <adm:breadcrumb title="Validation"/>
-    </ui:define>
+	<ui:define name="breadcrumb">
+		<adm:breadcrumb title="Validation" />
+	</ui:define>
 
 
 	<ui:define name="description-extra">
@@ -30,43 +30,55 @@
 		<h3>How to Setup Validation Rule</h3>
 
 		<p>Use $validate{rule="...." error="...."} in the cell's comment.</p>
-	<ul>
-		<li>rule:validation rule.</li>
-		<li>error: error message to show up if validation failed.</li>
-	</ul>
-		
-	<p>Note: One cell can define multiple rules. Use $value to present the current input value. For example, the following rules are defined for the price cell:</p>
-	
+		<ul>
+			<li>rule:validation rule.</li>
+			<li>error: error message to show up if validation failed.</li>
+		</ul>
 
-	<div class="source"><pre class="prettyprint">$validate{rule="$value&gt;0" error="Value must be greater than zero (0)."}
+		<p>Note: One cell can define multiple rules. Use $value to present
+			the current input value. For example, the following rules are defined
+			for the price cell:</p>
+
+
+		<div class="source">
+			<pre class="prettyprint">$validate{rule="$value&gt;0" error="Value must be greater than zero (0)."}
 $validate{rule="$value&lt;=500000" error="Value must be less than or equal to 500,000."}.</pre>
-	</div>
-	
-		
-		<h:form id="form1">	
-		
-		   <h3>Excel Template</h3>
+		</div>
+
+
+		<h:form id="form1">
+
+			<h3>Excel Template</h3>
 
 			<tie:websheet id="sheet1" webSheetBean="#{webSheetValidation_Config}"
 				maxRowsPerPage="30" readOnly="true">
 			</tie:websheet>
 			<p:commandButton id="cmdExportTemplate" value="Download the template"
-				ajax="false" actionListener="#{webSheetValidation_Config.doExport()}">
+				ajax="false"
+				actionListener="#{webSheetValidation_Config.doExport()}">
 				<p:fileDownload value="#{webSheetValidation_Config.exportFile}" />
 			</p:commandButton>
 
 
 			<h3>Validation Demo</h3>
 
+			<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="45">
+				<h:outputText value="Render Switch (hide the websheet when switch off) : " />
+				<p:inputSwitch value="#{webSheetValidation.rendered}">
+					<p:ajax listener="#{webSheetValidation.dynamicShow}"
+						update="sheet2" />
+				</p:inputSwitch>
+			</h:panelGrid>
+
 			<tie:websheet id="sheet2" webSheetBean="#{webSheetValidation}"
 				maxRowsPerPage="30">
 			</tie:websheet>
 			<p>
-			<p:commandButton id="cmdExportResult" value="Download the result"
-				ajax="false" actionListener="#{webSheetValidation.doExport()}">
-				<p:fileDownload value="#{webSheetValidation.exportFile}" />
-			</p:commandButton>
-			</p>			
+				<p:commandButton id="cmdExportResult" value="Download the result"
+					ajax="false" actionListener="#{webSheetValidation.doExport()}">
+					<p:fileDownload value="#{webSheetValidation.exportFile}" />
+				</p:commandButton>
+			</p>
 		</h:form>
 
 	</ui:define>

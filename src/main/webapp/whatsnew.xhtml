@@ -16,46 +16,77 @@
     </ui:define>
     
   <ui:define name="body">   
+  		<h3>Version 1.0.10</h3>
+		<h4>Web Sheet</h4>
+ 
+		<ul>
+			<li>Fix: attr Rendered problem.<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/17" target="_blank">[issues17]</h:outputLink>.
+			The rendered attribute in component tag doesn't work as expected:
+			<ul>
+	<li>Removed the rendered attribute from component tag.</li>
+	<li>Added the rendered attribute into webSheetBean. You can use setRendered(false) in the bean to hide the web sheet. Please see the "Validation" demo page for detail.</li>
+			</ul>
+		</li>	
+		</ul> 		
+		
+  		<h3>Version 1.0.9</h3>
+		<h4>Web Sheet</h4>
+		<ul>
+			<li>Fix: translate labels in modal of remove line.<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/18" target="_blank">[issues18]</h:outputLink>.
+			The following attributes have been added into component tag:
+			<ul>
+	<li><b>deleteRowConfirmHeader</b>: String to set the header title of confirmation dialog for delete row. default is "Confirmation". required="false"</li>
+	<li><b>deleteRowConfirmButtonYes</b>: String to set the title of "Yes" button in delete row confirmation dialog. default is "Yes". required="false"</li>
+	<li><b>deleteRowConfirmButtonNo</b>: String to set the title of "No" button in delete row confirmation dialog. default is "No". required="false"</li>
+	<li><b>addRowButtonTip</b>: String to set the tool tip of add row button. default is "Add Row". required="false"</li>
+	<li><b>deleteRowButtonTip</b>: String to set the tool tip of delete row button. default is "Delete Row". required="false"</li>
+			</ul>
+		</li>	
+		</ul> 
+  		<h3>Version 1.0.8</h3>
+		<h4>Web Sheet</h4>
+		<ul>
+			<li>Fix: Exported sheets have no comments.<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/16" target="_blank">[issues16]</h:outputLink>.</li>
+		</ul> 
   		<h3>Version 1.0.7</h3>
 		<h4>Web Sheet</h4>
 		<ul>
-			<li>Fix bug: Bug on edit or upload Excel file.<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/15" target="_blank">[issues15]</h:outputLink>.</li>
+			<li>Fix: Bug on edit or upload Excel file.<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/15" target="_blank">[issues15]</h:outputLink>.</li>
 		</ul> 
   		<h3>Version 1.0.6</h3>
 		<h4>Web Sheet</h4>
 		<ul>
-			<li>Fix bug: exported sheets lost normal comments.<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/16" target="_blank">[issues16]</h:outputLink>.</li>
+			<li>Fix: cannot load form with no predefined commands<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/14" target="_blank">[issues14]</h:outputLink>.</li>
 		</ul> 
   		<h3>Version 1.0.5</h3>
 		<h4>Web Sheet</h4>
 		<ul>
-			<li>Fix bug: cannot load form with no predefined commands<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/14" target="_blank">[issues14]</h:outputLink>.</li>
-			<li>Fix bug: delete row doesn't work properly<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/13" target="_blank">[issues13]</h:outputLink>.</li>
+			<li>Fix: delete row doesn't work properly<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/13" target="_blank">[issues13]</h:outputLink>.</li>
 		</ul> 
   		<h3>Version 1.0.4</h3>
 		<h4>Web Sheet</h4>
 		<ul>
 			<li>Prompt message box if user leave the page without saving data<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/8" target="_blank">[issues8]</h:outputLink>.</li>
-			<li>Fix bug: Picture height not rendered properly<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/9" target="_blank">[issues9]</h:outputLink>.</li>
+			<li>Fix: Picture height not rendered properly<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/9" target="_blank">[issues9]</h:outputLink>.</li>
 			<li>Hide tab if there's only one form<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/10" target="_blank">[issues10]</h:outputLink>.</li>
 			<li>Add attribute: fixedWidthStyle (default is false)<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/11" target="_blank">[issues11]</h:outputLink>.</li>
 		</ul> 
 		<h3>Version 1.0.3</h3>
 		<h4>Web Sheet</h4>
 		<ul>
-			<li>Fix bug: Support both CDI and JSF bean(@Named bean issue)<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/7" target="_blank">[issues7]</h:outputLink>.</li>
+			<li>Fix: Support both CDI and JSF bean(@Named bean issue)<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/7" target="_blank">[issues7]</h:outputLink>.</li>
 		</ul>
 		<h3>Version 1.0.2</h3>
 		<h4>Web Sheet</h4>
 		<ul>
-			<li>Fix bug: Add/Delete row button not shown if no form command<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/5" target="_blank">[issues5]</h:outputLink>.</li>
-			<li>Fix bug: Namespace not found error in NetBean IDE<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/6" target="_blank">[issues6]</h:outputLink>.</li>
+			<li>Fix: Add/Delete row button not shown if no form command<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/5" target="_blank">[issues5]</h:outputLink>.</li>
+			<li>Fix: Namespace not found error in NetBean IDE<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/6" target="_blank">[issues6]</h:outputLink>.</li>
 		</ul>
 		<h3>Version 1.0.1</h3>
 		<h4>Web Sheet</h4>
 		<ul>
 			<li>Implement validation command (see validation demo page)<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/3" target="_blank">[issues3]</h:outputLink>.</li>
-			<li>Fix bug: hide temporary sheet in the template<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/1" target="_blank">[issues1]</h:outputLink>.</li>
+			<li>Fix: hide temporary sheet in the template<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/1" target="_blank">[issues1]</h:outputLink>.</li>
 			<li>Add skipConfiguration attribute in bean Object<h:outputLink value="https://github.com/tiefaces/TieFaces/issues/2" target="_blank">[issues2]</h:outputLink>.</li>
 		</ul>
 		<h3>Version 1.0.0</h3>

@@ -26,7 +26,10 @@ public class WebSheetValidation extends TieWebSheetBean {
 		HashMap<String, Object> context = new HashMap<String, Object>();
 		context.put("items", itemList);
 		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELISTINPUTVALIDATION.xlsx");
-		loadWebSheet(stream, context);				
+		loadWebSheet(stream, context);	
 	}
-
+		
+    public void dynamicShow() {
+    	System.out.println("sheet rendered = "+this.isRendered());
+    }
 }

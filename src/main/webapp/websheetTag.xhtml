@@ -33,7 +33,6 @@
 	<h2>The Attributes of tie:websheet</h2>
 	<ul>
 	<li><b>webSheetBean</b>: The bean object which passed in. required="true"</li>
-	<li><b>rendered</b>: Show or Hide. required="false"</li>
 	<li><b>readOnly</b>: True then not editable. required="false"</li>
 	<li><b>showLineNumber</b>: True then show line number. required="false"</li>
 	<li><b>paginator</b>: Same as p:datatable. required="false"</li>
@@ -46,8 +45,11 @@
 	<li><b>emptyMessage</b>: Same as p:datatable.</li>
 	<li><b>deleteRowConfirmMessage</b>: confirmation message when prompt delete row. required="false"</li>
 	<li><b>hideSingleSheetTabTitle</b>: default is false. When set to true, If there's only one form, then hide the form title. required="false"</li>
-	
-	
+	<li><b>deleteRowConfirmHeader</b>: String to set the header title of confirmation dialog for delete row. default is "Confirmation". required="false"</li>
+	<li><b>deleteRowConfirmButtonYes</b>: String to set the title of "Yes" button in delete row confirmation dialog. default is "Yes". required="false"</li>
+	<li><b>deleteRowConfirmButtonNo</b>: String to set the title of "No" button in delete row confirmation dialog. default is "No". required="false"</li>
+	<li><b>addRowButtonTip</b>: String to set the tool tip of add row button. default is "Add Row". required="false"</li>
+	<li><b>deleteRowButtonTip</b>: String to set the tool tip of delete row button. default is "Delete Row". required="false"</li>
 	</ul>
 	
 	</ui:define>
