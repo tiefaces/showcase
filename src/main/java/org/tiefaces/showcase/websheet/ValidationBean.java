@@ -14,7 +14,7 @@ public class ValidationBean implements TieWebSheetValidation {
 	}
 
 	private boolean checkRule2(double value) {
-		if (value < 500000) {
+		if (value >0 && value < 500000) {
 			return true;
 		}
 		return false;
@@ -31,7 +31,7 @@ public class ValidationBean implements TieWebSheetValidation {
 			}
 			pass = checkRule2(Double.parseDouble(inputValue));
 			if (!pass) {
-				return "line " + (rowIndex + 1) + " error : value must less than 50,000.";
+				return "line " + (rowIndex + 1) + " error : value must greater than 0 and less than 50,000.";
 			}
 			break;
 		case 4:

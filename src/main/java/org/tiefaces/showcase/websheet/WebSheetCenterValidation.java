@@ -29,12 +29,8 @@ public class WebSheetCenterValidation extends TieWebSheetBean {
 		context.put("items", itemList);
 		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/ServerCenterValidation.xlsx");
 		loadWebSheet(stream, context);
-
+		this.setTieWebSheetValidationBean(new ValidationBean());
 
 	}
 		
-
-	public void dynamicShow() {
-    	System.out.println("sheet rendered = "+this.isRendered());
-    }
 }

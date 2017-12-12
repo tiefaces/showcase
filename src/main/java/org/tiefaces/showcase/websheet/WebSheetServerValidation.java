@@ -29,7 +29,4 @@ public class WebSheetServerValidation extends TieWebSheetBean {
 		loadWebSheet(stream, context);	
 	}
 		
-    public void dynamicShow() {
-    	System.out.println("sheet rendered = "+this.isRendered());
-    }
 }

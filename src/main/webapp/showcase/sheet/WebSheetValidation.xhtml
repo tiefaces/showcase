@@ -11,7 +11,7 @@
 		<f:metadata>
 			<f:attribute name="api.path" value="common/TableLookup" />
 			<f:attribute name="src.paths"
-				value="classes/org/tiefaces/showcase/websheet/WebSheetValidation.java,classes/org/tiefaces/showcase/websheet/WebSheetServerValidation.java,classes/org/tiefaces/showcase/websheet/RuleBean.java,classes/org/tiefaces/showcase/websheet/ValicationBean.java" />
+				value="classes/org/tiefaces/showcase/websheet/WebSheetValidation.java,classes/org/tiefaces/showcase/websheet/WebSheetServerValidation.java,classes/org/tiefaces/showcase/websheet/WebSheetCenterValidation.java,classes/org/tiefaces/showcase/websheet/RuleBean.java,classes/org/tiefaces/showcase/websheet/ValidationBean.java" />
 		</f:metadata>
 	</ui:define>
 
@@ -43,7 +43,7 @@ $rowIndex  -- current row index (start from 0)
 $colIndex  -- current column index (start from 0, for example column A is 0)
 $A$1       -- refer to the value of cell A1. Of course you can use $B$2 refer to cell B2.
 $A         -- If no row specified, then use current row as reference. For example, current row is row 2, then $A refer to the value of cell A2.
-\#{         -- JSF EL (see below demo for detail)
+\#{         -- Invoke back-end bean through EL (please see demo 2 for detail)
 </pre>
 		</div>
 
@@ -62,23 +62,13 @@ $validate{rule="\#{ruleBean.checkRule2($value)}" error="Value must be less than 
 		<h:form id="form1">
 
 
-			<h3>Demo 1: </h3>
+			<h3>Demo 1: Validation Rules</h3>
 
 		<div class="source">
 			<pre class="prettyprint">$validate{rule="$value&gt;0" error="Value must be greater than zero (0)."}
 $validate{rule="$value&lt;=500000" error="Value must be less than or equal to 500,000."}.
 </pre>
 		</div>
-
-
-			<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="45">
-				<h:outputText
-					value="Render Switch (hide the websheet when switch off) : " />
-				<p:inputSwitch value="#{webSheetValidation.rendered}">
-					<p:ajax listener="#{webSheetValidation.dynamicShow}"
-						update="sheet2" />
-				</p:inputSwitch>
-			</h:panelGrid>
 
 			<tie:websheet id="sheet2" webSheetBean="#{webSheetValidation}"
 				maxRowsPerPage="30">
@@ -99,7 +89,7 @@ $validate{rule="$value&lt;=500000" error="Value must be less than or equal to 50
 </h:form>
 		<h:form id="form2">
 
-		<h3>Demo 2: validation through back-end bean</h3>
+		<h3>Demo 2: Pass validation process to back-end bean through EL</h3>
 
 		<p>JSF EL is supported in the validation rule. You can pass the current input value or other parameters into back-end bean through EL. For example, the following rules are defined
 			to invoke the back-end bean 'ruleBean'</p>
@@ -135,35 +125,61 @@ $validate{rule="\#{ruleBean.checkRule2($value)}" error="Value must be less than 
 
 		<h:form id="form3">
 
-		<h3>Demo 3: define all the validations in a back-end center bean</h3>
+		<h3>Demo 3: Define validation rules and messages in a center place.</h3>
 
-		<p>Implement TieWebSheetValidation interface and use it as a central place to define all the validation rules and error messages. No need to define the rules in each cell separately. </p>
+		<p>Implement TieWebSheetValidation interface and use it as a central place to define all the validation rules and error messages. No need to define rules in the template. </p>
 
 
 		<div class="source">
-			<pre class="prettyprint">$validate{rule="\#{ruleBean.checkRule1($value)}" error="Value must be greater than zero (0)."}
-$validate{rule="\#{ruleBean.checkRule2($value)}" error="Value must be less than or equal to 500,000."}
+			<pre class="prettyprint">
+/** Create a bean which implement TieWebSheetValidation interface **/
+
+
+public class ValidationBean implements TieWebSheetValidation {
+...
+	@Override
+	public String validate(String sheetName, int rowIndex, int colIndex, String inputValue) {
+	...
+	/** return error message if validation failed, otherwise return empty string. **/
+	...
+	}		
+}
+			
+/** Assign the validation bean to TieWebSheetBean in the initialLoad. **/
+			
+@Named
+@ViewScoped
+public class WebSheetCenterValidation extends TieWebSheetBean {
+...	
+	@Override
+	public void initialLoad() {
+		
+...
+		loadWebSheet(stream, context);
+		this.setTieWebSheetValidationBean(new ValidationBean());
+
+	}
 </pre>
 		</div>
 
 
 
-		<tie:websheet id="sheet3" webSheetBean="#{webSheetServerValidation}"
+		<tie:websheet id="sheet3" webSheetBean="#{webSheetCenterValidation}"
 			maxRowsPerPage="30">
 		</tie:websheet>
 		<p>
 
-			<p:commandButton id="cmdServerExportTemplate"
+			<p:commandButton id="cmdCenterExportTemplate"
 				value="Download the template" ajax="false"
-				actionListener="#{webSheetServerValidation_Config.doExport()}">
+				actionListener="#{webSheetCenterValidation_Config.doExport()}">
 				<p:fileDownload
-					value="#{webSheetServerValidation_Config.exportFile}" />
+					value="#{webSheetCenterValidation_Config.exportFile}" />
 			</p:commandButton>
 
-			<p:commandButton id="cmdServerExportResult"
+			<p:commandButton id="cmdCenterExportResult"
 				value="Download the result" ajax="false"
-				actionListener="#{webSheetServerValidation.doExport()}">
-				<p:fileDownload value="#{webSheetServerValidation.exportFile}" />
+				actionListener="#{webSheetCenterValidation.doExport()}">
+				<p:fileDownload value="#{webSheetCenterValidation.exportFile}" />
 			</p:commandButton>
 		</p>
 		</h:form>
