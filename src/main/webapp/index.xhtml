@@ -1,16 +1,45 @@
-<ui:composition template="/templates/layout.xhtml"
+<ui:composition template="WEB-INF/templates/template.xhtml"
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 >
-	<ui:define name="contentTitle">Welcome to the TieFaces Showcase application!</ui:define>
 
-	<ui:define name="content">
-		<p>
-			Check out the left side menu for live examples of the TieFaces components !
-		</p>
+    <ui:define name="head-end">
+        <ui:param name="renderBreadCrumb" value="false"/>
+    </ui:define>
 
-		<hr />
+    <ui:define name="title">
+        <h2 class="align-center">
+            Welcome to the TieFaces WebSheet Showcase!
+        </h2>
 
+    </ui:define>
+    
+  <ui:define name="body">    
+    <h2>Over View</h2>
+	<p>Tiefaces webSheet is a JSF component which can render a excel template as a web form while keeping the same formats and styles.	It is not intend to become online document tools like Google Docs, instead it want to become a gateway or transformer of Excel sheets to Web forms.  
+	</p>
+	<h2>Features</h2>
+	<h3>Render excel templates as web forms</h3>
+	<ul>
+		<li>Support multiple sheets</li>
+		<li>Keep Excel formats and styles</li>
+		<li>Keep Excel formulas</li>
+		<li>Support charts and images</li>
+	</ul>
+	<h:graphicImage library="showcase" name="img/websheet1.png" alt="web sheet feature 1" width="1024" height="499" />
+	<h3>Dynamic Web Form Solution</h3>
+	<ul>
+		<li>Use expression language to define data.</li>
+		<li>Use special command in the cell comment to define features.</li>
+		<li>Two way binding between data and cell object.</li>
+		<li>Support multiple input/output widget. i.e. calendar, dropdown, inputNumber, inputArea etc.</li>
+		<li>Support nested data collections. i.e. a company include multiple departments while each department include multiple employees.</li>
+		<li>Support add/delete functions for data collections.</li>
+	</ul>
+	<h:graphicImage library="showcase" name="img/websheet2.png" alt="web sheet feature 2" width="1024" height="399" />
+	<h3>Source Code in GitHub</h3>
+<p>Tiefaces licensed under MIT license (totally free to use). Source code is available from the public repositories at <h:outputLink value="https://github.com/tiefaces/TieFaces" target="_blank">Github</h:outputLink>.</p>
+<p>Any feedback is appreciated (Jason.Jiang.ca@gmail.com).</p>
 	</ui:define>
 </ui:composition>

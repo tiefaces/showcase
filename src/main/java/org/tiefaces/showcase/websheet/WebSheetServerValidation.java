@@ -12,7 +12,7 @@ import org.tiefaces.showcase.tablelookup.Item;
 
 @Named
 @ViewScoped
-public class WebSheetValidation extends TieWebSheetBean {
+public class WebSheetServerValidation extends TieWebSheetBean {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,7 +25,7 @@ public class WebSheetValidation extends TieWebSheetBean {
 		itemList.add(new Item());
 		HashMap<String, Object> context = new HashMap<String, Object>();
 		context.put("items", itemList);
-		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/PRICELISTINPUTVALIDATION.xlsx");
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("websheet/ServerValidation.xlsx");
 		loadWebSheet(stream, context);	
 	}
 		
