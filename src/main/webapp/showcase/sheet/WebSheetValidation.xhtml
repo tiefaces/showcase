@@ -27,37 +27,6 @@
 
 	<ui:define name="demo">
 	
-		<h3>How to Setup Validation Rule</h3>
-
-		<p>Use $validate{rule="...." error="...."} in the cell's comment.</p>
-		<ul>
-			<li>rule:validation rule.</li>
-			<li>error: error message to show up if validation failed.</li>
-		</ul>
-
-		<p>Special variables:</p>
-		<div class="source">
-			<pre class="prettyprint">$value     -- current input value
-$sheetName -- current sheet name
-$rowIndex  -- current row index (start from 0)
-$colIndex  -- current column index (start from 0, for example column A is 0)
-$A$1       -- refer to the value of cell A1. Of course you can use $B$2 refer to cell B2.
-$A         -- If no row specified, then use current row as reference. For example, current row is row 2, then $A refer to the value of cell A2.
-\#{         -- Invoke back-end bean through EL (please see demo 2 for detail)
-</pre>
-		</div>
-
-
-		<p>Some Examples:</p>
-
-
-		<div class="source">
-			<pre class="prettyprint">$validate{rule="$value&lt;=500000" error="Value must be less than or equal to 500,000."}.
-$validate{rule="$value &gt; $C " error="Value must be greater than column C."}
-$validate{rule="\#{ruleBean.checkRule2($value)}" error="Value must be less than or equal to 500,000."}
-</pre>
-		</div>
-
 
 		<h:form id="form1">
 
@@ -91,17 +60,11 @@ $validate{rule="$value&lt;=500000" error="Value must be less than or equal to 50
 
 		<h3>Demo 2: Pass validation process to back-end bean through EL</h3>
 
-		<p>JSF EL is supported in the validation rule. You can pass the current input value or other parameters into back-end bean through EL. For example, the following rules are defined
-			to invoke the back-end bean 'ruleBean'</p>
-
-
 		<div class="source">
 			<pre class="prettyprint">$validate{rule="\#{ruleBean.checkRule1($value)}" error="Value must be greater than zero (0)."}
 $validate{rule="\#{ruleBean.checkRule2($value)}" error="Value must be less than or equal to 500,000."}
 </pre>
 		</div>
-
-
 
 		<tie:websheet id="sheet3" webSheetBean="#{webSheetServerValidation}"
 			maxRowsPerPage="30">
@@ -125,43 +88,7 @@ $validate{rule="\#{ruleBean.checkRule2($value)}" error="Value must be less than 
 
 		<h:form id="form3">
 
-		<h3>Demo 3: Define validation rules and messages in a center place.</h3>
-
-		<p>Implement TieWebSheetValidation interface and use it as a central place to define all the validation rules and error messages. No need to define rules in the template. </p>
-
-
-		<div class="source">
-			<pre class="prettyprint">
-/** Create a bean which implement TieWebSheetValidation interface **/
-
-
-public class ValidationBean implements TieWebSheetValidation {
-...
-	@Override
-	public String validate(String sheetName, int rowIndex, int colIndex, String inputValue) {
-	...
-	/** return error message if validation failed, otherwise return empty string. **/
-	...
-	}		
-}
-			
-/** Assign the validation bean to TieWebSheetBean in the initialLoad. **/
-			
-@Named
-@ViewScoped
-public class WebSheetCenterValidation extends TieWebSheetBean {
-...	
-	@Override
-	public void initialLoad() {
-		
-...
-		loadWebSheet(stream, context);
-		this.setTieWebSheetValidationBean(new ValidationBean());
-
-	}
-</pre>
-		</div>
-
+		<h3>Demo 3: Implement TieWebSheetValidation interface.</h3>
 
 
 		<tie:websheet id="sheet3" webSheetBean="#{webSheetCenterValidation}"

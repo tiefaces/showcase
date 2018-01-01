@@ -34,6 +34,9 @@ public class Employee {
         this.bonus = bonus;
         this.birthDate = birthDate;
         this.sex = sex;
+        if ((payment != null)&&(bonus!=null)) {
+        	this.total = Math.round(payment * (100 + bonus*100))/100.0;
+        }
     }
 
 
@@ -132,6 +135,7 @@ public class Employee {
                 ", birth date='" + birthDate + '\'' +
                 ", worktime=" + worktime +
                 ", payment=" + payment +
+                ", total=" + total +
                 '}';
     }
 }

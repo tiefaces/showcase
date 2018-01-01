@@ -1,10 +1,17 @@
 package org.tiefaces.showcase.websheet;
 
+import java.util.Map;
+
 import org.tiefaces.components.websheet.TieWebSheetValidation;
 
 
 public class ValidationBean implements TieWebSheetValidation {
 
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private boolean checkRule1(double value) {
 		if (value > 0) {
@@ -20,9 +27,24 @@ public class ValidationBean implements TieWebSheetValidation {
 		return false;
 	}
 
-	@Override
-	public String validate(String sheetName, int rowIndex, int colIndex, String inputValue) {
+	
+	private boolean isNumeric(String str)  
+	{  
+	  try  
+	  {  
+	    Double.parseDouble(str);  
+	  }  
+	  catch(NumberFormatException nfe)  
+	  {  
+	    return false;  
+	  }  
+	  return true;  
+	}
 
+
+	@Override
+	public String validate(Map<String, Object> dataContext, String dataField, String nestedDataFullName,
+			String sheetName, int rowIndex, int colIndex, String inputValue) {
 		boolean pass = true;
 		switch (colIndex) {
 		case 3:
@@ -46,20 +68,6 @@ public class ValidationBean implements TieWebSheetValidation {
 		default:
 			break;
 		}
-		return "";
-
-	}
-	
-	private boolean isNumeric(String str)  
-	{  
-	  try  
-	  {  
-	    Double.parseDouble(str);  
-	  }  
-	  catch(NumberFormatException nfe)  
-	  {  
-	    return false;  
-	  }  
-	  return true;  
+		return "";	
 	}	
 }

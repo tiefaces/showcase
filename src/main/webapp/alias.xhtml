@@ -1,0 +1,66 @@
+<ui:composition template="WEB-INF/templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+
+    <ui:define name="head-end">
+        <ui:param name="renderBreadCrumb" value="false"/>
+    </ui:define>
+
+    <ui:define name="title">
+        <h2 class="align-left">
+            Command Alias
+        </h2>
+
+    </ui:define>
+    
+  <ui:define name="body">    
+<p>Command Alias is a shortcut to define TieFaces commands in the template. In real world, the template maybe created by business users who are not familiar with commands definition. In those case, developers can step in and use the alias to help:</p>
+	<h2>How to define?</h2>
+	<p>1. Create CommandAlias object:</p>
+
+<div class="source">
+<div class="source"><pre class="prettyprint">
+//Use constructor TieCommandAlias(key, command, removeFlag)
+//key: keyword, also support wildcard, e.g. "\${*Date}"
+//command: command
+//removeFlag: if true, then the key will be removed after add the command into the cell.
+...
+//example 1: add "$widget.calendar..." command into cell which contain "\${*Date}". 
+new TieCommandAlias("\${*Date}",  "\$widget.calendar{showOn=\"button\" pattern=\"yyyy/MM/dd\" readonlyInput=\"true\"}\r\n")
+
+//example 2: add "widget.inputnumber.." command into cell which contain "\${inputWorkTime}", also "\${inputWorkTime}" will be removed from cell. 
+new TieCommandAlias("\${inputWorkTime}", "\$widget.inputnumber{symbol=\" years\" symbolPosition=\"s\" minValue=\"0\" maxValue=\"999\" decimalPlaces=\"2\"}\r\n", true); 
+
+...
+</pre>
+</div>
+</div>
+
+
+	<p>2. Add alias into a list and assign it into WebSheetBean before loading:</p>
+
+<div class="source">
+<div class="source"><pre class="prettyprint">...
+
+@Override
+public void initialLoad() {
+		
+...
+	List&lt;TieCommandAlias&gt; tieCommandAliasList = new ArrayList&lt;&gt;();
+	tieCommandAliasList.add(new TieCommandAlias(...)); 
+	tieCommandAliasList.add(new TieCommandAlias(...));
+	this.setTieCommandAliasList(tieCommandAliasList);
+....		
+	loadWebSheet(stream, context);
+....
+	}
+...
+</pre>
+</div>
+</div>
+
+
+	</ui:define>
+</ui:composition>
