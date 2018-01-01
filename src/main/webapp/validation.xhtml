@@ -1,0 +1,143 @@
+<ui:composition template="WEB-INF/templates/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+
+    <ui:define name="head-end">
+        <ui:param name="renderBreadCrumb" value="false"/>
+    </ui:define>
+
+    <ui:define name="title">
+        <h2 class="align-left">
+            Validation
+        </h2>
+
+    </ui:define>
+    
+  <ui:define name="body">    
+<p>There are 3 ways to handle validation in TieFaces:</p>
+<ul>
+	<li>1. define validation rule for cell</li>
+	<li>2. pass the handler to back-end bean through EL.</li>
+	<li>3. validation interface.</li>
+</ul>
+<p>The way 1 and 2 are triggered each time when the cell value changed. The way 3 could be configured as only triggered in submit mode.</p>
+ 		
+	<h2>How to define?</h2>
+	<h3>Way 1. Define validation rule:</h3>
+
+		<p>Use $validate{rule="...." error="...."} in the cell's comment.</p>
+		<ul>
+			<li>rule:validation rule.</li>
+			<li>error: error message to show up if validation failed.</li>
+		</ul>
+
+		<p>Special variables:</p>
+		<div class="source">
+			<pre class="prettyprint">$value     -- current input value
+$sheetName -- current sheet name
+$rowIndex  -- current row index (start from 0)
+$colIndex  -- current column index (start from 0, for example column A is 0)
+$A$1       -- refer to the value of cell A1. Of course you can use $B$2 refer to cell B2.
+$A         -- If no row specified, then use current row as reference. For example, current row is row 2, then $A refer to the value of cell A2.
+\#{         -- Invoke back-end bean through EL (please see demo 2 for detail)
+</pre>
+		</div>
+		
+
+		<p>Some Examples:</p>
+
+
+		<div class="source">
+			<pre class="prettyprint">$validate{rule="$value&lt;=500000" error="Value must be less than or equal to 500,000."}.
+$validate{rule="$value &gt; $C " error="Value must be greater than column C."}
+$validate{rule="\#{ruleBean.checkRule2($value)}" error="Value must be less than or equal to 500,000."}
+</pre>
+		</div>
+		
+				
+	<h3>Way 2: Pass validation process to back-end bean through EL</h3>
+
+	<p>JSF EL is supported in the validation rule. You can pass the current input value or other parameters into back-end bean through EL. For example, the following rules are defined
+			to invoke the back-end bean 'ruleBean'</p>
+
+		<div class="source">
+			<pre class="prettyprint">$validate{rule="\#{ruleBean.checkRule1($value)}" error="Value must be greater than zero (0)."}
+$validate{rule="\#{ruleBean.checkRule2($value)}" error="Value must be less than or equal to 500,000."}
+</pre>
+		</div>
+		
+		<h3>Way 3: Validation interface.</h3>
+
+		<p>Implement TieWebSheetValidation interface and use it as a central place to define all the validation rules and error messages. No need to define rules in the template. </p>
+
+<p>3.1 Create a bean which implement TieWebSheetValidation interface.</p>
+		<div class="source">
+			<pre class="prettyprint">
+public class ValidationBean implements TieWebSheetValidation {
+...
+	@Override
+	public String validate(Map&lt;String, Object&gt; dataContext, String dataField, 
+	String nestedDataFullName,String sheetName, int rowIndex, int colIndex, String inputValue) {
+	...
+	/** return error message if validation failed, otherwise return empty string. **/
+	...
+	}		
+}
+			
+</pre>
+		</div>
+
+<p>3.2 Assign the validation bean to TieWebSheetBean in the initialLoad. </p>
+<p>The validation bean could be configured to only triggered in submit mode as it commonly used for server side validation and no need be triggered each time value changes. </p>
+		<div class="source">
+			<pre class="prettyprint">
+@Named
+@ViewScoped
+public class WebSheetCenterValidation extends TieWebSheetBean {
+...	
+	@Override
+	public void initialLoad() {
+		
+...
+		// if set to true, then the validation only triggered in submit mode.
+		this.setTieWebSheetValidationBean(new ValidationBean(), true);
+		loadWebSheet(stream, context);
+
+	}
+</pre>
+		</div>
+		
+		
+		<h3>Submit Mode</h3>
+
+		<p>In default mode (submit mode = false), the validation rules only apply to the cells which value changed. So the value not changed cells or empty fields don't need to pass the validation. The allow partially save the form. e.g. empty field could be saved. </p>
+		<p>If set to true, then all the cells need to pass the validation rules. </p>
+		
+		<div class="source">
+			<pre class="prettyprint">
+	/**
+	 * Submit the current workbooks.
+	 */
+	public void doSubmit() {
+				
+		this.setSubmitMde(true);
+		// validation may behavior differently depend on the submit mode.
+		// e.g. when submit mode = false, empty fields or value not changed cells
+		// don't need to pass the validation rule. This allow partial save the form. 
+		// when submit mode = true, all cells need to pass the validation.
+		if (!this.getHelper().getValidationHandler().preValidation()) {
+			LOG.fine("Validation failed before saving");
+			return;
+		}
+		processSubmit();
+		this.getHelper().getWebSheetLoader().setUnsavedStatus(
+				RequestContext.getCurrentInstance(), false);
+		this.setSubmitMde(false);
+	}
+</pre>
+		</div>		
+		
+	</ui:define>
+</ui:composition>
